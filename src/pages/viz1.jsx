@@ -20,6 +20,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import Button from '@mui/material/Button';
 import HelpIcon from '@mui/icons-material/Help';
 import *  as d3 from 'd3'
+import { CSV_URL } from '../constants';
 
 const getDownloadsNumber = (data) => {
     let uniques = new Set()
@@ -29,60 +30,52 @@ const getDownloadsNumber = (data) => {
     return Array.from(uniques).sort((a, b) => parseInt(b.replaceAll('+', '').replaceAll(',', '')) - parseInt(a.replaceAll('+', '').replaceAll(',', '')))
 }
 
-// Ajouter le calcul de chaque mnetrique
-// Todo finir les deux derniers methodes et clean et toujours tous renvoyer comme ca on peut toujiours afficher toutes les infor lorsuq'on hover les bails
-// Chaque row : Pour chaque metrique de telechargement il faut : Distribution et la position selon chaque valeur
-const preprocessData = (data, downloads_metric, variableName, order, download_number) => {
-    let downloadPerValue = new Map()
-    let valuesCount = new Map()
-    let meanDownload = new Map()
+const handleSort = (preprocessedData, order, downloads_metric) => {
+    let sortMethod = order ==="croissant" ? (a, b) => b[downloads_metric] - a[downloads_metric] : (a, b) => a[downloads_metric] - b[downloads_metric]
+    preprocessedData.sort(sortMethod)
+}
 
+// nAppByValue is filled only if not nul
+const fillMaps = (data, variableName, sumDlsByValue, occurrencesByValue, nAppByValueData) => {
     for (let i = 0; i < data.length; i++) {
         let row = data[i]
-        let downloadValue = parseInt(row.Installs.replaceAll('+', '').replaceAll(',', ''))
+        let downloads = parseInt(row.Installs.replaceAll('+', '').replaceAll(',', ''))
         let variableValue = row[variableName]
-        downloadPerValue.set(variableValue, downloadPerValue.has(variableValue) ? downloadPerValue.get(variableValue) + downloadValue : downloadValue)
-        valuesCount.set(variableValue, valuesCount.has(variableValue) ? valuesCount.get(variableValue) + 1 : 1)
-    }
+        sumDlsByValue.set(variableValue, sumDlsByValue.has(variableValue) ? sumDlsByValue.get(variableValue) + downloads : downloads)
+        occurrencesByValue.set(variableValue, occurrencesByValue.has(variableValue) ? occurrencesByValue.get(variableValue) + 1 : 1)
 
-    for (let value of valuesCount) {
-        let count = value[1]
-        let mean = downloadPerValue.get(value[0]) / count
-        meanDownload.set(value[0], mean)
-    }
-
-    let numberOfApp = new Map()
-    if(downloads_metric === 'Nombre applications' || downloads_metric === 'Nombre applications moyen') {
-        for (let i = 0; i < data.length; i++) {
-            let row = data[i]
-            let variableValue = row[variableName]
+        if(nAppByValueData) {
+            let [nAppByValue, download_number] = nAppByValueData
             if(row.Installs === download_number) {
-                numberOfApp.set(variableValue, numberOfApp.has(variableValue) ? numberOfApp.get(variableValue) + 1 : 1)
+                nAppByValue.set(variableValue, nAppByValue.has(variableValue) ? nAppByValue.get(variableValue) + 1 : 1)
             }
         }
     }
+}
 
+const preprocessData = (data, downloads_metric, variableName, order, download_number) => {
+    let sumDlsByValue = new Map()
+    let occurrencesByValue = new Map()
+    let nAppByValue = new Map()
+    
+    let shouldGetNApps = downloads_metric === 'Nombre applications' || downloads_metric === 'Nombre applications moyen'
+    fillMaps(data, variableName, sumDlsByValue, occurrencesByValue, shouldGetNApps ? [nAppByValue, download_number] : null )
 
     let preprocessedData = []
-    for (let download of downloadPerValue) {
-        if(downloads_metric === 'Nombre applications' || downloads_metric === 'Nombre applications moyen') { 
-            let nApp = numberOfApp.has(download[0]) ? numberOfApp.get(download[0]) : 0
-            preprocessedData.push({ 'value': download[0], 'brut': download[1], 'moyen': meanDownload.get(download[0]), 'distribution': valuesCount.get(download[0]) / data.length , 
-            'Nombre applications' : nApp, 'Nombre applications moyen' : nApp/valuesCount.get(download[0]) })
+    for (let [value, sumDls] of sumDlsByValue) {
+        let distribution = occurrencesByValue.get(value) / data.length
+        let meanDls = sumDls / occurrencesByValue.get(value)
+        let preprocessedValue = { 'value': value, 'brut': sumDls, 'moyen': meanDls , 'distribution': distribution}
+        if(downloads_metric === 'Nombre applications' ) { 
+            preprocessedValue['Nombre applications'] = nAppByValue.has(value) ? nAppByValue.get(value) : 0
         }
-        else {
-            preprocessedData.push({ 'value': download[0], 'brut': download[1], 'moyen': meanDownload.get(download[0]), 'distribution': valuesCount.get(download[0]) / data.length})
+        if (downloads_metric === 'Nombre applications moyen'){
+            preprocessedValue['Nombre applications moyen'] = (nAppByValue.has(value) ? nAppByValue.get(value) : 0) / occurrencesByValue.get(value)
         }
-       
+        preprocessedData.push(preprocessedValue)
     }
 
-    if (order === 'croissant') {
-        preprocessedData.sort((a, b) => b[downloads_metric] - a[downloads_metric])
-    }
-    else {
-        preprocessedData.sort((a, b) => a[downloads_metric] - b[downloads_metric])
-    }
-    console.log(preprocessedData)
+    handleSort(preprocessedData, order, downloads_metric)
     return preprocessedData
 }
 
@@ -98,7 +91,7 @@ const createSVG = () => {
 
 export function Categorical(props) {
     const createVisusalisation = () => {
-        d3.csv('/googleplaystore.csv').then((data, error) => {
+        d3.csv(CSV_URL).then((data, error) => {
             if (error) {
                 console.log(error)
                 return
