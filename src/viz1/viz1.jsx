@@ -23,13 +23,12 @@ const createSVG = () => {
 }
 
 const getHtmlToolTip = (row, dataLength, downloadsRange) => {
-    console.log(row)
-    return `<p> ${row.value} </p> 
-    <p> Distribution : ${row.distribution.value}% (${row.distribution.position}/${dataLength}) </p> 
-    <p> Total download : ${row.sum.value} (${row.sum.position})/${dataLength}</p> 
-    <p> Average download : ${row.avg.value} (${row.avg.position})/${dataLength}</p> 
-    <p> Number of app with more than ${downloadsRange} downloads : ${row.nApp.value} (${row.nApp.position})/${dataLength}</p> 
-    <p> Number of app with more than ${downloadsRange} downloads average : ${row.avgNApp.value} (${row.avgNApp.position})/${dataLength}</p> `
+    return `<h4> ${row.value} </h4> 
+    <p> <b> Distribution </b>: ${row.distribution.value}% (${row.distribution.position}/${dataLength}) </p> 
+    <p> <b> Total download </b>: ${row.sum.value} (${row.sum.position}/${dataLength})</p> 
+    <p> <b> Average download </b>: ${row.avg.value} (${row.avg.position}/${dataLength})</p> 
+    <p> <b> Number of app with more than ${downloadsRange} downloads  </b>: ${row.nApp.value} (${row.nApp.position}/${dataLength})</p> 
+    <p> <b> Number of app with more than ${downloadsRange} downloads average  </b>: ${row.avgNApp.value} (${row.avgNApp.position}/${dataLength})</p> `
 }
 
 export function Categorical() {
@@ -80,12 +79,15 @@ export function Categorical() {
             svg.append("text")
                 .attr("text-anchor", "end")
                 .attr('x', '-40')
-                .text("Variable etudiee : " + variable);
+                .text("Variable etudiee : " + variable)
+                .attr("class", "axis")
+
 
             svg.append("text")
                 .attr("text-anchor", "end")
                 .attr('x', '80%')
-                .text("Metrique de telechargement : " + downloadsMetric);
+                .text("Metrique de telechargement : " + downloadsMetric)
+                .attr("class", "axis")
 
             let toolTip = d3.select(".svg").append("div")
                 .attr("class", "tooltip")
@@ -151,7 +153,6 @@ export function Categorical() {
     }, [downloadsMetric, variable, isAscending, downloadsRange])
 
     const shouldDisplayDlsRangesSelector = (downloadsMetric === CONSTANTS.downloadsMetricSelector.values[2] || downloadsMetric === CONSTANTS.downloadsMetricSelector.values[3])
-    console.log(shouldDisplayDlsRangesSelector, downloadsMetric)
     const Selectors = () => (<Box sx={{ display: 'flex', justifyContent: 'space-between', maxWidth: '60%', paddingLeft: '5%' }}>
         <Selector inputLabel={CONSTANTS.variableSelector.label}
             currentValue={variable} onChange={(event) => setVariable(event.target.value)} menuItemsValues={CONSTANTS.variableSelector.values} menuItemsText={CONSTANTS.variableSelector.texts} helperText={CONSTANTS.variableSelector.helper}

@@ -41,7 +41,7 @@ const handleSort = (preprocessedData, isAscending, downloadsMetric) => {
 const fillMaps = (data, variableName, sumDlsByValue, occurrencesByValue, nAppByValueData) => {
     for (let i = 0; i < data.length; i++) {
         let row = data[i]
-        let downloads = parseInt(row.Installs.replaceAll('+', '').replaceAll(',', ''))
+        let downloads = parseInt(row.Installs.replaceAll('+', '').replaceAll(',', '')) ?  parseInt(row.Installs.replaceAll('+', '').replaceAll(',', '')) : 0
         let variableValue = row[variableName]
         sumDlsByValue.set(variableValue, sumDlsByValue.has(variableValue) ? sumDlsByValue.get(variableValue) + downloads : downloads)
         occurrencesByValue.set(variableValue, occurrencesByValue.has(variableValue) ? occurrencesByValue.get(variableValue) + 1 : 1)
@@ -55,9 +55,9 @@ const fillMaps = (data, variableName, sumDlsByValue, occurrencesByValue, nAppByV
     }
 }
 
-const addPositionsMetrics = (preprocessedData,) => {
-  //  const metrics = [...CONSTANTS.downloadsMetricSelector.values, 'distribution']  cree un bug je sais pas prkoi
-  const metrics = CONSTANTS.downloadsMetricSelector.values
+const addPositionsMetrics = (preprocessedData) => {
+  const metrics = [...CONSTANTS.downloadsMetricSelector.values, 'distribution'] //  cree un bug je sais pas prkoi
+  //const metrics = CONSTANTS.downloadsMetricSelector.values
     for (let i = 0; i < metrics.length; i++) {
         let metric = metrics[i]
         handleSort(preprocessedData, false, metric)
@@ -66,10 +66,13 @@ const addPositionsMetrics = (preprocessedData,) => {
             preprocessedData[j][metric]['position'] = j + 1
         }
     }
+}
 
-
+const addStatsMetrics = (preprocessedData) => {
 
 }
+
+
 
 // Preprocess data for the first visualisation
 export const preprocessData = (data, downloadsMetric, variableName, isAscending, downloadsRange) => {
