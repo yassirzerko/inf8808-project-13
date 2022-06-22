@@ -43,14 +43,16 @@ const fillMaps = (data, variableName, sumDlsByValue, occurrencesByValue, nAppByV
         let row = data[i]
         let downloads = parseInt(row.Installs.replaceAll('+', '').replaceAll(',', '')) ?  parseInt(row.Installs.replaceAll('+', '').replaceAll(',', '')) : 0
         let variableValue = row[variableName]
+        if(variableValue ==="NaN") {
+            continue;
+        }
         sumDlsByValue.set(variableValue, sumDlsByValue.has(variableValue) ? sumDlsByValue.get(variableValue) + downloads : downloads)
         occurrencesByValue.set(variableValue, occurrencesByValue.has(variableValue) ? occurrencesByValue.get(variableValue) + 1 : 1)
 
-        if (nAppByValueData) {
-            let [nAppByValue, download_number] = nAppByValueData
-            if (row.Installs === download_number) {
-                nAppByValue.set(variableValue, nAppByValue.has(variableValue) ? nAppByValue.get(variableValue) + 1 : 1)
-            }
+      
+        let [nAppByValue, download_number] = nAppByValueData
+        if (row.Installs === download_number) {
+            nAppByValue.set(variableValue, nAppByValue.has(variableValue) ? nAppByValue.get(variableValue) + 1 : 1)
         }
     }
 }

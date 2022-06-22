@@ -23,10 +23,11 @@ const createSVG = () => {
 }
 
 const getHtmlToolTip = (row, dataLength, downloadsRange) => {
+    console.log(row.avg.value)
     return `<h4> ${row.value} </h4> 
     <p> <b> Distribution </b>: ${row.distribution.value}% (${row.distribution.position}/${dataLength}) </p> 
-    <p> <b> Total download </b>: ${row.sum.value} (${row.sum.position}/${dataLength})</p> 
-    <p> <b> Average download </b>: ${row.avg.value} (${row.avg.position}/${dataLength})</p> 
+    <p> <b> Total download </b>: ${row.sum.value.toLocaleString()} (${row.sum.position}/${dataLength})</p> 
+    <p> <b> Average download </b>: ${row.avg.value.toLocaleString()} (${row.avg.position}/${dataLength})</p> 
     <p> <b> Number of app with more than ${downloadsRange} downloads  </b>: ${row.nApp.value} (${row.nApp.position}/${dataLength})</p> 
     <p> <b> Number of app with more than ${downloadsRange} downloads average  </b>: ${row.avgNApp.value} (${row.avgNApp.position}/${dataLength})</p> `
 }
@@ -62,6 +63,7 @@ export function Categorical() {
                 .style("text-anchor", "end")
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
+                .attr("fill", "black")
 
             let yScale = d3.scaleBand()
                 .range([0, preprocessedData.length * 50])
