@@ -14,7 +14,7 @@ function Home() {
       <CardMedia
         component="img"
         height="200"
-        image={require("/home/yassir/Bureau/inf8808-project-13/src/téléchargement.jpeg")}
+        image={require("../téléchargement.jpeg")}
         alt="green iguana"
       />
       <CardContent>
