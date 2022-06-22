@@ -21,7 +21,8 @@ import Button from '@mui/material/Button';
 import HelpIcon from '@mui/icons-material/Help';
 import *  as d3 from 'd3'
 import { CSV_URL } from '../constants';
-import { preprocessData, getDownloadsRanges } from '../utils';
+import { preprocessData, getDownloadsRanges, CONSTANTS } from './utils';
+import { Selector } from '../components/Selector';
 
 
 const createSVG = () => {
@@ -33,7 +34,14 @@ const createSVG = () => {
         .attr("transform", "translate(" + 250 + "," + 20 + ")");
 }
 
-export function Categorical(props) {
+export function Categorical() {
+    const [isAscending, setAscending] = React.useState(true)
+    const [downloadsMetric, setDownloadMetric] = React.useState('brut')
+    const [variable, setVariable] = React.useState('Category')
+    const [downloadsRange, setDownloadsRange] = React.useState('1,000,000,000+')
+    const [downloadsRanges, setDownloadsRanges] = React.useState(null)
+    const [isDialogOpen, setDialogOpen] = React.useState(false)
+
     const createVisusalisation = () => {
         d3.csv(CSV_URL).then((data, error) => {
             if (error) {
@@ -108,27 +116,15 @@ export function Categorical(props) {
 
         })
     }
-    
-    const [isAscending, setAscending] = React.useState(true)
-    const [downloadsMetric, setDownloadMetric] = React.useState('brut')
-    const [variable, setVariable] = React.useState('Category')
-    const [downloadsRange, setDownloadsRange] = React.useState('1,000,000,000+')
-    const [downloadsRanges, setDownloadsRanges] = React.useState(null)
-    const [isToolTipOpen, setToolTip] = React.useState(false)
 
-    const getDownloadsSelectors = () => {
-        let array = []
-        for (let i = 0; i < downloadsRanges.length; i++) {
-            array.push(<MenuItem value={downloadsRanges[i]} key={i}> {downloadsRanges[i]}</MenuItem>)
-        }
-        return array
-    }
-
-    const [isDialogOpen, setDialogOpen] = React.useState(false)
     React.useEffect(() => {
         d3.select('.svg').selectAll('*').remove()
         createVisusalisation()
     }, [downloadsMetric, variable, isAscending, downloadsRange])
+
+    const shouldDisplayDlsRangesSelector = (downloadsMetric === 'Nombre applications' || downloadsMetric === 'Nombre applications moyen')
+
+    const [isToolTipOpen, setToolTip] = React.useState(false)
 
 
 
@@ -170,62 +166,20 @@ export function Categorical(props) {
     </FormControl>)
 
     const Selectors = () => (<Box sx={{ display: 'flex', justifyContent: 'space-between', maxWidth: '45%', paddingLeft: '5%' }}>
-        <FormControl size='small'>
-            <InputLabel id="demo-simple-select-helper-label-">Variable</InputLabel>
-            <Select
-                labelId="demo-simple-select-helper-label-variable"
-                id="demo-simple-select-helper-label-variable"
-                value={variable}
-                label="Variable"
-                onChange={(event) => setVariable(event.target.value)}
-                fullWidth
-            >
-                <MenuItem value={'Category'}>Categories</MenuItem>
-                <MenuItem value={'Genres'}>Genres</MenuItem>
-                <MenuItem value={'Type'}>Type</MenuItem>
-                <MenuItem value={'Content Rating'}>Evaluation du contenu</MenuItem>
-                <MenuItem value={'Android Ver'}>Version minimale d’Android requise </MenuItem>
-            </Select>
-            <FormHelperText>Choisir la variable categorique a visualiser</FormHelperText>
-
-        </FormControl>
-        <FormControl size='small'>
-            <InputLabel id="demo-simple-select-helper-label-">Metrique de telechargements</InputLabel>
-            <Select
-                labelId="demo-simple-select-helper-label-dl"
-                id="demo-simple-select-helper-label-dl"
-                value={downloadsMetric}
-                label="Metrique de telechargement"
-                onChange={(event) => setDownloadMetric(event.target.value)}
-                fullWidth
-            >
-                <MenuItem value={'brut'}>Brut</MenuItem>
-                <MenuItem value={'moyen'}>Moyen</MenuItem>
-                <MenuItem value={'Nombre applications'}>Par tranche d'applications </MenuItem>
-                <MenuItem value={'Nombre applications moyen'}>Par tranche d'applications moyen (TODO)</MenuItem>
-            </Select>
-            <FormHelperText>Choisir la metrique de telechargement a visualiser</FormHelperText>
-        </FormControl>
-        {(downloadsMetric === 'Nombre applications' || downloadsMetric === 'Nombre applications moyen') &&
-            <FormControl size='small'>
-                <InputLabel id="demo-simple-select-helper-labeld">Nombre de telechargements </InputLabel>
-                <Select
-                    labelId="demo-simple-select-helper-label-variable"
-                    id="demo-simple-select-helper-label-variable"
-                    value={downloadsRange}
-                    label="Variable"
-                    onChange={(event) => setDownloadsRange(event.target.value)}
-                    fullWidth
-                >
-                    {getDownloadsSelectors()}
-                </Select>
-                <FormHelperText>Choisir le nombre de telechargement a considerer</FormHelperText>
-
-            </FormControl>
+        <Selector inputLabel={CONSTANTS.variableSelector.label} 
+            currentValue={variable} onChange={(event) => setVariable(event.target.value)} menuItemsValues={CONSTANTS.variableSelector.values} menuItemsText={CONSTANTS.variableSelector.texts} helperText={CONSTANTS.variableSelector.helper}
+        />
+        <Selector inputLabel={CONSTANTS.downloadsMetricSelector.label} 
+            currentValue={downloadsMetric} onChange={(event) => setDownloadMetric(event.target.value)} menuItemsValues={CONSTANTS.downloadsMetricSelector.values} menuItemsText={CONSTANTS.downloadsMetricSelector.texts} helperText={CONSTANTS.downloadsMetricSelector.helper}
+        />
+        {shouldDisplayDlsRangesSelector &&
+            <Selector inputLabel={'Nombre de telechargements'} 
+            currentValue={downloadsRange} onChange={(event) => setDownloadsRange(event.target.value)} menuItemsValues={downloadsRanges ? downloadsRanges : []} menuItemsText={downloadsRanges ? downloadsRanges : []} helperText={"Choisir la tranche de telechargement"}
+            ></Selector>
         }
-
     </Box>
     )
+    
     return (
         <Box /*backgroundColor={'#d3d3d3'}*/ height={'100vh'} m={0} p={0}>
             <NavBar></NavBar>

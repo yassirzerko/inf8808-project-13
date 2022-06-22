@@ -6,8 +6,8 @@ export const getDownloadsRanges = (data) => {
     return Array.from(uniques).sort((a, b) => parseInt(b.replaceAll('+', '').replaceAll(',', '')) - parseInt(a.replaceAll('+', '').replaceAll(',', '')))
 }
 
-const handleSort = (preprocessedData, isAscending, downloads_metric) => {
-    let sortMethod = isAscending === true ? (a, b) => b[downloads_metric] - a[downloads_metric] : (a, b) => a[downloads_metric] - b[downloads_metric]
+const handleSort = (preprocessedData, isAscending, downloadsMetric) => {
+    let sortMethod = isAscending === true ? (a, b) => b[downloadsMetric] - a[downloadsMetric] : (a, b) => a[downloadsMetric] - b[downloadsMetric]
     preprocessedData.sort(sortMethod)
 }
 
@@ -54,4 +54,20 @@ export const preprocessData = (data, downloadsMetric, variableName, isAscending,
 
     handleSort(preprocessedData, isAscending, downloadsMetric)
     return preprocessedData
+}
+
+export const CONSTANTS = {
+    variableSelector : {
+        values : ['Category','Genres', 'Type', 'Content Rating', 'Android Ver'],
+        texts : ['Categorie','Genres', 'Type', 'Evaluation de contenu', 'Version minimale d’Android requise'],
+        helper: 'Choisir la variable categorique a visualiser',
+        label: 'Variable'
+    },
+    downloadsMetricSelector : {
+        values : ['brut','moyen', 'Nombre applications', 'Nombre applications moyen'],
+        texts : ['Somme','Moyenne', 'Nombre applications avec +', 'Nombre applications avec + moyen'],
+        helper: 'Choisir la metrique de telechargement a visualiser',
+        label: 'Metrique de telechargements'
+    }
+  
 }
