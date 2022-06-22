@@ -21,63 +21,8 @@ import Button from '@mui/material/Button';
 import HelpIcon from '@mui/icons-material/Help';
 import *  as d3 from 'd3'
 import { CSV_URL } from '../constants';
+import { preprocessData, getDownloadsRanges } from '../utils';
 
-const getDownloadsNumber = (data) => {
-    let uniques = new Set()
-    for (let i = 0; i < data.length; i++) {
-        uniques.add(data[i]['Installs'])
-    }
-    return Array.from(uniques).sort((a, b) => parseInt(b.replaceAll('+', '').replaceAll(',', '')) - parseInt(a.replaceAll('+', '').replaceAll(',', '')))
-}
-
-const handleSort = (preprocessedData, order, downloads_metric) => {
-    let sortMethod = order ==="croissant" ? (a, b) => b[downloads_metric] - a[downloads_metric] : (a, b) => a[downloads_metric] - b[downloads_metric]
-    preprocessedData.sort(sortMethod)
-}
-
-// nAppByValue is filled only if not nul
-const fillMaps = (data, variableName, sumDlsByValue, occurrencesByValue, nAppByValueData) => {
-    for (let i = 0; i < data.length; i++) {
-        let row = data[i]
-        let downloads = parseInt(row.Installs.replaceAll('+', '').replaceAll(',', ''))
-        let variableValue = row[variableName]
-        sumDlsByValue.set(variableValue, sumDlsByValue.has(variableValue) ? sumDlsByValue.get(variableValue) + downloads : downloads)
-        occurrencesByValue.set(variableValue, occurrencesByValue.has(variableValue) ? occurrencesByValue.get(variableValue) + 1 : 1)
-
-        if(nAppByValueData) {
-            let [nAppByValue, download_number] = nAppByValueData
-            if(row.Installs === download_number) {
-                nAppByValue.set(variableValue, nAppByValue.has(variableValue) ? nAppByValue.get(variableValue) + 1 : 1)
-            }
-        }
-    }
-}
-
-const preprocessData = (data, downloads_metric, variableName, order, download_number) => {
-    let sumDlsByValue = new Map()
-    let occurrencesByValue = new Map()
-    let nAppByValue = new Map()
-    
-    let shouldGetNApps = downloads_metric === 'Nombre applications' || downloads_metric === 'Nombre applications moyen'
-    fillMaps(data, variableName, sumDlsByValue, occurrencesByValue, shouldGetNApps ? [nAppByValue, download_number] : null )
-
-    let preprocessedData = []
-    for (let [value, sumDls] of sumDlsByValue) {
-        let distribution = occurrencesByValue.get(value) / data.length
-        let meanDls = sumDls / occurrencesByValue.get(value)
-        let preprocessedValue = { 'value': value, 'brut': sumDls, 'moyen': meanDls , 'distribution': distribution}
-        if(downloads_metric === 'Nombre applications' ) { 
-            preprocessedValue['Nombre applications'] = nAppByValue.has(value) ? nAppByValue.get(value) : 0
-        }
-        if (downloads_metric === 'Nombre applications moyen'){
-            preprocessedValue['Nombre applications moyen'] = (nAppByValue.has(value) ? nAppByValue.get(value) : 0) / occurrencesByValue.get(value)
-        }
-        preprocessedData.push(preprocessedValue)
-    }
-
-    handleSort(preprocessedData, order, downloads_metric)
-    return preprocessedData
-}
 
 const createSVG = () => {
     return d3.select('.svg')
@@ -88,7 +33,6 @@ const createSVG = () => {
         .attr("transform", "translate(" + 250 + "," + 20 + ")");
 }
 
-
 export function Categorical(props) {
     const createVisusalisation = () => {
         d3.csv(CSV_URL).then((data, error) => {
@@ -97,11 +41,11 @@ export function Categorical(props) {
                 return
             }
 
-            let preprocessedData = preprocessData(data, downloads_metric, variable, order, download_number)
+            let preprocessedData = preprocessData(data, downloadsMetric, variable, isAscending, downloadsRange)
             let svg = createSVG()
 
             let xScale = d3.scaleLinear()
-                .domain([d3.min(preprocessedData.map(row => row[downloads_metric])), d3.max(preprocessedData.map(row => row[downloads_metric]))])
+                .domain([d3.min(preprocessedData.map(row => row[downloadsMetric])), d3.max(preprocessedData.map(row => row[downloadsMetric]))])
                 .range([0, window.screen.width * 0.75])
 
             svg.append("g")
@@ -112,9 +56,7 @@ export function Categorical(props) {
                 .style("text-anchor", "end")
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
-
-
-
+        
             let yScale = d3.scaleBand()
                 .range([0, preprocessedData.length * 50])
                 .domain(preprocessedData.map(row => row.value))
@@ -136,7 +78,7 @@ export function Categorical(props) {
             svg.append("text")
                 .attr("text-anchor", "end")
                 .attr('x', '80%')
-                .text("Metrique de telechargement : " + downloads_metric);
+                .text("Metrique de telechargement : " + downloadsMetric);
 
             let bars = svg.selectAll("myRect")
                 .data(preprocessedData)
@@ -146,14 +88,14 @@ export function Categorical(props) {
 
             bars.append("rect")
                 .attr("y", (row) => yScale(row.value))
-                .attr("width", (row) => xScale(row[downloads_metric]))
+                .attr("width", (row) => xScale(row[downloadsMetric]))
                 .attr("height", () => yScale.bandwidth())
                 .attr("fill", "steelblue")
 
             bars.append('text')
-                .text(row => row[downloads_metric])
+                .text(row => row[downloadsMetric])
                 .style("text-anchor", "middle")
-                .attr("x", (row) => xScale(row[downloads_metric]) * 0.8)
+                .attr("x", (row) => xScale(row[downloadsMetric]) * 0.8)
                 .attr("y", (row) => yScale(row.value) + yScale.bandwidth() - 10)
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
@@ -162,23 +104,22 @@ export function Categorical(props) {
             bars.on('click', () => setToolTip(true))
             bars.style('cursor', 'pointer')
 
-            const downloadValues = getDownloadsNumber(data)
-            setDownloadValues(downloadValues)
+            setDownloadsRanges(getDownloadsRanges(data))
 
         })
     }
-
-    const [order, setOrder] = React.useState('croissant')
-    const [downloads_metric, setDownloadMetric] = React.useState('brut')
+    
+    const [isAscending, setAscending] = React.useState(true)
+    const [downloadsMetric, setDownloadMetric] = React.useState('brut')
     const [variable, setVariable] = React.useState('Category')
-    const [download_number, setDownloadNumber] = React.useState('1,000,000,000+')
-    const [download_values, setDownloadValues] = React.useState(null)
+    const [downloadsRange, setDownloadsRange] = React.useState('1,000,000,000+')
+    const [downloadsRanges, setDownloadsRanges] = React.useState(null)
     const [isToolTipOpen, setToolTip] = React.useState(false)
 
     const getDownloadsSelectors = () => {
         let array = []
-        for (let i = 0; i < download_values.length; i++) {
-            array.push(<MenuItem value={download_values[i]} key={i}> {download_values[i]}</MenuItem>)
+        for (let i = 0; i < downloadsRanges.length; i++) {
+            array.push(<MenuItem value={downloadsRanges[i]} key={i}> {downloadsRanges[i]}</MenuItem>)
         }
         return array
     }
@@ -187,7 +128,7 @@ export function Categorical(props) {
     React.useEffect(() => {
         d3.select('.svg').selectAll('*').remove()
         createVisusalisation()
-    }, [downloads_metric, variable, order, download_number])
+    }, [downloadsMetric, variable, isAscending, downloadsRange])
 
 
 
@@ -218,13 +159,13 @@ export function Categorical(props) {
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            value={order}
-            onChange={(event) => setOrder(event.target.value)}
+            value={isAscending}
+            onChange={(event) => setAscending(event.target.value === "true")}
         >
-            <FormControlLabel value="croissant" control={<Radio />} label="Croissant" labelPlacement="top" />
+            <FormControlLabel value={true} control={<Radio />} label="Croissant" labelPlacement="top" />
 
 
-            <FormControlLabel value="decroissant" control={<Radio />} label="Decroissant" labelPlacement="top" />
+            <FormControlLabel value={false} control={<Radio />} label="Decroissant" labelPlacement="top" />
         </RadioGroup>
     </FormControl>)
 
@@ -253,7 +194,7 @@ export function Categorical(props) {
             <Select
                 labelId="demo-simple-select-helper-label-dl"
                 id="demo-simple-select-helper-label-dl"
-                value={downloads_metric}
+                value={downloadsMetric}
                 label="Metrique de telechargement"
                 onChange={(event) => setDownloadMetric(event.target.value)}
                 fullWidth
@@ -265,15 +206,15 @@ export function Categorical(props) {
             </Select>
             <FormHelperText>Choisir la metrique de telechargement a visualiser</FormHelperText>
         </FormControl>
-        {(downloads_metric === 'Nombre applications' || downloads_metric === 'Nombre applications moyen') &&
+        {(downloadsMetric === 'Nombre applications' || downloadsMetric === 'Nombre applications moyen') &&
             <FormControl size='small'>
                 <InputLabel id="demo-simple-select-helper-labeld">Nombre de telechargements </InputLabel>
                 <Select
                     labelId="demo-simple-select-helper-label-variable"
                     id="demo-simple-select-helper-label-variable"
-                    value={download_number}
+                    value={downloadsRange}
                     label="Variable"
-                    onChange={(event) => setDownloadNumber(event.target.value)}
+                    onChange={(event) => setDownloadsRange(event.target.value)}
                     fullWidth
                 >
                     {getDownloadsSelectors()}
