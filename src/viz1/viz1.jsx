@@ -32,13 +32,18 @@ const getHtmlToolTip = (row, dataLength, downloadsRange) => {
     <p> <b> Number of app with more than ${downloadsRange} downloads average  </b>: ${row.avgNApp.value} (${row.avgNApp.position}/${dataLength})</p> `
 }
 
+const getModalData = () => {
+
+}
+
 export function Categorical() {
     const [isAscending, setAscending] = React.useState(false)
     const [downloadsMetric, setDownloadMetric] = React.useState(CONSTANTS.downloadsMetricSelector.values[0])
     const [variable, setVariable] = React.useState('Category')
     const [downloadsRange, setDownloadsRange] = React.useState('1,000,000,000+')
     const [downloadsRanges, setDownloadsRanges] = React.useState(null)
-    const [isModalOpen, setModalOpen] = React.useState(false)
+    const [modalData, setModalData] = React.useState({ 'isOpen': false, 'title': null, 'content': null })
+
 
     const createVisusalisation = () => {
         d3.csv(CSV_URL).then((data, error) => {
@@ -57,7 +62,7 @@ export function Categorical() {
 
             svg.append("g")
                 .attr("transform", "translate(-10,15)")
-                .style("position", "fixed") //todo : fix la position
+                .attr("position", "fixed") //todo : fix la position
                 .call(d3.axisBottom(xScale))
                 .append("text")
                 .style("text-anchor", "end")
@@ -135,10 +140,11 @@ export function Categorical() {
                         .style('opacity', 0)
                 })
 
-            bars.append('text')
+            bars.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
                 .text(row => row[downloadsMetric].value)
                 .style("text-anchor", "middle")
-                .attr("x", (row) => xScale(row[downloadsMetric].value) * 0.8)
+                //.attr("x", (row) => xScale(row[downloadsMetric].value) * 0.8)
+                .attr("x", 100)
                 .attr("y", (row) => yScale(row.value) + yScale.bandwidth() - 10)
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
@@ -155,17 +161,18 @@ export function Categorical() {
     }, [downloadsMetric, variable, isAscending, downloadsRange])
 
     const shouldDisplayDlsRangesSelector = (downloadsMetric === CONSTANTS.downloadsMetricSelector.values[2] || downloadsMetric === CONSTANTS.downloadsMetricSelector.values[3])
-    const Selectors = () => (<Box sx={{ display: 'flex', justifyContent: 'space-between', maxWidth: '60%', paddingLeft: '5%' }}>
+    const Selectors = () => (<Box sx={{ display: 'flex', justifyContent: 'space-even', maxWidth: '80%', paddingLeft: '5%' }}>
         <Selector inputLabel={CONSTANTS.variableSelector.label}
             currentValue={variable} onChange={(event) => setVariable(event.target.value)} menuItemsValues={CONSTANTS.variableSelector.values} menuItemsText={CONSTANTS.variableSelector.texts} helperText={CONSTANTS.variableSelector.helper}
-        />
+            onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Variable ', 'content': 'Explication' })} />
+
         <Selector inputLabel={CONSTANTS.downloadsMetricSelector.label}
             currentValue={downloadsMetric} onChange={(event) => setDownloadMetric(event.target.value)} menuItemsValues={CONSTANTS.downloadsMetricSelector.values} menuItemsText={CONSTANTS.downloadsMetricSelector.texts} helperText={CONSTANTS.downloadsMetricSelector.helper}
-        />
+            onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Metrique de telechargement', 'content': 'Explication' })} />
         {shouldDisplayDlsRangesSelector &&
             <Selector inputLabel={'Nombre de telechargements'}
                 currentValue={downloadsRange} onChange={(event) => setDownloadsRange(event.target.value)} menuItemsValues={downloadsRanges ? downloadsRanges : []} menuItemsText={downloadsRanges ? downloadsRanges : []} helperText={"Choisir la tranche de telechargement"}
-            ></Selector>
+                onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Nombre de telechargement', 'content': 'Explication' })} ></Selector>
         }
     </Box>
     )
@@ -178,9 +185,8 @@ export function Categorical() {
             </Typography>
             <Box pl={'40%'} pt={3}>
                 <RadioButtons label={CONSTANTS.radioButtons.label} currentValue={isAscending} onChange={(event) => setAscending(event.target.value === "true")}
-                    buttonsValues={CONSTANTS.radioButtons.values} buttonsText={CONSTANTS.radioButtons.texts}></RadioButtons>
-                <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} title={CONSTANTS.modal.title} content={CONSTANTS.modal.content} />
-                <HelpIcon onClick={() => setModalOpen(true)} />
+                    buttonsValues={CONSTANTS.radioButtons.values} buttonsText={CONSTANTS.radioButtons.texts} onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Ordonnacement', 'content': 'Explication' })}></RadioButtons>
+                <Modal isOpen={modalData.isOpen} onClose={() => setModalData({ 'isOpen': false, 'title': null, 'content': null })} title={modalData.title} content={modalData.content} />
             </Box>
             <Box pl={'25%'} pt={3} pb={2}>
                 <Selectors></Selectors>
