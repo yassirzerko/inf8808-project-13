@@ -22,8 +22,18 @@ const createSVG = () => {
         .attr("transform", "translate(" + 250 + "," + 20 + ")");
 }
 
+const getHtmlToolTip = (row, dataLength, downloadsRange) => {
+    console.log(row)
+    return `<p> ${row.value} </p> 
+    <p> Distribution : ${row.distribution.value}% (${row.distribution.position}/${dataLength}) </p> 
+    <p> Total download : ${row.sum.value} (${row.sum.position})/${dataLength}</p> 
+    <p> Average download : ${row.avg.value} (${row.avg.position})/${dataLength}</p> 
+    <p> Number of app with more than ${downloadsRange} downloads : ${row.nApp.value} (${row.nApp.position})/${dataLength}</p> 
+    <p> Number of app with more than ${downloadsRange} downloads average : ${row.avgNApp.value} (${row.avgNApp.position})/${dataLength}</p> `
+}
+
 export function Categorical() {
-    const [isAscending, setAscending] = React.useState(true)
+    const [isAscending, setAscending] = React.useState(false)
     const [downloadsMetric, setDownloadMetric] = React.useState(CONSTANTS.downloadsMetricSelector.values[0])
     const [variable, setVariable] = React.useState('Category')
     const [downloadsRange, setDownloadsRange] = React.useState('1,000,000,000+')
@@ -39,7 +49,8 @@ export function Categorical() {
 
             let preprocessedData = preprocessData(data, downloadsMetric, variable, isAscending, downloadsRange)
             let svg = createSVG()
-            
+            let dataLength = preprocessedData.length
+
             let xScale = d3.scaleLinear()
                 .domain([d3.min(preprocessedData.map(row => row[downloadsMetric].value)), d3.max(preprocessedData.map(row => row[downloadsMetric].value))])
                 .range([0, window.screen.width * 0.75])
@@ -105,7 +116,7 @@ export function Categorical() {
                         .duration(50)
                         .style('opacity', 1)
 
-                    toolTip.html(row.distribution.value)
+                    toolTip.html(getHtmlToolTip(row, dataLength, downloadsRange))
                         .style("left", (event.pageX + 20) + "px")
                         .style("top", (event.pageY - 20) + "px")
                 })
@@ -128,27 +139,6 @@ export function Categorical() {
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
                 .attr("fill", "black")
-                .on('mouseover', function (event, row) {
-                    d3.select(this)
-                    toolTip.transition()
-                        .duration(50)
-                        .style('opacity', 1)
-
-                    toolTip.html(row.distribution.value)
-                        .style("left", (event.pageX + 20) + "px")
-                        .style("top", (event.pageY - 20) + "px")
-                })
-                .on('mouseout', function (event, row) {
-                    d3.select(this)
-                        .transition()
-                        .duration(50)
-                        .attr('opacity', 0.7)
-
-                    toolTip.transition()
-                        .duration(50)
-                        .style('opacity', 0)
-                })
-                
 
             setDownloadsRanges(getDownloadsRanges(data))
 
@@ -160,8 +150,8 @@ export function Categorical() {
         createVisusalisation()
     }, [downloadsMetric, variable, isAscending, downloadsRange])
 
-    const shouldDisplayDlsRangesSelector = (downloadsMetric === CONSTANTS.downloadsMetricSelector.values[3] || downloadsMetric === CONSTANTS.downloadsMetricSelector.values[4])
-
+    const shouldDisplayDlsRangesSelector = (downloadsMetric === CONSTANTS.downloadsMetricSelector.values[2] || downloadsMetric === CONSTANTS.downloadsMetricSelector.values[3])
+    console.log(shouldDisplayDlsRangesSelector, downloadsMetric)
     const Selectors = () => (<Box sx={{ display: 'flex', justifyContent: 'space-between', maxWidth: '60%', paddingLeft: '5%' }}>
         <Selector inputLabel={CONSTANTS.variableSelector.label}
             currentValue={variable} onChange={(event) => setVariable(event.target.value)} menuItemsValues={CONSTANTS.variableSelector.values} menuItemsText={CONSTANTS.variableSelector.texts} helperText={CONSTANTS.variableSelector.helper}
