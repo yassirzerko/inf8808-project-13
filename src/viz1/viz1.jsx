@@ -2,27 +2,14 @@
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import { NavBar } from '../components/NavBar';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import React from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
-import Select from '@mui/material/Select';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle'
-import Button from '@mui/material/Button';
 import HelpIcon from '@mui/icons-material/Help';
 import *  as d3 from 'd3'
 import { CSV_URL } from '../constants';
 import { preprocessData, getDownloadsRanges, CONSTANTS } from './utils';
 import { Selector } from '../components/Selector';
+import { RadioButtons } from '../components/RadioButtons';
+import { Modal } from '../components/Modal';
 
 
 const createSVG = () => {
@@ -40,7 +27,8 @@ export function Categorical() {
     const [variable, setVariable] = React.useState('Category')
     const [downloadsRange, setDownloadsRange] = React.useState('1,000,000,000+')
     const [downloadsRanges, setDownloadsRanges] = React.useState(null)
-    const [isDialogOpen, setDialogOpen] = React.useState(false)
+    const [isModalOpen, setModalOpen] = React.useState(false)
+    const [isToolTipOpen, setToolTip] = React.useState(false)
 
     const createVisusalisation = () => {
         d3.csv(CSV_URL).then((data, error) => {
@@ -124,48 +112,7 @@ export function Categorical() {
 
     const shouldDisplayDlsRangesSelector = (downloadsMetric === 'Nombre applications' || downloadsMetric === 'Nombre applications moyen')
 
-    const [isToolTipOpen, setToolTip] = React.useState(false)
-
-
-
-    const DialogCustom = () => (<Dialog
-        open={isDialogOpen}
-        onClose={() => setDialogOpen(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-    >
-        <DialogTitle id="alert-dialog-title">
-            {"Use Google's location service?"}
-        </DialogTitle>
-        <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-                Let Google help apps determine location. This means sending anonymous
-                location data to Google, even when no apps are running.
-            </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-            <Button onClick={() => setDialogOpen(false)}>Fermer</Button>
-        </DialogActions>
-    </Dialog>)
-
-    const RadioButtons = () => (<FormControl>
-        <Box pl={5}><FormLabel id="demo-row-radio-buttons-group-label">Ordonnancement</FormLabel></Box>
-
-        <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-            value={isAscending}
-            onChange={(event) => setAscending(event.target.value === "true")}
-        >
-            <FormControlLabel value={true} control={<Radio />} label="Croissant" labelPlacement="top" />
-
-
-            <FormControlLabel value={false} control={<Radio />} label="Decroissant" labelPlacement="top" />
-        </RadioGroup>
-    </FormControl>)
-
-    const Selectors = () => (<Box sx={{ display: 'flex', justifyContent: 'space-between', maxWidth: '45%', paddingLeft: '5%' }}>
+    const Selectors = () => (<Box sx={{ display: 'flex', justifyContent: 'space-between', maxWidth: '60%', paddingLeft: '5%' }}>
         <Selector inputLabel={CONSTANTS.variableSelector.label} 
             currentValue={variable} onChange={(event) => setVariable(event.target.value)} menuItemsValues={CONSTANTS.variableSelector.values} menuItemsText={CONSTANTS.variableSelector.texts} helperText={CONSTANTS.variableSelector.helper}
         />
@@ -179,17 +126,18 @@ export function Categorical() {
         }
     </Box>
     )
-    
+
     return (
         <Box /*backgroundColor={'#d3d3d3'}*/ height={'100vh'} m={0} p={0}>
             <NavBar></NavBar>
-            <Typography variant="h5" color="text.primary" pl={'10%'} pt={2}>
-                Visualisation 1 : Exploration du comportement des variables catégoriques et des téléchargements
+            <Typography variant="h5" color="text.primary" pl={'20%'} pt={2}>
+                {CONSTANTS.title}
             </Typography>
             <Box pl={'40%'} pt={3}>
-                <RadioButtons></RadioButtons>
-                <DialogCustom></DialogCustom>
-                <HelpIcon onClick={() => setDialogOpen(true)} />
+                <RadioButtons label={CONSTANTS.radioButtons.label} currentValue={isAscending} onChange = {(event) => setAscending(event.target.value === "true")}
+                 buttonsValues ={CONSTANTS.radioButtons.values} buttonsText={CONSTANTS.radioButtons.texts}></RadioButtons>
+                <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} title={CONSTANTS.modal.title} content={CONSTANTS.modal.content}/>
+                <HelpIcon onClick={() => setModalOpen(true)} />
             </Box>
             <Box pl={'25%'} pt={3} pb={2}>
                 <Selectors></Selectors>

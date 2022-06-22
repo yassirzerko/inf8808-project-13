@@ -68,6 +68,16 @@ export const CONSTANTS = {
         texts : ['Somme','Moyenne', 'Nombre applications avec +', 'Nombre applications avec + moyen'],
         helper: 'Choisir la metrique de telechargement a visualiser',
         label: 'Metrique de telechargements'
-    }
+    },
+    radioButtons: {
+        values : [true, false],
+        texts : ['Croissant','Decroissant'],
+        label:'Ordonnancement'
+    },
+    title : 'Visualisation 1 : Exploration du comportement des variables catégoriques et des téléchargements',
+    modal: {
+        title : 'Informations supplementaires',
+        content : 'TODO',
+    },
   
 }

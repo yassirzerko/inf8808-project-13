@@ -7,9 +7,8 @@ import Select from '@mui/material/Select';
 
 export const Selector = (props) => {
     const {inputLabel, currentValue, onChange, menuItemsValues, menuItemsText ,helperText} = props
-    let menuItems = []
-    console.log(props)
 
+    let menuItems = []
     for (let i = 0; i < menuItemsValues.length; i++) {
         menuItems.push(<MenuItem value={menuItemsValues[i]} key={i}> {menuItemsText[i]}</MenuItem>)
     }
