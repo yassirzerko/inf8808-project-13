@@ -17,7 +17,7 @@ export const Selector = (props) => {
     }
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', minWidth: '300px' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between'}}>
             <FormControl size='small'>
                 <InputLabel id={"select-helper-" + inputLabel}>{inputLabel}</InputLabel>
                 <Select
@@ -33,7 +33,7 @@ export const Selector = (props) => {
                 <FormHelperText>{helperText}</FormHelperText>
             </FormControl>
             {
-                onClickToolTip && <Box sx={{ paddingTop: '10px' }}><ToolTip onClick={onClickToolTip}></ToolTip></Box>
+                onClickToolTip && <Box sx={{ paddingTop: '10px' , paddingLeft:'15px'}}><ToolTip onClick={onClickToolTip}></ToolTip></Box>
             }
         </Box>
     )

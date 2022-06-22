@@ -27,8 +27,8 @@ export const RadioButtons = (props) => {
                     onChange={onChange}
                 >
                     {radioButtons}
+                    {onClickToolTip && <ToolTip onClick={onClickToolTip}></ToolTip>}
                 </RadioGroup>
-            </FormControl>
-            {onClickToolTip && <ToolTip onClick={onClickToolTip}></ToolTip>}
+            </FormControl>   
         </Box>)
 }

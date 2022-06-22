@@ -161,36 +161,39 @@ export function Categorical() {
     }, [downloadsMetric, variable, isAscending, downloadsRange])
 
     const shouldDisplayDlsRangesSelector = (downloadsMetric === CONSTANTS.downloadsMetricSelector.values[2] || downloadsMetric === CONSTANTS.downloadsMetricSelector.values[3])
-    const Selectors = () => (<Box sx={{ display: 'flex', justifyContent: 'space-even', maxWidth: '80%', paddingLeft: '5%' }}>
-        <Selector inputLabel={CONSTANTS.variableSelector.label}
-            currentValue={variable} onChange={(event) => setVariable(event.target.value)} menuItemsValues={CONSTANTS.variableSelector.values} menuItemsText={CONSTANTS.variableSelector.texts} helperText={CONSTANTS.variableSelector.helper}
-            onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Variable ', 'content': 'Explication' })} />
-
-        <Selector inputLabel={CONSTANTS.downloadsMetricSelector.label}
-            currentValue={downloadsMetric} onChange={(event) => setDownloadMetric(event.target.value)} menuItemsValues={CONSTANTS.downloadsMetricSelector.values} menuItemsText={CONSTANTS.downloadsMetricSelector.texts} helperText={CONSTANTS.downloadsMetricSelector.helper}
-            onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Metrique de telechargement', 'content': 'Explication' })} />
-        {shouldDisplayDlsRangesSelector &&
-            <Selector inputLabel={'Nombre de telechargements'}
-                currentValue={downloadsRange} onChange={(event) => setDownloadsRange(event.target.value)} menuItemsValues={downloadsRanges ? downloadsRanges : []} menuItemsText={downloadsRanges ? downloadsRanges : []} helperText={"Choisir la tranche de telechargement"}
-                onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Nombre de telechargement', 'content': 'Explication' })} ></Selector>
-        }
-    </Box>
-    )
 
     return (
         <Box /*backgroundColor={'#d3d3d3'}*/ height={'100vh'} m={0} p={0}>
             <NavBar></NavBar>
-            <Typography variant="h5" color="text.primary" pl={'20%'} pt={2}>
+            <Modal isOpen={modalData.isOpen} onClose={() => setModalData({ 'isOpen': false, 'title': null, 'content': null })} title={modalData.title} content={modalData.content} />
+            <Typography variant="h6" color="text.primary" pl={'30%'} pt={2}>
                 {CONSTANTS.title}
             </Typography>
-            <Box pl={'40%'} pt={3}>
-                <RadioButtons label={CONSTANTS.radioButtons.label} currentValue={isAscending} onChange={(event) => setAscending(event.target.value === "true")}
+            <Box pl={'5%'} pt={2} sx={{ display: 'flex', justifyContent: 'center', minWidth: '100%' }}>
+                <Box pr={10}> <RadioButtons label={CONSTANTS.radioButtons.label} currentValue={isAscending} onChange={(event) => setAscending(event.target.value === "true")}
                     buttonsValues={CONSTANTS.radioButtons.values} buttonsText={CONSTANTS.radioButtons.texts} onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Ordonnacement', 'content': 'Explication' })}></RadioButtons>
-                <Modal isOpen={modalData.isOpen} onClose={() => setModalData({ 'isOpen': false, 'title': null, 'content': null })} title={modalData.title} content={modalData.content} />
+                </Box>
+
+                <Box pr={10}>
+                    <Selector inputLabel={CONSTANTS.variableSelector.label}
+                        currentValue={variable} onChange={(event) => setVariable(event.target.value)} menuItemsValues={CONSTANTS.variableSelector.values} menuItemsText={CONSTANTS.variableSelector.texts} helperText={CONSTANTS.variableSelector.helper}
+                        onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Variable ', 'content': 'Explication' })} />
+                </Box >
+
+                <Box pr={10}>
+                    <Selector inputLabel={CONSTANTS.downloadsMetricSelector.label}
+                        currentValue={downloadsMetric} onChange={(event) => setDownloadMetric(event.target.value)} menuItemsValues={CONSTANTS.downloadsMetricSelector.values} menuItemsText={CONSTANTS.downloadsMetricSelector.texts} helperText={CONSTANTS.downloadsMetricSelector.helper}
+                        onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Metrique de telechargement', 'content': 'Explication' })} />
+                </Box>
+
+                {shouldDisplayDlsRangesSelector &&
+                   
+                        <Selector inputLabel={'Nombre de telechargements'}
+                            currentValue={downloadsRange} onChange={(event) => setDownloadsRange(event.target.value)} menuItemsValues={downloadsRanges ? downloadsRanges : []} menuItemsText={downloadsRanges ? downloadsRanges : []} helperText={"Choisir la tranche de telechargement"}
+                            onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Nombre de telechargement', 'content': 'Explication' })} ></Selector>
+                    }
             </Box>
-            <Box pl={'25%'} pt={3} pb={2}>
-                <Selectors></Selectors>
-            </Box>
+
             <Box className='svg' height='100vh' p={2} ></Box>
         </Box>
     )
