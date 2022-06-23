@@ -14,8 +14,20 @@ export const CONSTANTS = {
 
 }
 
-const handleSort = (preprocessedData, isAscending) => {
-    let sortMethod = isAscending ? (b, a) => b.free.distribution - a.free.distribution : (b, a) => a.free.distribution - b.free.distribution
+const addPositionsMetrics = (preprocessedData) => {
+    const metrics = [...CONSTANTS.downloadsMetricSelector.values, 'distribution']
+      for (let i = 0; i < metrics.length; i++) {
+          let metric = metrics[i]
+          handleSort(preprocessedData, false, metric)
+  
+          for (let j = 0; j < preprocessedData.length; j++) {
+              preprocessedData[j][metric]['position'] = j + 1
+          }
+      }
+  }
+
+const handleSort = (preprocessedData, isAscending, type) => {
+    let sortMethod = isAscending ? (b, a) => b.type.distribution - a[type].distribution : (b, a) => a[type].distribution - b[type].distribution
     preprocessedData.sort(sortMethod)
 }
 
@@ -41,6 +53,7 @@ export const preprocessData = (data, variableName, isAscending) => {
     }
     
     let preprocessedData = []
+
     for (let [value, freeCount] of nAppByValueFree) {
         let paidCount = nAppByValuePaid.get(value)
         let freeDistribution = (freeCount / totalFreeCount) * 100
@@ -59,7 +72,18 @@ export const preprocessData = (data, variableName, isAscending) => {
             }
         })
     }
-    handleSort(preprocessedData, isAscending)
+    handleSort(preprocessedData, false, 'paid')
+  
+    for (let j = 0; j < preprocessedData.length; j++) {
+        preprocessedData[j].paid.position = j + 1
+    }
+    handleSort(preprocessedData, isAscending, 'free')
+
+    for (let j = 0; j < preprocessedData.length; j++) {
+        preprocessedData[j].free.position = j + 1
+    }
+    
+    console.log(preprocessedData,'s')
     return preprocessedData
 }
 

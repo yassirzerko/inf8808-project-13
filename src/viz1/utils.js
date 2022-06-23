@@ -53,8 +53,7 @@ const fillMaps = (data, variableName, sumDlsByValue, occurrencesByValue, nAppByV
 }
 
 const addPositionsMetrics = (preprocessedData) => {
-  const metrics = [...CONSTANTS.downloadsMetricSelector.values, 'distribution'] //  cree un bug je sais pas prkoi
-  //const metrics = CONSTANTS.downloadsMetricSelector.values
+  const metrics = [...CONSTANTS.downloadsMetricSelector.values, 'distribution']
     for (let i = 0; i < metrics.length; i++) {
         let metric = metrics[i]
         handleSort(preprocessedData, false, metric)

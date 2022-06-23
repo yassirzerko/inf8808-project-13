@@ -21,15 +21,17 @@ const createSVG = () => {
         .attr("transform", "translate(" + 250 + "," + 20 + ")");
 }
 
-const getHtmlToolTip = (row) => {
+const getHtmlToolTip = (row, dataLength) => {
     return `<h4> ${row.value} </h4> 
-    <p> <b> Free distribution </b>: ${row.free.distribution} % </p> 
-    <p> <b> Paid distribution </b>:  ${row.paid.distribution} % </p> 
+    <h5> Free : <h5> 
+    <p> <b> Distribution </b>: ${row.free.distribution} %  (${row.free.position}/${dataLength})</p> 
+    <p> <b> Number of app </b>:  ${row.free.count}</p> 
+    <h5> Paid : <h5> 
+    <p> <b> Distribution </b>: ${row.paid.distribution} %  (${row.paid.position}/${dataLength})</p> 
+    <p> <b> Number of app </b>:  ${row.paid.count}</p> 
     `
-
-  //  return `<h4> ${row.value} </h4> 
- //   <p> <b> Distribution </b>: ${row.distribution.value}% (${row.distribution.position}/${dataLength}) </p> )</p> `
 }
+
 
 
 export function Type() {
@@ -121,7 +123,7 @@ export function Type() {
                         .duration(50)
                         .style('opacity', 1)
 
-                    toolTip.html(getHtmlToolTip(row))
+                    toolTip.html(getHtmlToolTip(row, dataLength))
                           .style("left", (event.pageX + 20) + "px")
                           .style("top", (event.pageY - 20) + "px")
                 })
@@ -173,7 +175,7 @@ export function Type() {
                 .text(row => row.free.distribution + '%')
                 .style("text-anchor", "middle")
                 .attr("x", 100)
-                .attr("y", (row) => yScale(row.value) + 21 + yScale.bandwidth()/2)
+                .attr("y", (row) => yScale(row.value) - 21 + yScale.bandwidth()/2)
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
                 .attr("fill", "black")
@@ -182,7 +184,7 @@ export function Type() {
                 .text(row => row.paid.distribution + '%')
                 .style("text-anchor", "middle")
                 .attr("x", 100)
-                .attr("y", (row) =>  yScale(row.value) - 21 + yScale.bandwidth()/2)
+                .attr("y", (row) =>  yScale(row.value) + 21 + yScale.bandwidth()/2)
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
                 .attr("fill", "black")
