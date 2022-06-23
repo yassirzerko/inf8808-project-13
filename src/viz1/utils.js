@@ -3,18 +3,21 @@ export const CONSTANTS = {
         values: ['Category', 'Genres', 'Type', 'Content Rating', 'Android Ver'],
         texts: ['Categorie', 'Genres', 'Type', 'Evaluation de contenu', 'Version minimale d’Android requise'],
         helper: 'Choisir la variable categorique a visualiser',
-        label: 'Variable'
+        label: 'Variable',
+        modalContent:'Choisir la variable dont vous voulez explorer le comportement. Vous avez le choix entre les 5 variables suivantes :Categorie, Evaluation de contenu, Version minimale Android requise, Genres, Type (Payante ou grauite).'
     },
     downloadsMetricSelector: {
         values: ['sum', 'avg', 'nApp', 'avgNApp'],
-        texts: ['Somme', 'Moyenne', 'Nombre applications avec +', 'Nombre applications avec + moyen'],
+        texts: ['Somme', 'Moyenne', 'Nombre applications avec', 'Nombre applications avec'],
         helper: 'Choisir la metrique de telechargement a visualiser',
-        label: 'Metrique de telechargements'
+        label: 'Metrique de telechargements',
+        modalContent : 'Choisir la metrique de telechargement que vous voulez utiliser. Vous avez le choix entre 4 metriques Nombre de téléchargements :  Somme des téléchargements de toutes les applications avec une certaines valeurs catégoriques.Nombre de téléchargements moyens : Ratio entre le nombre de téléchargements de toutes les applications avec une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique.Nombre d’applications avec plus de n téléchargements : Nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique.Nombre d’applications avec plus de n téléchargements moyens : Ratio entre le nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique.Nombre d’applications avec plus de n téléchargements moyens : Ratio entre le nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique.'
     },
     radioButtons: {
         values: [true, false],
         texts: ['Croissant', 'Decroissant'],
-        label: 'Ordonnancement'
+        label: 'Ordonnancement',
+        modalContent : 'Choisir l ordre dans lequel les valeurs seront ordonnee. '
     },
     title: 'Visualisation 1 : Exploration du comportement des variables catégoriques et des téléchargements',
 }

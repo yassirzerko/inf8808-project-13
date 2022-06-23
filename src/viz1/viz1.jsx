@@ -165,19 +165,19 @@ export function Categorical() {
             </Typography>
             <Box pl={'5%'} pt={2} sx={{ display: 'flex', justifyContent: 'center', minWidth: '100%' }}>
                 <Box pr={10}> <RadioButtons label={CONSTANTS.radioButtons.label} currentValue={isAscending} onChange={(event) => setAscending(event.target.value === "true")}
-                    buttonsValues={CONSTANTS.radioButtons.values} buttonsText={CONSTANTS.radioButtons.texts} onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Ordonnacement', 'content': 'Explication' })}></RadioButtons>
+                    buttonsValues={CONSTANTS.radioButtons.values} buttonsText={CONSTANTS.radioButtons.texts} onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Ordonnacement', 'content': CONSTANTS.radioButtons.modalContent })}></RadioButtons>
                 </Box>
 
                 <Box pr={10}>
                     <Selector inputLabel={CONSTANTS.variableSelector.label}
                         currentValue={variable} onChange={(event) => setVariable(event.target.value)} menuItemsValues={CONSTANTS.variableSelector.values} menuItemsText={CONSTANTS.variableSelector.texts} helperText={CONSTANTS.variableSelector.helper}
-                        onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Variable ', 'content': 'Explication' })} />
+                        onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Variable ', 'content': CONSTANTS.variableSelector.modalContent })} />
                 </Box >
 
                 <Box pr={10}>
                     <Selector inputLabel={CONSTANTS.downloadsMetricSelector.label}
                         currentValue={downloadsMetric} onChange={(event) => setDownloadMetric(event.target.value)} menuItemsValues={CONSTANTS.downloadsMetricSelector.values} menuItemsText={CONSTANTS.downloadsMetricSelector.texts} helperText={CONSTANTS.downloadsMetricSelector.helper}
-                        onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Metrique de telechargement', 'content': 'Explication' })} />
+                        onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Metrique de telechargement', 'content': CONSTANTS.downloadsMetricSelector.modalContent })} />
                 </Box>
 
                 {shouldDisplayDlsRangesSelector &&

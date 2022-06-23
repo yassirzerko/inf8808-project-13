@@ -3,31 +3,21 @@ export const CONSTANTS = {
         values: ['Category', 'Genres', 'Content Rating'],
         texts: ['Categorie', 'Genres', 'Evaluation de contenu'],
         helper: 'Choisir la variable categorique a visualiser',
-        label: 'Variable'
+        label: 'Variable',
+        modalContent: 'Choisir la variable dont vous voulez explorer le comportement. Vous avez le choix entre les 3 variables suivantes :Categorie, Genres, Evaluation de contenu',
     },
     radioButtons: {
         values: [true, false],
         texts: ['Croissant', 'Decroissant'],
-        label: 'Ordonnancement'
+        label: 'Ordonnancement',
+        modalContent: 'Choisir l ordre dans lequel les valeurs seront ordonnee.',
     },
     title: 'Visualisation 2 : Comparaison des distributions des applications gratuites et payantes',
 
 }
 
-const addPositionsMetrics = (preprocessedData) => {
-    const metrics = [...CONSTANTS.downloadsMetricSelector.values, 'distribution']
-      for (let i = 0; i < metrics.length; i++) {
-          let metric = metrics[i]
-          handleSort(preprocessedData, false, metric)
-  
-          for (let j = 0; j < preprocessedData.length; j++) {
-              preprocessedData[j][metric]['position'] = j + 1
-          }
-      }
-  }
-
 const handleSort = (preprocessedData, isAscending, type) => {
-    let sortMethod = isAscending ? (b, a) => b.type.distribution - a[type].distribution : (b, a) => a[type].distribution - b[type].distribution
+    let sortMethod = isAscending ? (b, a) => b[type].distribution - a[type].distribution : (b, a) => a[type].distribution - b[type].distribution
     preprocessedData.sort(sortMethod)
 }
 
