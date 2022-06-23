@@ -7,6 +7,7 @@ import { BrowserRouter, Routes,
   Route } from "react-router-dom";
 import { Categorical } from './viz1/viz1';
 import { Type } from './viz2/viz2';
+import { Numerical } from './viz3/viz3';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,7 +17,7 @@ root.render(
   <Route path="/" element={<Home />} />
   <Route path="categorical" element={<Categorical />} />
   <Route path="type" element={<Type />} />
-  <Route path="numerical" element={<Categorical />} />
+  <Route path="numerical" element={<Numerical />} />
   </Routes>
   
    
