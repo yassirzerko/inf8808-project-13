@@ -95,7 +95,7 @@ export function Categorical() {
                 .attr("class", "tooltip")
                 .style("opacity", 0);
             // bars container
-            let bars = svg.selectAll("myRect")
+            let barContainer = svg.selectAll("myRect")
                 .data(preprocessedData)
                 .enter()
                 .append('g')
@@ -103,7 +103,7 @@ export function Categorical() {
 
 
             //real bars
-            bars.append("rect")
+            let bars = barContainer.append("rect")
                 .attr("y", (row) => yScale(row.value))
                 .attr("width", (row) => xScale(row[downloadsMetric].value))
                 .attr("height", () => yScale.bandwidth())
@@ -135,10 +135,9 @@ export function Categorical() {
                         .style('opacity', 0)
                 })
 
-            bars.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
+            barContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
                 .text(row => row[downloadsMetric].value)
                 .style("text-anchor", "middle")
-                //.attr("x", (row) => xScale(row[downloadsMetric].value) * 0.8)
                 .attr("x", 100)
                 .attr("y", (row) => yScale(row.value) + yScale.bandwidth() - 10)
                 .attr("font-family", "sans-serif")

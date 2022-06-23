@@ -53,7 +53,6 @@ export function Type() {
                 .domain([0,100])
                 .range([0, window.screen.width * 0.7])
 
-            console.log(xScale(50))
 
             svg.append("g")
                 .attr("transform", "translate(-10,15)")
@@ -66,9 +65,9 @@ export function Type() {
                 .attr("fill", "black")
 
             let yScale = d3.scaleBand()
-                .range([0, preprocessedData.length * 50])
+                .range([0, (2 *preprocessedData.length) * 50])
                 .domain(preprocessedData.map(row => row.value))
-                .padding(0.8)
+                .padding(0.5)
 
 
             svg.append("g")
@@ -96,16 +95,16 @@ export function Type() {
                 .style("opacity", 0);
 
             // bars container
-            let bars = svg.selectAll("myRect")
+            let barContainer = svg.selectAll("myRect")
                 .data(preprocessedData)
                 .enter()
                 .append('g')
                 .attr("transform", "translate(-10," + 20 + ")")
 
 
-            //real bars
-            bars.append("rect")
-                .attr("y", (row) => yScale(row.value) - 5)
+            //Free bars
+            barContainer.append("rect")
+                .attr("y", (row) => yScale(row.value) - 21)
                 .attr("width", (row) => xScale(row.free.distribution))
              
                 .attr("height", () => 0.85* yScale.bandwidth())
@@ -137,9 +136,9 @@ export function Type() {
                         .style('opacity', 0)
                 })
 
-            //real bars
-            bars.append("rect")
-                .attr("y", (row) => yScale(row.value) + 5)
+            //Paid bars
+            barContainer.append("rect")
+                .attr("y", (row) => yScale(row.value) + 21)
                 .attr("width", (row) => xScale(row.paid.distribution))
                 .attr("height", () => 0.85 * yScale.bandwidth())
                 .attr("fill", "black")
@@ -170,15 +169,23 @@ export function Type() {
                         .style('opacity', 0)
                 })
 
-           /* bars.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
-              //  .text(row => row[downloadsMetric].value)
+           barContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
+                .text(row => row.free.distribution + '%')
                 .style("text-anchor", "middle")
-                //.attr("x", (row) => xScale(row[downloadsMetric].value) * 0.8)
                 .attr("x", 100)
-                .attr("y", (row) => yScale(row.value) + yScale.bandwidth() - 10)
+                .attr("y", (row) => yScale(row.value) + 21 + yScale.bandwidth()/2)
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
-                .attr("fill", "black")*/
+                .attr("fill", "black")
+
+            barContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
+                .text(row => row.paid.distribution + '%')
+                .style("text-anchor", "middle")
+                .attr("x", 100)
+                .attr("y", (row) =>  yScale(row.value) - 21 + yScale.bandwidth()/2)
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "14px")
+                .attr("fill", "black")
 
         })
     }
