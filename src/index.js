@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes,
   Route } from "react-router-dom";
 import { Categorical } from './viz1/viz1';
+import { Type } from './viz2/viz2';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,8 +15,8 @@ root.render(
   <Routes>
   <Route path="/" element={<Home />} />
   <Route path="categorical" element={<Categorical />} />
+  <Route path="type" element={<Type />} />
   <Route path="numerical" element={<Categorical />} />
-  <Route path="type" element={<Categorical />} />
   </Routes>
   
    

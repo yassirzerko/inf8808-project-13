@@ -17,11 +17,6 @@ export const CONSTANTS = {
         label: 'Ordonnancement'
     },
     title: 'Visualisation 1 : Exploration du comportement des variables catégoriques et des téléchargements',
-    modal: {
-        title: 'Informations supplementaires',
-        content: 'TODO',
-    },
-
 }
 
 export const getDownloadsRanges = (data) => {
@@ -71,7 +66,7 @@ const addPositionsMetrics = (preprocessedData) => {
 }
 
 const addStatsMetrics = (preprocessedData) => {
-
+    // Todo
 }
 
 

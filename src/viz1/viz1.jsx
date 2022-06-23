@@ -3,14 +3,12 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import { NavBar } from '../components/NavBar';
 import React from 'react';
-import HelpIcon from '@mui/icons-material/Help';
 import *  as d3 from 'd3'
 import { CSV_URL } from '../constants';
 import { preprocessData, getDownloadsRanges, CONSTANTS } from './utils';
 import { Selector } from '../components/Selector';
 import { RadioButtons } from '../components/RadioButtons';
 import { Modal } from '../components/Modal';
-import { DataTable } from '../components/Table';
 import '../index.css';
 
 const createSVG = () => {
@@ -28,13 +26,10 @@ const getHtmlToolTip = (row, dataLength, downloadsRange) => {
     <p> <b> Distribution </b>: ${row.distribution.value}% (${row.distribution.position}/${dataLength}) </p> 
     <p> <b> Total download </b>: ${row.sum.value.toLocaleString()} (${row.sum.position}/${dataLength})</p> 
     <p> <b> Average download </b>: ${row.avg.value.toLocaleString()} (${row.avg.position}/${dataLength})</p> 
-    <p> <b> Number of app with more than ${downloadsRange} downloads  </b>: ${row.nApp.value} (${row.nApp.position}/${dataLength})</p> 
-    <p> <b> Number of app with more than ${downloadsRange} downloads average  </b>: ${row.avgNApp.value} (${row.avgNApp.position}/${dataLength})</p> `
+    <p> <b> Number of app with  ${downloadsRange} downloads  </b>: ${row.nApp.value} (${row.nApp.position}/${dataLength})</p> 
+    <p> <b> Number of app with ${downloadsRange} downloads average  </b>: ${row.avgNApp.value} (${row.avgNApp.position}/${dataLength})</p> `
 }
 
-const getModalData = () => {
-
-}
 
 export function Categorical() {
     const [isAscending, setAscending] = React.useState(false)
@@ -163,7 +158,7 @@ export function Categorical() {
     const shouldDisplayDlsRangesSelector = (downloadsMetric === CONSTANTS.downloadsMetricSelector.values[2] || downloadsMetric === CONSTANTS.downloadsMetricSelector.values[3])
 
     return (
-        <Box /*backgroundColor={'#d3d3d3'}*/ height={'100vh'} m={0} p={0}>
+        <Box /*backgroundColor={'#d3d3d3'}*/ height={'500vh'} m={0} p={0}>
             <NavBar></NavBar>
             <Modal isOpen={modalData.isOpen} onClose={() => setModalData({ 'isOpen': false, 'title': null, 'content': null })} title={modalData.title} content={modalData.content} />
             <Typography variant="h6" color="text.primary" pl={'30%'} pt={2}>

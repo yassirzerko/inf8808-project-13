@@ -4,9 +4,13 @@ import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Tooltip from '@mui/material/Tooltip';
+import { Box } from '@mui/material';
 
+const buttonData = [["/", "Accueil", "Page d'accueil"], 
+["/categorical", "Visualisation 1", "Exploration du comportement des variables catégoriques et des téléchargements"], 
+["/type", "Visualisation 2","Comparaison des distributions des applications gratuites et payantes" ],
+["/numerical", "Visualisation 3", "Exploration du comportement des variables numériques et des téléchargements"]]
 
-const buttonData = [["/", "Accueil", "Page d'accueil"], ["/categorical", "Visualisation 1", "Exploration du comportement des variables catégoriques et des téléchargements"], ["/numerical", "Visualisation 2", "Exploration du comportement des variables numériques et des téléchargements"], ["/type", "Visualisation 3","Comparaison des distributions des applications gratuites et payantes" ]]
 
 export function NavBar() {
   const ButtonGroups = () => {
@@ -14,9 +18,13 @@ export function NavBar() {
     let buttons = []
     for (let i = 0; i < buttonData.length; i++) {
       let [link, title, hover] = buttonData[i]
+      const isCurrentPage = currentPath === link
       buttons.push(<Tooltip title = {hover} placement="bottom">
-        <Button key = {link} component={Link} to={link} variant="contained" color="primary" href="#"  disabled = {currentPath === link} >
-      {title}
+        <Button key = {link} component={Link} to={link} variant="contained" color="primary" href="#"  disabled = {isCurrentPage}  >
+        <Box sx={isCurrentPage ? {borderBottom: '1px solid'} :  {borderBottom: 'none'}}>
+        {title}
+        </Box>
+     
     </Button>
         </Tooltip>
       )
