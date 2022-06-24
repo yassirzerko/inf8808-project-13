@@ -5,9 +5,8 @@ import { NavBar } from '../components/NavBar';
 import React from 'react';
 import *  as d3 from 'd3'
 import { CSV_URL } from '../constants';
-import { preprocessData, CONSTANTS } from './utils';
+import { preprocessData, CONSTANTS, getAxesData } from './utils';
 import { Selector } from '../components/Selector';
-import { RadioButtons } from '../components/RadioButtons';
 import { Modal } from '../components/Modal';
 import '../index.css';
 
@@ -196,28 +195,10 @@ export function Numerical() {
         createVisusalisation()
     }, [axes])
 
-    let variablesData = CONSTANTS.variables
-    let xAxisData = []
-    let yAxisData = []
-    for (let variableName in variablesData) {
-        let variableText = variablesData[variableName]
-        if (axes.xAxis === variableName) {
-            xAxisData.push([variableName, variableText])
-        }
-        else if(axes.yAxis === variableName)  {
-            yAxisData.push([variableName, variableText])
-        }
-        else {
-            xAxisData.push([variableName, variableText])
-            yAxisData.push([variableName, variableText])
-        }
-       
-    }
-
-    console.log(xAxisData)
+    const {xAxisData, yAxisData} =  getAxesData(axes.xAxis, axes.yAxis)
 
     return (
-        <Box /*backgroundColor={'#d3d3d3'}*/ height={'500vh'} m={0} p={0}>
+        <Box height={'500vh'} m={0} p={0}>
             <NavBar></NavBar>
             <Modal isOpen={modalData.isOpen} onClose={() => setModalData({ 'isOpen': false, 'title': null, 'content': null })} title={modalData.title} content={modalData.content} />
             <Typography variant="h6" color="text.primary" pl={'30%'} pt={2}>

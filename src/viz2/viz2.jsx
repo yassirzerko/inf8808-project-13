@@ -199,7 +199,7 @@ export function Type() {
 
 
     return (
-        <Box /*backgroundColor={'#d3d3d3'}*/ height={'500vh'} m={0} p={0}>
+        <Box height={'500vh'} m={0} p={0}>
             <NavBar></NavBar>
             <Modal isOpen={modalData.isOpen} onClose={() => setModalData({ 'isOpen': false, 'title': null, 'content': null })} title={modalData.title} content={modalData.content} />
             <Typography variant="h6" color="text.primary" pl={'30%'} pt={2}>

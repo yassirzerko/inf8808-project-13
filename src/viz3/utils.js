@@ -1,5 +1,5 @@
 export const CONSTANTS = {
-    variables : {
+    variables: {
         Size: 'Taille',
         Rating: 'Note',
         Reviews: 'Nombre d evaluation',
@@ -19,64 +19,97 @@ export const CONSTANTS = {
 
 }
 
-const handleSort = (preprocessedData, isAscending, type) => {
-    let sortMethod = isAscending ? (b, a) => b[type].distribution - a[type].distribution : (b, a) => a[type].distribution - b[type].distribution
-    preprocessedData.sort(sortMethod)
+export const getAxesData = (xAxisValue, yAxisValue) => {
+    let variablesData = CONSTANTS.variables
+    let xAxisData = []
+    let yAxisData = []
+    for (let variableName in variablesData) {
+        let variableText = variablesData[variableName]
+        if (xAxisValue === variableName) {
+            xAxisData.push([variableName, variableText])
+        }
+        else if (yAxisValue === variableName) {
+            yAxisData.push([variableName, variableText])
+        }
+        else {
+            xAxisData.push([variableName, variableText])
+            yAxisData.push([variableName, variableText])
+        }
+    }
+
+    return { xAxisData: xAxisData, yAxisData: yAxisData }
+
+}
+
+const handleNanData = (value, variable) => {
+    if (isNaN(value)) {
+        if (variable === 'Rating' || variable === 'Reviews') {
+            
+            value = parseFloat(value)
+        }
+
+        if (variable ==="Price") {
+            value = parseFloat(value.includes('$') ? value.replaceAll('$', '') : value)
+            
+        }
+
+        if (variable=== 'Size') {
+            if(value === 'Varies with device') {
+                return null
+            }
+            value = value.includes('M') ? parseFloat(value.replaceAll('M', '')) * Math.pow(10, 6) :  parseFloat(value.replaceAll('k', '')) * Math.pow(10, 3) 
+            
+        }
+
+    }
+  
+    return isNaN(value) ? null : parseFloat(value)
 }
 
 // Preprocess data for the first visualisation
-export const preprocessData = (data, variableName, isAscending) => {
-    let nAppByValueFree = new Map()
-    let nAppByValuePaid = new Map()
-    let totalFreeCount = 0
-    let totalPaidCount = 0
-
+export const preprocessData = (data, axes) => {
+    let preprocessedData = []
+    let variablesValuesDownloadRanges = new Map()
     for (let i = 0; i < data.length; i++) {
         let row = data[i]
-        let value = row[variableName]
-        if (row.Type === "Free") {
-            nAppByValueFree.set(value,nAppByValueFree.has(value) ? nAppByValueFree.get(value) + 1 : 1)
-            nAppByValuePaid.set(value, nAppByValuePaid.has(value) ? nAppByValuePaid.get(value) : 0)
-            totalFreeCount += 1
+        let downloadRange = row.Installs
+
+        if (downloadRange === "Free") {
             continue
         }
-        nAppByValuePaid.set(value, nAppByValuePaid.has(value) ? nAppByValuePaid.get(value) + 1 : 1)
-        nAppByValueFree.set(value, nAppByValueFree.has(value) ? nAppByValueFree.get(value) : 0)
-        totalPaidCount += 1
+
+        if (!variablesValuesDownloadRanges.has(downloadRange)) {
+            variablesValuesDownloadRanges.set(downloadRange, [])
+        }
+        variablesValuesDownloadRanges.get(downloadRange).push([row[axes.xAxis], row[axes.yAxis]])
     }
-    
-    let preprocessedData = []
 
-    for (let [value, freeCount] of nAppByValueFree) {
-        let paidCount = nAppByValuePaid.get(value)
-        let freeDistribution = (freeCount / totalFreeCount) * 100
-        let paidDistribution = (paidCount / totalPaidCount) * 100
+    for (let [downloadRange, variablesValues] of variablesValuesDownloadRanges) {
 
-        preprocessedData.push({
-            'value': value, 
-            'free': {
-                'count': freeCount,
-                'distribution': freeDistribution.toFixed(2),
-
-            },
-            'paid' : {
-                'count': paidCount,
-                'distribution': paidDistribution.toFixed(2)
+        let xSum = 0
+        let ySum = 0
+        let nApp = variablesValues.length
+        let skipped = 0
+        for (let i = 0; i < nApp; i++) {
+            let [xValue, yValue] = variablesValues[i]
+            xValue = handleNanData(xValue, axes.xAxis)
+            yValue = handleNanData(yValue, axes.yAxis)
+            if (!xValue || !yValue) {
+                skipped += 1
+                continue
             }
-        })
-    }
-    handleSort(preprocessedData, false, 'paid')
-  
-    for (let j = 0; j < preprocessedData.length; j++) {
-        preprocessedData[j].paid.position = j + 1
-    }
-    handleSort(preprocessedData, isAscending, 'free')
+            
+            xSum += xValue
+            ySum += yValue
 
-    for (let j = 0; j < preprocessedData.length; j++) {
-        preprocessedData[j].free.position = j + 1
+        }
+        nApp -= skipped
+        console.log(xSum, ySum)
+        let preprocessedRow = {}
+        preprocessedRow[downloadRange] = { xAvg: xSum / nApp, yAvg: ySum / nApp, nApp: nApp }
+        preprocessedData.push(preprocessedRow)
     }
-    
-    console.log(preprocessedData,'s')
+    console.log(preprocessedData)
     return preprocessedData
 }
 
