@@ -13,7 +13,7 @@ import '../index.css';
 import { LegendViz1} from '../components/Legend';
 
 const createSVG = () => {
-    return d3.select('.svg')
+    return d3.select('#svg')
         .append('svg')
         .attr('width', '90%')
         .attr('height', '400%')
@@ -124,7 +124,7 @@ export function Categorical() {
                 .text(getAxisName(downloadsMetric, downloadsRange))
                 .attr("class", "axis")
 
-            let toolTip = d3.select(".svg").append("div")
+            let toolTip = d3.select("#svg").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
             // bars container
@@ -183,7 +183,8 @@ export function Categorical() {
     }
 
     React.useEffect(() => {
-        d3.select('.svg').selectAll('*').remove()
+        console.log("useEffect")
+        d3.select('#svg').selectAll('*').remove()
         createVisusalisation()
     }, [downloadsMetric, variable, isAscending, downloadsRange])
 
@@ -225,7 +226,7 @@ export function Categorical() {
                     }
             </Box>
 
-            <Box className='svg' height='100vh' p={2} ></Box>
+            <Box id='svg' height='100vh' p={2} ></Box>
         </Box>
     )
 }

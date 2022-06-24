@@ -13,7 +13,7 @@ import '../index.css';
 import { LegendViz2, getDataViz2 } from '../components/Legend';
 
 const createSVG = () => {
-    return d3.select('.svg')
+    return d3.select('#svg')
         .append('svg')
         .attr('width', '90%')
         .attr('height', '400%')
@@ -104,7 +104,7 @@ export function Type() {
                 .text("Frequence (%) : ")
                 .attr("class", "axis")
 
-            let toolTip = d3.select(".svg").append("div")
+            let toolTip = d3.select("#svg").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
 
@@ -205,7 +205,7 @@ export function Type() {
     }
 
     React.useEffect(() => {
-        d3.select('.svg').selectAll('*').remove()
+        d3.select('#svg').selectAll('*').remove()
         createVisusalisation()
     }, [variable, isAscending])
 
@@ -231,7 +231,7 @@ export function Type() {
                     <LegendViz2 data ={[getDataViz2('red', 'Applications payantes', avg.free.reviews ? avg.free.reviews.toLocaleString() : null, avg.free.rating ? avg.free.rating.toLocaleString() : null), getDataViz2('steelblue', 'Applications gratuites', avg.paid.reviews? avg.paid.reviews.toLocaleString() : null,  avg.paid.rating? avg.paid.rating.toLocaleString() : null)]}></LegendViz2>
               </Box>
             </Box>
-            <Box className='svg' height='100vh' p={2} ></Box>
+            <Box id='svg' height='100vh' p={2} ></Box>
         </Box>
     )
 }

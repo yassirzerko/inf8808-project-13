@@ -12,7 +12,7 @@ import '../index.css';
 
 
 const createSVG = () => {
-    return d3.select('.svg')
+    return d3.select('#svg')
         .append('svg')
         .attr('width', '90%')
         .attr('height', '400%')
@@ -109,7 +109,7 @@ export function Numerical() {
                 .text(getAxisName(axes.xAxis))
                 .attr("class", "axis")
 
-            let toolTip = d3.select(".svg").append("div")
+            let toolTip = d3.select("#svg").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
 
@@ -166,7 +166,7 @@ export function Numerical() {
     }
 
     React.useEffect(() => {
-        d3.select('.svg').selectAll('*').remove()
+        d3.select('#svg').selectAll('*').remove()
         createVisusalisation()
     }, [axes])
 
@@ -191,7 +191,7 @@ export function Numerical() {
                
             </Box>
 
-            <Box className='svg' height='100vh' p={2} ></Box>
+            <Box id='svg' height='100vh' p={2} ></Box>
         </Box>
     )
 }
