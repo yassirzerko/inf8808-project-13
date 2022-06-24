@@ -16,8 +16,8 @@ export function NavBar() {
   const ButtonGroups = () => {
     const currentPath = window.location.pathname
     let buttons = []
-    for (let i = 0; i < buttonData.length; i++) {
-      let [link, title, hover] = buttonData[i]
+    for (const element of buttonData) {
+      let [link, title, hover] = element
       const isCurrentPage = currentPath === link
       buttons.push(<Tooltip title = {hover} placement="bottom">
         <Button key = {link} component={Link} to={link} variant="contained" color="primary" href="#"  disabled = {isCurrentPage}  >

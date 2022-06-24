@@ -10,6 +10,7 @@ import { Selector } from '../components/Selector';
 import { RadioButtons } from '../components/RadioButtons';
 import { Modal } from '../components/Modal';
 import '../index.css';
+import { LegendViz1} from '../components/Legend';
 
 const createSVG = () => {
     return d3.select('.svg')
@@ -178,6 +179,10 @@ export function Categorical() {
                     <Selector inputLabel={CONSTANTS.downloadsMetricSelector.label}
                         currentValue={downloadsMetric} onChange={(event) => setDownloadMetric(event.target.value)} menuItemsValues={CONSTANTS.downloadsMetricSelector.values} menuItemsText={CONSTANTS.downloadsMetricSelector.texts} helperText={CONSTANTS.downloadsMetricSelector.helper}
                         onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Metrique de telechargement', 'content': CONSTANTS.downloadsMetricSelector.modalContent })} />
+                </Box>
+
+                <Box >
+                    <LegendViz1></LegendViz1>
                 </Box>
 
                 {shouldDisplayDlsRangesSelector &&
