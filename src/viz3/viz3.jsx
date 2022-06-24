@@ -20,14 +20,11 @@ const createSVG = () => {
         .attr("transform", "translate(" + 250 + "," + 20 + ")");
 }
 
-const getHtmlToolTip = (row, dataLength) => {
-    return `<h4> ${row.value} </h4> 
-    <h5> Free : <h5> 
-    <p> <b> Distribution </b>: ${row.free.distribution} %  (${row.free.position}/${dataLength})</p> 
-    <p> <b> Number of app </b>:  ${row.free.count}</p> 
-    <h5> Paid : <h5> 
-    <p> <b> Distribution </b>: ${row.paid.distribution} %  (${row.paid.position}/${dataLength})</p> 
-    <p> <b> Number of app </b>:  ${row.paid.count}</p> 
+const getHtmlToolTip = (row, axes) => {
+    return `<h4> ${row.downloadRange} </h4> 
+    <p> Containing : ${row.nApp} apps <p> 
+    <p> <b> Average of ${axes.xAxis} <b> : ${row.xAvg.toFixed(2)} <p>
+    <p> <b> Average of ${axes.yAxis} <b> : ${row.yAvg.toFixed(2)} <p>
     `
 }
 
@@ -47,11 +44,14 @@ export function Numerical() {
 
             let preprocessedData = preprocessData(data, axes)
             let svg = createSVG()
-            let dataLength = preprocessedData.length
 
             let xScale = d3.scaleLinear()
-                .domain([0,100])
+                .domain([d3.min(preprocessedData.map(data => data.xAvg)),d3.max(preprocessedData.map(data => data.xAvg))])
                 .range([0, window.screen.width * 0.7])
+
+            let radiusScale = d3.scaleSqrt()
+            .domain([d3.min(preprocessedData.map(data => parseInt(data.downloadRange.replaceAll('+', '').replaceAll(',', '')))),d3.max(preprocessedData.map(data => parseInt(data.downloadRange.replaceAll('+', '').replaceAll(',', ''))))])
+            .range([20, 120])
 
 
             svg.append("g")
@@ -64,10 +64,9 @@ export function Numerical() {
                 .attr("font-size", "14px")
                 .attr("fill", "black")
 
-            let yScale = d3.scaleBand()
-                .range([0, (2 *preprocessedData.length) * 50])
-                .domain(preprocessedData.map(row => row.value))
-                .padding(0.5)
+            let yScale = d3.scaleLinear()
+            .domain([d3.min(preprocessedData.map(data => data.yAvg)),d3.max(preprocessedData.map(data => data.yAvg))])
+            .range([0, window.screen.height * 0.7])
 
 
             svg.append("g")
@@ -80,7 +79,7 @@ export function Numerical() {
             svg.append("text")
                 .attr("text-anchor", "end")
                 .attr('x', '-40')
-                .text("Variable etudiee : " + axes.yAxis)
+                .text("Variable etudiee : " + axes.xAxis)
                 .attr("class", "axis")
 
 
@@ -103,11 +102,10 @@ export function Numerical() {
 
 
             //Free bars
-            barContainer.append("rect")
-                .attr("y", (row) => yScale(row.value) - 21)
-                .attr("width", (row) => xScale(row.free.distribution))
-             
-                .attr("height", () => 0.85* yScale.bandwidth())
+            barContainer.append("circle")
+                .attr("cy", (row) => yScale(row.yAvg))
+                .attr("cx", (row) => xScale(row.xAvg))
+                .attr("r", (row) => radiusScale(row.downloadRange.replaceAll('+', '').replaceAll(',', '')) )
                 .attr("fill", "steelblue")
                 .attr('opacity', 0.7)
                 .attr('id', (row, i) => 'bar-' + i)
@@ -121,40 +119,7 @@ export function Numerical() {
                         .duration(50)
                         .style('opacity', 1)
 
-                    toolTip.html(getHtmlToolTip(row, dataLength))
-                          .style("left", (event.pageX + 20) + "px")
-                          .style("top", (event.pageY - 20) + "px")
-                })
-                .on('mouseout', function (event, row) {
-                    d3.select(this)
-                        .transition()
-                        .duration(50)
-                        .attr('opacity', 0.7)
-
-                    toolTip.transition()
-                        .duration(50)
-                        .style('opacity', 0)
-                })
-
-            //Paid bars
-            barContainer.append("rect")
-                .attr("y", (row) => yScale(row.value) + 21)
-                .attr("width", (row) => xScale(row.paid.distribution))
-                .attr("height", () => 0.85 * yScale.bandwidth())
-                .attr("fill", "black")
-                .attr('opacity', 0.7)
-                .attr('id', (row, i) => 'bar-' + i)
-                .on('mouseover', function (event, row) {
-                    d3.select(this)
-                        .transition()
-                        .duration(50)
-                        .attr('opacity', 1)
-
-                    toolTip.transition()
-                        .duration(50)
-                        .style('opacity', 1)
-
-                    toolTip.html(getHtmlToolTip(row, dataLength))
+                    toolTip.html(getHtmlToolTip(row, axes))
                           .style("left", (event.pageX + 20) + "px")
                           .style("top", (event.pageY - 20) + "px")
                 })
@@ -170,23 +135,13 @@ export function Numerical() {
                 })
 
            barContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
-                .text(row => row.free.distribution + '%')
+                .text(row => row.downloadRange)
                 .style("text-anchor", "middle")
-                .attr("x", 100)
-                .attr("y", (row) => yScale(row.value) - 21 + yScale.bandwidth()/2)
+                .attr("x", row => xScale(row.xAvg))
+                .attr("y", (row) => yScale(row.yAvg))
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
                 .attr("fill", "black")
-
-            barContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
-                .text(row => row.paid.distribution + '%')
-                .style("text-anchor", "middle")
-                .attr("x", 100)
-                .attr("y", (row) =>  yScale(row.value) + 21 + yScale.bandwidth()/2)
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "14px")
-                .attr("fill", "black")
-
         })
     }
 
@@ -208,9 +163,12 @@ export function Numerical() {
                 <Selector inputLabel={CONSTANTS.xAxisSelector.label}
                     currentValue={axes.xAxis} onChange={(event) => setAxes({xAxis : event.target.value, yAxis : axes.yAxis})} menuItemsValues={xAxisData.map(data => data[0])} menuItemsText={xAxisData.map(data => data[1])} helperText={CONSTANTS.xAxisSelector.helper}
                     onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Axe horizontal ', 'content': CONSTANTS.xAxisSelector.modalContent })} />
-                <Selector inputLabel={CONSTANTS.yAxisSelector.label}
+                <Box pl={'5%'} >
+                <Selector  inputLabel={CONSTANTS.yAxisSelector.label}
                     currentValue={axes.yAxis} onChange={(event) => setAxes({xAxis : axes.xAxis, yAxis : event.target.value})} menuItemsValues={yAxisData.map(data => data[0])} menuItemsText={yAxisData.map(data => data[1])} helperText={CONSTANTS.yAxisSelector.helper}
                     onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Axe vertical ', 'content': CONSTANTS.yAxisSelector.modalContent })} />
+                </Box>
+               
             </Box>
 
             <Box className='svg' height='100vh' p={2} ></Box>

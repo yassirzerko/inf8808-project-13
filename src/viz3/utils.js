@@ -41,29 +41,30 @@ export const getAxesData = (xAxisValue, yAxisValue) => {
 
 }
 
-const handleNanData = (value, variable) => {
-    if (isNaN(value)) {
-        if (variable === 'Rating' || variable === 'Reviews') {
-            
-            value = parseFloat(value)
-        }
+const sanitizeData = (value, variable) => {
+    if (!isNaN(value)) {
+        return parseFloat(value)
+    }
 
-        if (variable ==="Price") {
-            value = parseFloat(value.includes('$') ? value.replaceAll('$', '') : value)
-            
-        }
+    if (variable === 'Rating' || variable === 'Reviews') {
 
-        if (variable=== 'Size') {
-            if(value === 'Varies with device') {
-                return null
-            }
-            value = value.includes('M') ? parseFloat(value.replaceAll('M', '')) * Math.pow(10, 6) :  parseFloat(value.replaceAll('k', '')) * Math.pow(10, 3) 
-            
-        }
+        value = parseFloat(value)
+    }
+
+    if (variable === "Price") {
+        value = parseFloat(value.includes('$') ? value.replaceAll('$', '') : value)
 
     }
-  
-    return isNaN(value) ? null : parseFloat(value)
+
+    if (variable === 'Size') {
+        if (value === 'Varies with device') {
+            return null
+        }
+        value = value.includes('M') ? parseFloat(value.replaceAll('M', '')) * Math.pow(10, 6) : parseFloat(value.replaceAll('k', '')) * Math.pow(10, 3)
+    }
+
+    return isNaN(value) ? null : value
+
 }
 
 // Preprocess data for the first visualisation
@@ -74,7 +75,7 @@ export const preprocessData = (data, axes) => {
         let row = data[i]
         let downloadRange = row.Installs
 
-        if (downloadRange === "Free") {
+        if (downloadRange === "Free" || downloadRange === "0" || downloadRange === "0+") {
             continue
         }
 
@@ -92,21 +93,20 @@ export const preprocessData = (data, axes) => {
         let skipped = 0
         for (let i = 0; i < nApp; i++) {
             let [xValue, yValue] = variablesValues[i]
-            xValue = handleNanData(xValue, axes.xAxis)
-            yValue = handleNanData(yValue, axes.yAxis)
+            xValue = sanitizeData(xValue, axes.xAxis)
+            yValue = sanitizeData(yValue, axes.yAxis)
             if (!xValue || !yValue) {
                 skipped += 1
                 continue
             }
-            
+
             xSum += xValue
             ySum += yValue
 
         }
         nApp -= skipped
-        console.log(xSum, ySum)
         let preprocessedRow = {}
-        preprocessedRow[downloadRange] = { xAvg: xSum / nApp, yAvg: ySum / nApp, nApp: nApp }
+        preprocessedRow = {downloadRange: downloadRange , xAvg: xSum / nApp, yAvg: ySum / nApp, nApp: nApp }
         preprocessedData.push(preprocessedRow)
     }
     console.log(preprocessedData)
