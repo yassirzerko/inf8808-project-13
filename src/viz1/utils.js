@@ -24,8 +24,13 @@ export const CONSTANTS = {
 
 export const getDownloadsRanges = (data) => {
     let uniques = new Set()
-    for (const element of data) {
-        uniques.add(element['Installs'])
+    for (const element of data) 
+    {
+        let downloadRange = element['Installs']
+        if (downloadRange === "Free" || downloadRange === "0" || downloadRange === "0+") {
+            continue
+        }
+        uniques.add(downloadRange)
     }
     return Array.from(uniques).sort((a, b) => parseInt(b.replaceAll('+', '').replaceAll(',', '')) - parseInt(a.replaceAll('+', '').replaceAll(',', '')))
 }
