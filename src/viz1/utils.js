@@ -24,8 +24,8 @@ export const CONSTANTS = {
 
 export const getDownloadsRanges = (data) => {
     let uniques = new Set()
-    for (let i = 0; i < data.length; i++) {
-        uniques.add(data[i]['Installs'])
+    for (const element of data) {
+        uniques.add(element['Installs'])
     }
     return Array.from(uniques).sort((a, b) => parseInt(b.replaceAll('+', '').replaceAll(',', '')) - parseInt(a.replaceAll('+', '').replaceAll(',', '')))
 }
@@ -37,8 +37,8 @@ const handleSort = (preprocessedData, isAscending, downloadsMetric) => {
 
 // nAppByValue is filled only if not nul
 const fillMaps = (data, variableName, sumDlsByValue, occurrencesByValue, nAppByValueData) => {
-    for (let i = 0; i < data.length; i++) {
-        let row = data[i]
+    for (const element of data) {
+        let row = element
         let downloads = parseInt(row.Installs.replaceAll('+', '').replaceAll(',', '')) ?  parseInt(row.Installs.replaceAll('+', '').replaceAll(',', '')) : 0
         let variableValue = row[variableName]
         if(variableValue ==="NaN") {
@@ -57,8 +57,8 @@ const fillMaps = (data, variableName, sumDlsByValue, occurrencesByValue, nAppByV
 
 const addPositionsMetrics = (preprocessedData) => {
   const metrics = [...CONSTANTS.downloadsMetricSelector.values, 'distribution']
-    for (let i = 0; i < metrics.length; i++) {
-        let metric = metrics[i]
+    for (const element of metrics) {
+        let metric = element
         handleSort(preprocessedData, false, metric)
 
         for (let j = 0; j < preprocessedData.length; j++) {
