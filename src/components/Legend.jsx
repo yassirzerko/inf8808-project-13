@@ -74,7 +74,7 @@ export function LegendViz2(props) {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                <div style={{backgroundColor: row.color, width: 25, height: 25, display: 'inline-block'}}>&nbsp;</div>
+                <div style={{backgroundColor: row.color, width: 25, height: 25, display: 'inline-block', margin: 2}}>&nbsp;</div>
                 {row.applicationType}
               </TableCell>
               <TableCell align="right">{row.average}</TableCell>
