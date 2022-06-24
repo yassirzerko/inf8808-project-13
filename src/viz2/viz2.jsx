@@ -10,7 +10,7 @@ import { Selector } from '../components/Selector';
 import { RadioButtons } from '../components/RadioButtons';
 import { Modal } from '../components/Modal';
 import '../index.css';
-
+import { LegendViz2 } from '../components/Legend';
 
 const createSVG = () => {
     return d3.select('.svg')
@@ -215,8 +215,10 @@ export function Type() {
                         currentValue={variable} onChange={(event) => setVariable(event.target.value)} menuItemsValues={CONSTANTS.variableSelector.values} menuItemsText={CONSTANTS.variableSelector.texts} helperText={CONSTANTS.variableSelector.helper}
                         onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Variable ', 'content': CONSTANTS.variableSelector.modalContent })} />
                 </Box >
+              <Box >
+                    <LegendViz2></LegendViz2>
+              </Box>
             </Box>
-
             <Box className='svg' height='100vh' p={2} ></Box>
         </Box>
     )
