@@ -82,7 +82,7 @@ export function Categorical() {
                 console.log(error)
                 return
             }
-
+            d3.select('#svg').selectAll('*').remove()
             let preprocessedData = preprocessData(data, downloadsMetric, variable, isAscending, downloadsRange)
             let svg = createSVG()
             let dataLength = preprocessedData.length
@@ -211,8 +211,6 @@ export function Categorical() {
     }
 
     React.useEffect(() => {
-        console.log("useEffect")
-        d3.select('#svg').selectAll('*').remove()
         createVisusalisation()
     }, [downloadsMetric, variable, isAscending, downloadsRange])
 

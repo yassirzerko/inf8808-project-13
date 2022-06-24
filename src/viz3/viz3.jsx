@@ -59,7 +59,7 @@ export function Numerical() {
                 console.log(error)
                 return
             }
-
+            d3.select('#svg').selectAll('*').remove()
             let preprocessedData = preprocessData(data, axes)
             let svg = createSVG()
 
@@ -190,7 +190,6 @@ export function Numerical() {
     }
 
     React.useEffect(() => {
-        d3.select('#svg').selectAll('*').remove()
         createVisusalisation()
     }, [axes])
 

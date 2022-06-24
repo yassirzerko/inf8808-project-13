@@ -56,7 +56,7 @@ export function Type() {
                 console.log(error)
                 return
             }
-
+            d3.select('#svg').selectAll('*').remove()
             let {preprocessedData, free, paid} = preprocessData(data, variable, isAscending)
             setAvg({free: free, paid:paid})
             let svg = createSVG()
@@ -253,7 +253,6 @@ export function Type() {
     }
 
     React.useEffect(() => {
-        d3.select('#svg').selectAll('*').remove()
         createVisusalisation()
     }, [variable, isAscending])
 
