@@ -57,7 +57,7 @@ export function Type() {
                 return
             }
 
-            let preprocessedData = preprocessData(data, variable, isAscending)
+            let [preprocessedData, [freeAvg, paidAvg]] = preprocessData(data, variable, isAscending)
             let svg = createSVG()
             let dataLength = preprocessedData.length
 
@@ -154,7 +154,7 @@ export function Type() {
                 .attr("y", (row) => yScale(row.value) + 21)
                 .attr("width", (row) => xScale(row.paid.distribution))
                 .attr("height", () => 0.85 * yScale.bandwidth())
-                .attr("fill", "black")
+                .attr("fill", "red")
                 .attr('opacity', 0.7)
                 .attr('id', (row, i) => 'bar-' + i)
                 .on('mouseover', function (event, row) {

@@ -26,7 +26,9 @@ export const preprocessData = (data, variableName, isAscending) => {
     let nAppByValueFree = new Map()
     let nAppByValuePaid = new Map()
     let totalFreeCount = 0
+    let totalFreeReviews = 0
     let totalPaidCount = 0
+    let totalPaidReviews = 0
 
     for (let i = 0; i < data.length; i++) {
         let row = data[i]
@@ -35,13 +37,14 @@ export const preprocessData = (data, variableName, isAscending) => {
             nAppByValueFree.set(value,nAppByValueFree.has(value) ? nAppByValueFree.get(value) + 1 : 1)
             nAppByValuePaid.set(value, nAppByValuePaid.has(value) ? nAppByValuePaid.get(value) : 0)
             totalFreeCount += 1
+            totalFreeReviews += parseFloat(row.Reviews)
             continue
         }
         nAppByValuePaid.set(value, nAppByValuePaid.has(value) ? nAppByValuePaid.get(value) + 1 : 1)
         nAppByValueFree.set(value, nAppByValueFree.has(value) ? nAppByValueFree.get(value) : 0)
         totalPaidCount += 1
+        totalPaidReviews += parseFloat(row.Reviews)
     }
-    
     let preprocessedData = []
 
     for (let [value, freeCount] of nAppByValueFree) {
@@ -60,6 +63,7 @@ export const preprocessData = (data, variableName, isAscending) => {
                 'count': paidCount,
                 'distribution': paidDistribution.toFixed(2)
             }
+            
         })
     }
     handleSort(preprocessedData, false, 'paid')
@@ -67,6 +71,7 @@ export const preprocessData = (data, variableName, isAscending) => {
     for (let j = 0; j < preprocessedData.length; j++) {
         preprocessedData[j].paid.position = j + 1
     }
+
     handleSort(preprocessedData, isAscending, 'free')
 
     for (let j = 0; j < preprocessedData.length; j++) {
@@ -74,7 +79,5 @@ export const preprocessData = (data, variableName, isAscending) => {
     }
     
     console.log(preprocessedData,'s')
-    return preprocessedData
+    return [preprocessedData, [totalFreeReviews/totalFreeCount, totalPaidReviews/totalPaidCount]]
 }
-
-

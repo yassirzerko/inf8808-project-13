@@ -14,8 +14,8 @@ function createDataViz1(label, value) {
 const rowsViz1 = [
   createDataViz1('Moyenne', 500000),
   createDataViz1('Écart type', 250000),
-  createDataViz1('Minimum', 100000),
-  createDataViz1('Maximum', 150000),
+  createDataViz1('Plus grande valeur', 100000),
+  createDataViz1('Plus petite valeur', 150000),
   createDataViz1('Nombre de valeurs', 22),
 ];
 
@@ -25,7 +25,7 @@ function createDataViz2(color, applicationType, average, standardDeviation) {
 
 const rowsViz2 = [
   createDataViz2('red', 'Applications payantes', 500000, 250000),
-  createDataViz2('blue', 'Applications gratuites', 500000, 250000),
+  createDataViz2('steelblue', 'Applications gratuites', 500000, 250000),
 ];
 
 export function LegendViz1() {

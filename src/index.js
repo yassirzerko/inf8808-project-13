@@ -12,7 +12,7 @@ import { Numerical } from './viz3/viz3';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  <BrowserRouter>
+  <BrowserRouter basename={process.env.PUBLIC_URL}>
   <Routes>
   <Route path="/" element={<Home />} />
   <Route path="categorical" element={<Categorical />} />
