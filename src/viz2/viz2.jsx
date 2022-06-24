@@ -191,6 +191,30 @@ export function Type() {
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
                 .attr("fill", "black")
+                .on('mouseover', function (event, row) {
+                    d3.select(this)
+                        .transition()
+                        .duration(50)
+                        .attr('opacity', 1)
+
+                    toolTip.transition()
+                        .duration(50)
+                        .style('opacity', 1)
+
+                    toolTip.html(getHtmlToolTip(row, dataLength))
+                          .style("left", (event.pageX + 20) + "px")
+                          .style("top", (event.pageY - 20) + "px")
+                })
+                .on('mouseout', function (event, row) {
+                    d3.select(this)
+                        .transition()
+                        .duration(50)
+                        .attr('opacity', 0.7)
+
+                    toolTip.transition()
+                        .duration(50)
+                        .style('opacity', 0)
+                })
 
             barContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
                 .text(row => row.paid.distribution + '%')
@@ -200,6 +224,30 @@ export function Type() {
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
                 .attr("fill", "black")
+                .on('mouseover', function (event, row) {
+                    d3.select(this)
+                        .transition()
+                        .duration(50)
+                        .attr('opacity', 1)
+
+                    toolTip.transition()
+                        .duration(50)
+                        .style('opacity', 1)
+
+                    toolTip.html(getHtmlToolTip(row, dataLength))
+                          .style("left", (event.pageX + 20) + "px")
+                          .style("top", (event.pageY - 20) + "px")
+                })
+                .on('mouseout', function (event, row) {
+                    d3.select(this)
+                        .transition()
+                        .duration(50)
+                        .attr('opacity', 0.7)
+
+                    toolTip.transition()
+                        .duration(50)
+                        .style('opacity', 0)
+                })
 
         })
     }
