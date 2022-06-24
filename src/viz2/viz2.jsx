@@ -32,7 +32,17 @@ const getHtmlToolTip = (row, dataLength) => {
     `
 }
 
+const getAxisName = (variableName) => {
+    if (variableName === "Category") {
+        return "Categories"
+    }
 
+    if (variableName === "Content rating") {
+        return "Evaluation de contenu"
+    }
+
+    return variableName
+}
 
 export function Type() {
     const [isAscending, setAscending] = React.useState(false)
@@ -81,8 +91,9 @@ export function Type() {
 
             svg.append("text")
                 .attr("text-anchor", "end")
-                .attr('x', '-40')
-                .text("Variable etudiee : " + variable)
+                .attr('x', '-100')
+                .attr('y', '200')
+                .text(getAxisName(variable) )
                 .attr("class", "axis")
 
 

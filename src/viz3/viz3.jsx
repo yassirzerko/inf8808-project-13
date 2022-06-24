@@ -23,9 +23,27 @@ const createSVG = () => {
 const getHtmlToolTip = (row, axes) => {
     return `<h4> ${row.downloadRange} </h4> 
     <p> Containing : ${row.nApp} apps <p> 
-    <p> <b> Average of ${axes.xAxis} <b> : ${row.xAvg.toFixed(2)} <p>
-    <p> <b> Average of ${axes.yAxis} <b> : ${row.yAvg.toFixed(2)} <p>
+    <p> <b> Average of ${axes.xAxis} </b> : ${row.xAvg.toFixed(2)} <p>
+    <p> <b> Average of ${axes.yAxis} </b> : ${row.yAvg.toFixed(2)} <p>
     `
+}
+
+const getAxisName = (variableName) => {
+    if (variableName === "Size") {
+        return "Taille en mega octets"
+    }
+
+    if (variableName === "Size") {
+        return "Taille en mega octets"
+    }
+
+    if (variableName === "Reviews") {
+        return "Nombre d'evaluation"
+    }
+
+    if (variableName === "Rating") {
+        return "Note "
+    }
 }
 
 
@@ -55,7 +73,7 @@ export function Numerical() {
 
 
             svg.append("g")
-                .attr("transform", "translate(-10,15)")
+                .attr("transform", "translate(-40,0)")
                 .attr("position", "fixed") //todo : fix la position
                 .call(d3.axisBottom(xScale))
                 .append("text")
@@ -71,22 +89,24 @@ export function Numerical() {
 
             svg.append("g")
                 .call(d3.axisLeft(yScale))
-                .attr("transform", "translate(-30,15)")
+                .attr("transform", "translate(-50,15)")
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
 
 
             svg.append("text")
                 .attr("text-anchor", "end")
-                .attr('x', '-40')
-                .text("Variable etudiee : " + axes.xAxis)
+                .attr('x', '-100')
+                .attr('y', '200')
+                .text(getAxisName(axes.yAxis))
                 .attr("class", "axis")
 
 
             svg.append("text")
                 .attr("text-anchor", "end")
                 .attr('x', '80%')
-                .text("Variable etudiee : " + axes.yAxis)
+                .attr('y', '-5')
+                .text(getAxisName(axes.xAxis))
                 .attr("class", "axis")
 
             let toolTip = d3.select(".svg").append("div")

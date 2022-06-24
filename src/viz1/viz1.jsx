@@ -31,6 +31,38 @@ const getHtmlToolTip = (row, dataLength, downloadsRange) => {
     <p> <b> Number of app with ${downloadsRange} downloads average  </b>: ${row.avgNApp.value} (${row.avgNApp.position}/${dataLength})</p> `
 }
 
+const getAxisName = (variableName, downloadsRange) => {
+    if (variableName === "Category") {
+        return "Categories"
+    }
+
+    if (variableName === "Content rating") {
+        return "Evaluation de contenu"
+    }
+
+    if (variableName === "Android Ver") {
+        return "Version minimale d'android requise"
+    }
+
+    if (variableName === 'sum') {
+        return "Nombre total de telechargement"
+    }
+    if (variableName === 'avg') {
+        return "Nombre moyen de telechargement"
+    }
+    if (variableName === 'nApp') {
+        return `Nombre d application avec plus de ${downloadsRange} telechargement`
+    }
+
+    if (variableName === 'avgNApp') {
+        return `Nombre d application moyen avec plus de ${downloadsRange} telechargement`
+    }
+
+
+
+    return variableName
+}
+
 
 export function Categorical() {
     const [isAscending, setAscending] = React.useState(false)
@@ -81,15 +113,15 @@ export function Categorical() {
 
             svg.append("text")
                 .attr("text-anchor", "end")
-                .attr('x', '-40')
-                .text("Variable etudiee : " + variable)
+                .attr('x', '-100')
+                .text(getAxisName(variable))
                 .attr("class", "axis")
 
 
             svg.append("text")
                 .attr("text-anchor", "end")
                 .attr('x', '80%')
-                .text("Metrique de telechargement : " + downloadsMetric)
+                .text(getAxisName(downloadsMetric, downloadsRange))
                 .attr("class", "axis")
 
             let toolTip = d3.select(".svg").append("div")

@@ -60,7 +60,7 @@ const sanitizeData = (value, variable) => {
         if (value === 'Varies with device') {
             return null
         }
-        value = value.includes('M') ? parseFloat(value.replaceAll('M', '')) * Math.pow(10, 6) : parseFloat(value.replaceAll('k', '')) * Math.pow(10, 3)
+        value = (value.includes('M') ? parseFloat(value.replaceAll('M', '')) * Math.pow(10, 6) : parseFloat(value.replaceAll('k', '')) * Math.pow(10, 3)) /  Math.pow(10, 6) 
     }
 
     return isNaN(value) ? null : value
