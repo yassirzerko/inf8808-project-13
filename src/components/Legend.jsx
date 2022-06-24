@@ -19,14 +19,14 @@ const rowsViz1 = [
   createDataViz1('Nombre de valeurs', 22),
 ];
 
-function createDataViz2(color, applicationType, average, standardDeviation) {
+export function getDataViz2(color, applicationType, average, standardDeviation) {
   return { color, applicationType, average, standardDeviation };
 }
 
-const rowsViz2 = [
+/*const rowsViz2 = [
   createDataViz2('red', 'Applications payantes', 500000, 250000),
   createDataViz2('steelblue', 'Applications gratuites', 500000, 250000),
-];
+];*/
 
 export function LegendViz1() {
   return (
@@ -55,19 +55,20 @@ export function LegendViz1() {
   );
 }
 
-export function LegendViz2() {
+export function LegendViz2(props) {
+  const {data} = props
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 300 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="center">Type d'application</TableCell>
-            <TableCell align="center">Moyenne des notes</TableCell>
-            <TableCell align="center">Écart type des notes</TableCell>
+            <TableCell align="center">Nombre moyen de revues</TableCell>
+            <TableCell align="center">Note moyenne</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rowsViz2.map((row) => (
+          {data.map((row) => (
             <TableRow
               key={row.applicationType}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

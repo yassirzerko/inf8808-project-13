@@ -29,21 +29,35 @@ export const preprocessData = (data, variableName, isAscending) => {
     let totalFreeReviews = 0
     let totalPaidCount = 0
     let totalPaidReviews = 0
+    let totalFreeRate = 0
+    let totalPaidRate = 0
+    let skippedFreeRate = 0
+    let skippedPaidRate = 0
 
     for (let i = 0; i < data.length; i++) {
         let row = data[i]
         let value = row[variableName]
         if (row.Type === "Free") {
-            nAppByValueFree.set(value,nAppByValueFree.has(value) ? nAppByValueFree.get(value) + 1 : 1)
+            nAppByValueFree.set(value, nAppByValueFree.has(value) ? nAppByValueFree.get(value) + 1 : 1)
             nAppByValuePaid.set(value, nAppByValuePaid.has(value) ? nAppByValuePaid.get(value) : 0)
             totalFreeCount += 1
             totalFreeReviews += parseFloat(row.Reviews)
+            if(isNaN(parseFloat(row.Rating))) {
+                skippedFreeRate += 1
+                continue
+            }
+            totalFreeRate += parseFloat(row.Rating)
             continue
         }
         nAppByValuePaid.set(value, nAppByValuePaid.has(value) ? nAppByValuePaid.get(value) + 1 : 1)
         nAppByValueFree.set(value, nAppByValueFree.has(value) ? nAppByValueFree.get(value) : 0)
         totalPaidCount += 1
         totalPaidReviews += parseFloat(row.Reviews)
+        if(isNaN(parseFloat(row.Rating))) {
+            skippedPaidRate += 1
+            continue
+        }
+        totalPaidRate += parseFloat(row.Rating)
     }
     let preprocessedData = []
 
@@ -53,21 +67,21 @@ export const preprocessData = (data, variableName, isAscending) => {
         let paidDistribution = (paidCount / totalPaidCount) * 100
 
         preprocessedData.push({
-            'value': value, 
+            'value': value,
             'free': {
                 'count': freeCount,
                 'distribution': freeDistribution.toFixed(2),
 
             },
-            'paid' : {
+            'paid': {
                 'count': paidCount,
                 'distribution': paidDistribution.toFixed(2)
             }
-            
+
         })
     }
     handleSort(preprocessedData, false, 'paid')
-  
+
     for (let j = 0; j < preprocessedData.length; j++) {
         preprocessedData[j].paid.position = j + 1
     }
@@ -77,7 +91,18 @@ export const preprocessData = (data, variableName, isAscending) => {
     for (let j = 0; j < preprocessedData.length; j++) {
         preprocessedData[j].free.position = j + 1
     }
-    
-    console.log(preprocessedData,'s')
-    return [preprocessedData, [totalFreeReviews/totalFreeCount, totalPaidReviews/totalPaidCount]]
+
+    console.log(totalFreeRate, 's')
+    return {
+        preprocessedData: preprocessedData,
+        free: {
+            reviews: totalFreeReviews / totalFreeCount,
+            rating: totalFreeRate / (totalFreeCount - skippedFreeRate),
+        },
+
+        paid: {
+            reviews: totalPaidReviews / totalPaidCount,
+            rating: totalPaidRate / (totalPaidCount - skippedPaidRate),
+        }
+    }
 }

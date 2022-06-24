@@ -10,7 +10,7 @@ import { Selector } from '../components/Selector';
 import { RadioButtons } from '../components/RadioButtons';
 import { Modal } from '../components/Modal';
 import '../index.css';
-import { LegendViz2 } from '../components/Legend';
+import { LegendViz2, getDataViz2 } from '../components/Legend';
 
 const createSVG = () => {
     return d3.select('.svg')
@@ -48,7 +48,7 @@ export function Type() {
     const [isAscending, setAscending] = React.useState(false)
     const [variable, setVariable] = React.useState('Category')
     const [modalData, setModalData] = React.useState({ 'isOpen': false, 'title': null, 'content': null })
-
+    const [avg, setAvg] = React.useState({ 'free': {'reviews': null, 'rating' : null}, 'paid': {'reviews': null, 'rating' : null}})
 
     const createVisusalisation = () => {
         d3.csv(CSV_URL).then((data, error) => {
@@ -57,7 +57,8 @@ export function Type() {
                 return
             }
 
-            let [preprocessedData, [freeAvg, paidAvg]] = preprocessData(data, variable, isAscending)
+            let {preprocessedData, free, paid} = preprocessData(data, variable, isAscending)
+            setAvg({free: free, paid:paid})
             let svg = createSVG()
             let dataLength = preprocessedData.length
 
@@ -208,7 +209,7 @@ export function Type() {
         createVisusalisation()
     }, [variable, isAscending])
 
-
+    console.log(avg)
     return (
         <Box height={'500vh'} m={0} p={0}>
             <NavBar></NavBar>
@@ -227,7 +228,7 @@ export function Type() {
                         onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Variable ', 'content': CONSTANTS.variableSelector.modalContent })} />
                 </Box >
               <Box >
-                    <LegendViz2></LegendViz2>
+                    <LegendViz2 data ={[getDataViz2('red', 'Applications payantes', avg.free.reviews ? avg.free.reviews.toLocaleString() : null, avg.free.rating ? avg.free.rating.toLocaleString() : null), getDataViz2('steelblue', 'Applications gratuites', avg.paid.reviews? avg.paid.reviews.toLocaleString() : null,  avg.paid.rating? avg.paid.rating.toLocaleString() : null)]}></LegendViz2>
               </Box>
             </Box>
             <Box className='svg' height='100vh' p={2} ></Box>
