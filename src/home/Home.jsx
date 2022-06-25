@@ -70,7 +70,7 @@ function Home() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="medium" component={Link} to={'/categorical'}>Voir la visualisation</Button>
+            <Button size="medium" component={Link} to={'/type'}>Voir la visualisation</Button>
           </CardActions>
         </Card>
         <Card sx={{ width: 500, border: 1, height: 'auto'}} elevation={12}>
@@ -93,7 +93,7 @@ function Home() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="medium" component={Link} to={'/categorical'}>Voir la visualisation</Button>
+            <Button size="medium" component={Link} to={'/numerical'}>Voir la visualisation</Button>
           </CardActions>
         </Card>
       </Box>
