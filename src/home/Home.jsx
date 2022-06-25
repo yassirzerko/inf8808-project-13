@@ -64,7 +64,7 @@ function Home() {
               Visualisation 2 :<br></br>Comparaison des distributions des applications gratuites et payantes
             </Typography>
             <Typography variant="body2" align="justify" color="text.secondary">
-              La troisième visualisation est un outil qui permet de comparer les distributions des applications payantes et gratuites selon deux variables catégoriques :
+              La seconde visualisation est un outil qui permet de comparer les distributions des applications payantes et gratuites selon deux variables catégoriques :
               Évaluation de contenu et catégorie.
               Il permet également d’avoir une idée sur le comportement des prix des applications selon la variable du type (application gratuite ou payante).<br></br>
             </Typography>
@@ -85,7 +85,7 @@ function Home() {
             Visualisation 3 :<br></br>Exploration du comportement des variables numériques et des téléchargements
             </Typography>
             <Typography variant="body2" align="justify" color="text.secondary">
-              La seconde visualisation est un outil qui permet d’explorer le comportement des variables numériques en fonction du nombre de téléchargements.
+              La troisième visualisation est un outil qui permet d’explorer le comportement des variables numériques en fonction du nombre de téléchargements.
               Ainsi, la visualisation permettra d’étudier le comportement des variables suivantes en fonction du nombre de téléchargements : 
               Taille de l’application
               , prix des applications payantes (comparaison entre les applications payantes)
