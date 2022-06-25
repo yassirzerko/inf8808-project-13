@@ -13,7 +13,7 @@ function Home() {
     <Box backgroundColor={'#d3d3d3'} height={'100vh'}>
       <NavBar></NavBar>
         <Typography variant="h1" color="text.primary" pl={'40%'}>
-          A propos
+          À propos
         </Typography>
         <Typography variant="body2" align="justify" color="text.secondary" pl = {'10%'} pr ={'10%'} pt ={2}>
           Le “Google play store” est la plateforme officielle de distribution d'applications pour les cellulaires intelligents fonctionnant sous le système d'exploitation Android.
@@ -37,7 +37,7 @@ function Home() {
           />
           <CardContent>
             <Typography gutterBottom variant="h5" align="center" component="div">
-              Visualisation 2 :<br></br>Exploration du comportement des variables catégoriques et des téléchargements
+              Visualisation 1 :<br></br>Exploration du comportement des variables catégoriques et des téléchargements
             </Typography>
             <Typography variant="body2" align="justify" color="text.secondary">
               La première visualisation est un outil qui permet d’explorer le comportement des variables catégoriques en fonction du nombre de téléchargements.
