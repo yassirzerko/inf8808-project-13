@@ -72,10 +72,6 @@ export function Categorical() {
     const [downloadsRanges, setDownloadsRanges] = React.useState(null)
     const [modalData, setModalData] = React.useState({ 'isOpen': false, 'title': null, 'content': null })
 
-    const createToolTip = () => {
-        
-    }
-
     const createVisusalisation = () => {
         d3.csv(CSV_URL).then((data, error) => {
             if (error) {
@@ -130,47 +126,13 @@ export function Categorical() {
             let toolTip = d3.select("#svg").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
+
             // bars container
             let barContainer = svg.selectAll("myRect")
                 .data(preprocessedData)
                 .enter()
                 .append('g')
                 .attr("transform", "translate(-10," + 20 + ")")
-
-
-            //real bars
-            let bars = barContainer.append("rect")
-                .attr("y", (row) => yScale(row.value))
-                .attr("width", (row) => xScale(row[downloadsMetric].value))
-                .attr("height", () => yScale.bandwidth())
-                .attr("fill", "steelblue")
-                .attr('opacity', 0.7)
-                .attr('id', (row, i) => 'bar-' + i)
-                .on('mouseover', function (event, row) {
-                    d3.select(this)
-                        .transition()
-                        .duration(50)
-                        .attr('opacity', 1)
-
-                    toolTip.transition()
-                        .duration(50)
-                        .style('opacity', 1)
-
-                    toolTip.html(getHtmlToolTip(row, dataLength, downloadsRange))
-                        .style("left", (event.pageX + 20) + "px")
-                        .style("top", (event.pageY - 20) + "px")
-                })
-                .on('mouseout', function (event, row) {
-                    d3.select(this)
-                        .transition()
-                        .duration(50)
-                        .attr('opacity', 0.7)
-
-                    toolTip.transition()
-                        .duration(50)
-                        .style('opacity', 0)
-                })
-                
 
             barContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
                 .text(row => row[downloadsMetric].value)
@@ -206,7 +168,6 @@ export function Categorical() {
                 })
 
             setDownloadsRanges(getDownloadsRanges(data))
-
         })
     }
 
@@ -251,7 +212,6 @@ export function Categorical() {
                             onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Nombre de telechargement', 'content': 'Explication' })} ></Selector>
                     }
             </Box>
-
             <Box id='svg' height='100vh' p={2} ></Box>
         </Box>
     )

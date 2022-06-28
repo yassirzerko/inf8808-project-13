@@ -33,10 +33,6 @@ const getAxisName = (variableName) => {
         return "Taille en mega octets"
     }
 
-    if (variableName === "Size") {
-        return "Taille en mega octets"
-    }
-
     if (variableName === "Reviews") {
         return "Nombre d'evaluation"
     }
