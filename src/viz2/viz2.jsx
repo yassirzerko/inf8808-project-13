@@ -171,7 +171,6 @@ export function Type() {
     createVisusalisation();
   }, [variable, isAscending]);
 
-  console.log(avg);
   return (
     <Box height={"500vh"} m={0} p={0}>
       <NavBar></NavBar>

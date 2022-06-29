@@ -17,8 +17,7 @@ export function getDataViz2(
 }
 
 export function LegendViz1(props) {
-  let { variableName, downloadsMetric, avg, std, top, low, nValues } = props;
-  console.log(props);
+  const { variableName, downloadsMetric, avg, std, top, low, nValues } = props;
   return (
     top &&
     low && (

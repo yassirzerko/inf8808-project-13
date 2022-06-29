@@ -63,14 +63,16 @@ export const preprocessData = (data, variableName, isAscending) => {
   for (let i = 0; i < data.length; i++) {
     let row = data[i];
     let value = row[variableName];
-    if (variableName === CONSTANTS.variableSelector.values[0] && value === '1.9') {
-      if (row.Type === "Free") { 
-        skippedFreeRate +=1
+    if (
+      variableName === CONSTANTS.variableSelector.values[0] &&
+      value === "1.9"
+    ) {
+      if (row.Type === "Free") {
+        skippedFreeRate += 1;
+      } else {
+        skippedPaidRate += 1;
       }
-      else {
-        skippedPaidRate += 1
-      }
-      continue
+      continue;
     }
     if (row.Type === "Free") {
       nAppByValueFree.set(
@@ -137,7 +139,6 @@ export const preprocessData = (data, variableName, isAscending) => {
     preprocessedData[j].free.position = j + 1;
   }
 
-  console.log(totalFreeRate, "s");
   return {
     preprocessedData: preprocessedData,
     free: {

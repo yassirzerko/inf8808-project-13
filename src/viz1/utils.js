@@ -132,8 +132,11 @@ const fillMaps = (
 ) => {
   for (const element of data) {
     let row = element;
-    if (variableName === CONSTANTS.variableSelector.values[0] && element[variableName] === '1.9') {
-      continue
+    if (
+      variableName === CONSTANTS.variableSelector.values[0] &&
+      element[variableName] === "1.9"
+    ) {
+      continue;
     }
     let downloads = parseInt(
       row.Installs.replaceAll("+", "").replaceAll(",", "")
@@ -192,7 +195,7 @@ const addStatsMetrics = (preprocessedData, downloadsMetric) => {
       .map((x) => Math.pow(x[downloadsMetric].value - avg, 2))
       .reduce((a, b) => a + b) / preprocessedData.length
   );
-  console.log(avg);
+
   preprocessedData.avg = avg.toLocaleString();
   preprocessedData.std = standardDeviation.toLocaleString();
 
