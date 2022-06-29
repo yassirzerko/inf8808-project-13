@@ -17,6 +17,7 @@ export const CONSTANTS = {
     "Visualisation 2 : Comparaison des distributions des applications gratuites et payantes",
 };
 
+/* Dynamically get the content of the tooltip  */
 export const getHtmlToolTip = (row, dataLength) => {
   return `<h4> ${row.value} </h4> 
     <h5> Free : <h5> 
@@ -28,6 +29,7 @@ export const getHtmlToolTip = (row, dataLength) => {
     `;
 };
 
+/* Get the axis name given the variable it represents  */
 export const getAxisName = (variableName) => {
   if (variableName === "Category") {
     return "Categories";
@@ -47,7 +49,7 @@ const handleSort = (preprocessedData, isAscending, type) => {
   preprocessedData.sort(sortMethod);
 };
 
-// Preprocess data for the first visualisation
+/* Sort the data given the variable */
 export const preprocessData = (data, variableName, isAscending) => {
   let nAppByValueFree = new Map();
   let nAppByValuePaid = new Map();

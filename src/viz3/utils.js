@@ -19,6 +19,7 @@ export const CONSTANTS = {
     "Visualisation 3 : Exploration du comportement des variables numériques et des téléchargements",
 };
 
+/* Dynamically get the content of the tooltip  */
 export const getHtmlToolTip = (row, axes) => {
   return `<h4> ${row.downloadRange} </h4> 
     <p> Containing : ${row.nApp} apps <p> 
@@ -27,6 +28,7 @@ export const getHtmlToolTip = (row, axes) => {
     `;
 };
 
+/* Get the axis name given the variable it represents  */
 export const getAxisName = (variableName) => {
   if (variableName === "Size") {
     return "Taille en mega octets";
@@ -41,6 +43,7 @@ export const getAxisName = (variableName) => {
   }
 };
 
+/*Get text to display for each value in axis selector based on selected values */
 export const getAxesData = (xAxisValue, yAxisValue) => {
   let variablesData = CONSTANTS.variables;
   let xAxisData = [];
@@ -60,6 +63,7 @@ export const getAxesData = (xAxisValue, yAxisValue) => {
   return { xAxisData: xAxisData, yAxisData: yAxisData };
 };
 
+/* Sanitize data based on the variable it represents*/
 const sanitizeData = (value, variable) => {
   if (!isNaN(value)) {
     return parseFloat(value);
@@ -87,7 +91,7 @@ const sanitizeData = (value, variable) => {
   return isNaN(value) ? null : value;
 };
 
-// Preprocess data for the first visualisation
+/* Preprocess and return the data */
 export const preprocessData = (data, axes) => {
   let preprocessedData = [];
   let variablesValuesDownloadRanges = new Map();
@@ -138,6 +142,6 @@ export const preprocessData = (data, axes) => {
     };
     preprocessedData.push(preprocessedRow);
   }
-  console.log(preprocessedData);
+
   return preprocessedData;
 };

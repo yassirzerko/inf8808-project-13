@@ -42,6 +42,7 @@ export const CONSTANTS = {
     "Visualisation 1 : Exploration du comportement des variables catégoriques et des téléchargements",
 };
 
+/* Dynamically get the content of the tooltip  */
 export const getHtmlToolTip = (row, dataLength, downloadsRange) => {
   return `<h4> ${row.value} </h4> 
     <p> <b> Distribution </b>: ${row.distribution.value}% (${
@@ -61,6 +62,7 @@ export const getHtmlToolTip = (row, dataLength, downloadsRange) => {
   } (${row.avgNApp.position}/${dataLength})</p> `;
 };
 
+/* Get the axis name given the variable it represents  */
 export const getAxisName = (variableName, downloadsRange) => {
   if (variableName === "Category") {
     return "Categories";
@@ -91,6 +93,7 @@ export const getAxisName = (variableName, downloadsRange) => {
   return variableName;
 };
 
+/* Extract and sanitize the downloads ranges from the data  */
 export const getDownloadsRanges = (data) => {
   let uniques = new Set();
   for (const element of data) {
@@ -111,6 +114,7 @@ export const getDownloadsRanges = (data) => {
   );
 };
 
+/* Sort the data given the downloads metric */
 const handleSort = (preprocessedData, isAscending, downloadsMetric) => {
   let sortMethod = isAscending
     ? (b, a) => b[downloadsMetric].value - a[downloadsMetric].value
@@ -118,7 +122,7 @@ const handleSort = (preprocessedData, isAscending, downloadsMetric) => {
   preprocessedData.sort(sortMethod);
 };
 
-// nAppByValue is filled only if not nul
+/* Fill the maps used by preprocessData */
 const fillMaps = (
   data,
   variableName,
@@ -160,7 +164,8 @@ const fillMaps = (
   }
 };
 
-const addPositionsMetrics = (preprocessedData) => {
+/* Add to the preprocessed data the ranking of each element according to each metric */
+const addRankingsMetrics = (preprocessedData) => {
   const metrics = [...CONSTANTS.downloadsMetricSelector.values, "distribution"];
   for (const element of metrics) {
     let metric = element;
@@ -172,11 +177,12 @@ const addPositionsMetrics = (preprocessedData) => {
   }
 };
 
+/* Add to the preprocessed data statistics about the data */
 const addStatsMetrics = (preprocessedData) => {
   // Todo
 };
 
-// Preprocess data for the first visualisation
+/* Preprocess and return the data */
 export const preprocessData = (
   data,
   downloadsMetric,
@@ -212,7 +218,7 @@ export const preprocessData = (
     };
     preprocessedData.push(preprocessedValue);
   }
-  addPositionsMetrics(preprocessedData);
+  addRankingsMetrics(preprocessedData);
   handleSort(preprocessedData, isAscending, downloadsMetric);
   return preprocessedData;
 };

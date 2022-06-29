@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import { NavBar } from "../components/NavBar";
-import parse from "html-react-parser";
 
 const texts = {
   title: "INF8808 - Projet equipe 13",

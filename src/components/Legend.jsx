@@ -28,11 +28,6 @@ export function getDataViz2(
   return { color, applicationType, average, standardDeviation };
 }
 
-/*const rowsViz2 = [
-  createDataViz2('red', 'Applications payantes', 500000, 250000),
-  createDataViz2('steelblue', 'Applications gratuites', 500000, 250000),
-];*/
-
 export function LegendViz1() {
   return (
     <TableContainer component={Paper}>
