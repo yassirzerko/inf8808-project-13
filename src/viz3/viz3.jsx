@@ -164,7 +164,7 @@ export function Numerical() {
           onClickToolTip={() =>
             setModalData({
               isOpen: true,
-              title: "Axe horizontal ",
+              title: CONSTANTS.xAxisSelector.label,
               content: CONSTANTS.xAxisSelector.modalContent,
             })
           }
@@ -182,7 +182,7 @@ export function Numerical() {
             onClickToolTip={() =>
               setModalData({
                 isOpen: true,
-                title: "Axe vertical ",
+                title: CONSTANTS.yAxisSelector.label,
                 content: CONSTANTS.yAxisSelector.modalContent,
               })
             }

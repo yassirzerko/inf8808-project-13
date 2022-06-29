@@ -197,7 +197,7 @@ export function Type() {
             onClickToolTip={() =>
               setModalData({
                 isOpen: true,
-                title: "Ordonnacement",
+                title: CONSTANTS.radioButtons.label,
                 content: CONSTANTS.radioButtons.modalContent,
               })
             }
@@ -215,7 +215,7 @@ export function Type() {
             onClickToolTip={() =>
               setModalData({
                 isOpen: true,
-                title: "Variable ",
+                title:CONSTANTS.variableSelector.label,
                 content: CONSTANTS.variableSelector.modalContent,
               })
             }
