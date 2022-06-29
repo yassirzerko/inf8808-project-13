@@ -9,7 +9,7 @@ import { Box } from "@mui/material";
 import { NavBar } from "../components/NavBar";
 
 const texts = {
-  title: "INF8808 - Projet equipe 13",
+  title: "INF8808 - Projet équipe 13",
   introduction:
     "  Le “Google play store” est la plateforme officielle de distribution d'applications pour les cellulaires intelligents fonctionnant sous le système d'exploitation Android. Bien qu'utilisée principalement pour acquérir des applications, la plateforme développée par Google permet également l’acquisition de musique, de livres, de films… En 2021, le “Google play store” a compté plus de 110 milliards téléchargements d’applications et plus de 2,5 millions d’applications disponibles. De plus, Android est actuellement le système d’exploitation de références pour cellulaires intelligents, avec 84 % des parts de marché mondiales. C’est une plateforme populaire et à succès, il est alors naturel de s’intéresser aux comportements des consommateurs sur cette dernière. Plus précisément, nous cherchons à comprendre quelles sont les caractéristiques qui influencent le potentiel succès d’une application sur le “Google play store”. Ainsi, notre objectif est de concevoir et d’implémenter un outil permettant de visualiser efficacement et sous plusieurs angles des données d’applications issues de la plateforme. L’outil que nous allons développer permettra d’explorer ces données et d’en tirer de potentielles conclusions.",
   gotoViz: "Voir visualisation",
@@ -43,7 +43,7 @@ function Home() {
   return (
     <Box backgroundColor={"#d3d3d3"} height={"100vh"}>
       <NavBar></NavBar>
-      <Typography variant="h1" color="text.primary" pl={"40%"}>
+      <Typography variant="h4" color="text.primary" pl={"40%"}>
         {texts.title}
       </Typography>
       <Typography

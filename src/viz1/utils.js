@@ -132,6 +132,9 @@ const fillMaps = (
 ) => {
   for (const element of data) {
     let row = element;
+    if (variableName === CONSTANTS.variableSelector.values[0] && element[variableName] === '1.9') {
+      continue
+    }
     let downloads = parseInt(
       row.Installs.replaceAll("+", "").replaceAll(",", "")
     )
