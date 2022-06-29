@@ -1,3 +1,4 @@
+
 export const CONSTANTS = {
   variableSelector: {
     values: ["Category", "Genres", "Type", "Content Rating", "Android Ver"],
@@ -206,7 +207,44 @@ const addStatsMetrics = (preprocessedData, downloadsMetric) => {
   preprocessedData.nValues = preprocessedData.length;
 };
 
-/* Preprocess and return the data */
+const groupSmallerValuesForMetric = (preprocessedData, downloadsMetric, nTotalCategories) => {
+  if (preprocessData.length >= nTotalCategories) {
+    return;
+  }
+  let newPrepropcessedData = [];
+  let otherRows = [];
+  for (let row of preprocessedData) {
+    if (row[downloadsMetric].position > nTotalCategories) {
+      otherRows.push(row);
+    } else {
+      newPrepropcessedData.push(row);
+    }
+  }
+  let newOtherRow = combineIntoOtherCategory(otherRows);
+  newPrepropcessedData.push(newOtherRow);
+  addPositionsMetrics(newPrepropcessedData);
+  return newPrepropcessedData;
+}
+
+const combineIntoOtherCategory = (otherRows) => {
+  let sum = otherRows.reduce((acc, curr) => { return acc + curr.sum.value }, 0)
+  let avgSum = otherRows.reduce((acc, curr) => { return acc + Number(curr.avg.value) }, 0)
+  let avg = avgSum / otherRows.length // NOT GOOD. Il faudrait faire l'avg sur le nombre total de donnes
+  let distribution = otherRows.reduce((acc, curr) => { return acc + Number(curr.distribution.value) }, 0)
+  let nApp = otherRows.reduce((acc, curr) => { return acc + curr.nApp.value }, 0)
+  let avgNApp = nApp / otherRows.length
+
+  return {
+    value: "AUTRES",
+    sum: { value: sum},
+    avg: { value: avg.toFixed(2) },
+    distribution: { value: distribution.toFixed(2) },
+    nApp: { value: nApp },
+    avgNApp: { value: avgNApp.toFixed(2) },
+  }
+}
+
+// Preprocess data for the first visualisation
 export const preprocessData = (
   data,
   downloadsMetric,
@@ -243,6 +281,8 @@ export const preprocessData = (
     preprocessedData.push(preprocessedValue);
   }
   addRankingsMetrics(preprocessedData);
+  addPositionsMetrics(preprocessedData);
+  preprocessedData = groupSmallerValuesForMetric(preprocessedData, downloadsMetric, 10);
   handleSort(preprocessedData, isAscending, downloadsMetric);
   addStatsMetrics(preprocessedData, downloadsMetric);
   return preprocessedData;
