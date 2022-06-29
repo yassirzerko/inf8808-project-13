@@ -10,16 +10,8 @@ import { Selector } from '../components/Selector';
 import { RadioButtons } from '../components/RadioButtons';
 import { Modal } from '../components/Modal';
 import '../index.css';
-import { LegendViz1} from '../components/Legend';
-
-const createSVG = () => {
-    return d3.select('#svg')
-        .append('svg')
-        .attr('width', '90%')
-        .attr('height', '400%')
-        .append('g')
-        .attr("transform", "translate(" + 250 + "," + 20 + ")");
-}
+import { LegendViz1 } from '../components/Legend';
+import { getDataContainer, addTooltip } from '../vizUtils';
 
 const getHtmlToolTip = (row, dataLength, downloadsRange) => {
     console.log(row.avg.value)
@@ -78,65 +70,22 @@ export function Categorical() {
                 console.log(error)
                 return
             }
-            d3.select('#svg').selectAll('*').remove()
             let preprocessedData = preprocessData(data, downloadsMetric, variable, isAscending, downloadsRange)
-            let svg = createSVG()
             let dataLength = preprocessedData.length
-
             let xScale = d3.scaleLinear()
                 .domain([d3.min(preprocessedData.map(row => row[downloadsMetric].value)), d3.max(preprocessedData.map(row => row[downloadsMetric].value))])
                 .range([0, window.screen.width * 0.75])
-
-            svg.append("g")
-                .attr("transform", "translate(-10,15)")
-                .attr("position", "fixed") //todo : fix la position
-                .call(d3.axisBottom(xScale))
-                .append("text")
-                .style("text-anchor", "end")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "14px")
-                .attr("fill", "black")
 
             let yScale = d3.scaleBand()
                 .range([0, preprocessedData.length * 50])
                 .domain(preprocessedData.map(row => row.value))
                 .padding(0.4)
 
+            let dataContainer = getDataContainer(xScale, yScale, getAxisName(downloadsMetric, downloadsRange), getAxisName(variable), preprocessedData)
+            let toolTip = addTooltip()
 
-            svg.append("g")
-                .call(d3.axisLeft(yScale))
-                .attr("transform", "translate(-30,15)")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "14px")
-
-
-            svg.append("text")
-                .attr("text-anchor", "end")
-                .attr('x', '-100')
-                .text(getAxisName(variable))
-                .attr("class", "axis")
-
-
-            svg.append("text")
-                .attr("text-anchor", "end")
-                .attr('x', '80%')
-                .text(getAxisName(downloadsMetric, downloadsRange))
-                .attr("class", "axis")
-
-            let toolTip = d3.select("#svg").append("div")
-                .attr("class", "tooltip")
-                .style("opacity", 0);
-
-            // bars container
-            let barContainer = svg.selectAll("myRect")
-                .data(preprocessedData)
-                .enter()
-                .append('g')
-                .attr("transform", "translate(-10," + 20 + ")")
-
-            
             //real bars
-            barContainer.append("rect")
+            dataContainer.append("rect")
                 .attr("y", (row) => yScale(row.value))
                 .attr("width", (row) => xScale(row[downloadsMetric].value))
                 .attr("height", () => yScale.bandwidth())
@@ -167,11 +116,8 @@ export function Categorical() {
                         .duration(50)
                         .style('opacity', 0)
                 })
-                
 
-
-
-            barContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
+            dataContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
                 .text(row => row[downloadsMetric].value)
                 .style("text-anchor", "middle")
                 .attr("x", 100)
@@ -243,11 +189,11 @@ export function Categorical() {
                 </Box>
 
                 {shouldDisplayDlsRangesSelector &&
-                   
-                        <Selector inputLabel={'Nombre de telechargements'}
-                            currentValue={downloadsRange} onChange={(event) => setDownloadsRange(event.target.value)} menuItemsValues={downloadsRanges ? downloadsRanges : []} menuItemsText={downloadsRanges ? downloadsRanges : []} helperText={"Choisir la tranche de telechargement"}
-                            onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Nombre de telechargement', 'content': 'Explication' })} ></Selector>
-                    }
+
+                    <Selector inputLabel={'Nombre de telechargements'}
+                        currentValue={downloadsRange} onChange={(event) => setDownloadsRange(event.target.value)} menuItemsValues={downloadsRanges ? downloadsRanges : []} menuItemsText={downloadsRanges ? downloadsRanges : []} helperText={"Choisir la tranche de telechargement"}
+                        onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Nombre de telechargement', 'content': 'Explication' })} ></Selector>
+                }
             </Box>
             <Box id='svg' height='100vh' p={2} ></Box>
         </Box>

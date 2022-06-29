@@ -9,7 +9,7 @@ import { preprocessData, CONSTANTS, getAxesData } from './utils';
 import { Selector } from '../components/Selector';
 import { Modal } from '../components/Modal';
 import '../index.css';
-
+import { getDataContainer, addTooltip } from '../vizUtils';
 
 const createSVG = () => {
     return d3.select('#svg')
@@ -55,9 +55,8 @@ export function Numerical() {
                 console.log(error)
                 return
             }
-            d3.select('#svg').selectAll('*').remove()
+
             let preprocessedData = preprocessData(data, axes)
-            let svg = createSVG()
 
             let xScale = d3.scaleLinear()
                 .domain([d3.min(preprocessedData.map(data => data.xAvg)),d3.max(preprocessedData.map(data => data.xAvg))])
@@ -68,57 +67,18 @@ export function Numerical() {
             .range([20, 120])
 
 
-            svg.append("g")
-                .attr("transform", "translate(-40,0)")
-                .attr("position", "fixed") //todo : fix la position
-                .call(d3.axisBottom(xScale))
-                .append("text")
-                .style("text-anchor", "end")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "14px")
-                .attr("fill", "black")
-
             let yScale = d3.scaleLinear()
             .domain([d3.min(preprocessedData.map(data => data.yAvg)),d3.max(preprocessedData.map(data => data.yAvg))])
             .range([0, window.screen.height * 0.7])
 
 
-            svg.append("g")
-                .call(d3.axisLeft(yScale))
-                .attr("transform", "translate(-50,15)")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "14px")
+            let dataContainer = getDataContainer(xScale, yScale, getAxisName(axes.xAxis), getAxisName(axes.yAxis), preprocessedData)
 
 
-            svg.append("text")
-                .attr("text-anchor", "end")
-                .attr('x', '-100')
-                .attr('y', '200')
-                .text(getAxisName(axes.yAxis))
-                .attr("class", "axis")
-
-
-            svg.append("text")
-                .attr("text-anchor", "end")
-                .attr('x', '80%')
-                .attr('y', '-5')
-                .text(getAxisName(axes.xAxis))
-                .attr("class", "axis")
-
-            let toolTip = d3.select("#svg").append("div")
-                .attr("class", "tooltip")
-                .style("opacity", 0);
-
-            // bars container
-            let barContainer = svg.selectAll("myRect")
-                .data(preprocessedData)
-                .enter()
-                .append('g')
-                .attr("transform", "translate(-10," + 20 + ")")
-
+            let toolTip = addTooltip()
 
             //Free bars
-            barContainer.append("circle")
+            dataContainer.append("circle")
                 .attr("cy", (row) => yScale(row.yAvg))
                 .attr("cx", (row) => xScale(row.xAvg))
                 .attr("r", (row) => radiusScale(row.downloadRange.replaceAll('+', '').replaceAll(',', '')) )
@@ -150,7 +110,7 @@ export function Numerical() {
                         .style('opacity', 0)
                 })
 
-           barContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
+            dataContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
                 .text(row => row.downloadRange)
                 .style("text-anchor", "middle")
                 .attr("x", row => xScale(row.xAvg))

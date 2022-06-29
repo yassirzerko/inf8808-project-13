@@ -11,15 +11,7 @@ import { RadioButtons } from '../components/RadioButtons';
 import { Modal } from '../components/Modal';
 import '../index.css';
 import { LegendViz2, getDataViz2 } from '../components/Legend';
-
-const createSVG = () => {
-    return d3.select('#svg')
-        .append('svg')
-        .attr('width', '90%')
-        .attr('height', '400%')
-        .append('g')
-        .attr("transform", "translate(" + 250 + "," + 20 + ")");
-}
+import { getDataContainer, addTooltip } from '../vizUtils';
 
 const getHtmlToolTip = (row, dataLength) => {
     return `<h4> ${row.value} </h4> 
@@ -48,7 +40,7 @@ export function Type() {
     const [isAscending, setAscending] = React.useState(false)
     const [variable, setVariable] = React.useState('Category')
     const [modalData, setModalData] = React.useState({ 'isOpen': false, 'title': null, 'content': null })
-    const [avg, setAvg] = React.useState({ 'free': {'reviews': null, 'rating' : null}, 'paid': {'reviews': null, 'rating' : null}})
+    const [avg, setAvg] = React.useState({ 'free': { 'reviews': null, 'rating': null }, 'paid': { 'reviews': null, 'rating': null } })
 
     const createVisusalisation = () => {
         d3.csv(CSV_URL).then((data, error) => {
@@ -56,72 +48,28 @@ export function Type() {
                 console.log(error)
                 return
             }
-            d3.select('#svg').selectAll('*').remove()
-            let {preprocessedData, free, paid} = preprocessData(data, variable, isAscending)
-            setAvg({free: free, paid:paid})
-            let svg = createSVG()
+            let { preprocessedData, free, paid } = preprocessData(data, variable, isAscending)
+            setAvg({ free: free, paid: paid })
             let dataLength = preprocessedData.length
-
             let xScale = d3.scaleLinear()
-                .domain([0,100])
+                .domain([0, 100])
                 .range([0, window.screen.width * 0.7])
 
-
-            svg.append("g")
-                .attr("transform", "translate(-10,15)")
-                .attr("position", "fixed") //todo : fix la position
-                .call(d3.axisBottom(xScale))
-                .append("text")
-                .style("text-anchor", "end")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "14px")
-                .attr("fill", "black")
-
             let yScale = d3.scaleBand()
-                .range([0, (2 *preprocessedData.length) * 50])
+                .range([0, (2 * preprocessedData.length) * 50])
                 .domain(preprocessedData.map(row => row.value))
                 .padding(0.5)
 
-
-            svg.append("g")
-                .call(d3.axisLeft(yScale))
-                .attr("transform", "translate(-30,15)")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "14px")
-
-
-            svg.append("text")
-                .attr("text-anchor", "end")
-                .attr('x', '-100')
-                .attr('y', '200')
-                .text(getAxisName(variable) )
-                .attr("class", "axis")
-
-
-            svg.append("text")
-                .attr("text-anchor", "end")
-                .attr('x', '80%')
-                .text("Frequence (%) : ")
-                .attr("class", "axis")
-
-            let toolTip = d3.select("#svg").append("div")
-                .attr("class", "tooltip")
-                .style("opacity", 0);
-
-            // bars container
-            let barContainer = svg.selectAll("myRect")
-                .data(preprocessedData)
-                .enter()
-                .append('g')
-                .attr("transform", "translate(-10," + 20 + ")")
-
+            let dataContainer = getDataContainer(xScale, yScale, "Frequence (%) : ", getAxisName(variable), preprocessedData)
+        
+            let toolTip = addTooltip()
 
             //Free bars
-            barContainer.append("rect")
+            dataContainer.append("rect")
                 .attr("y", (row) => yScale(row.value) - 21)
                 .attr("width", (row) => xScale(row.free.distribution))
-             
-                .attr("height", () => 0.85* yScale.bandwidth())
+
+                .attr("height", () => 0.85 * yScale.bandwidth())
                 .attr("fill", "steelblue")
                 .attr('opacity', 0.7)
                 .attr('id', (row, i) => 'bar-' + i)
@@ -136,8 +84,8 @@ export function Type() {
                         .style('opacity', 1)
 
                     toolTip.html(getHtmlToolTip(row, dataLength))
-                          .style("left", (event.pageX + 20) + "px")
-                          .style("top", (event.pageY - 20) + "px")
+                        .style("left", (event.pageX + 20) + "px")
+                        .style("top", (event.pageY - 20) + "px")
                 })
                 .on('mouseout', function (event, row) {
                     d3.select(this)
@@ -151,7 +99,7 @@ export function Type() {
                 })
 
             //Paid bars
-            barContainer.append("rect")
+            dataContainer.append("rect")
                 .attr("y", (row) => yScale(row.value) + 21)
                 .attr("width", (row) => xScale(row.paid.distribution))
                 .attr("height", () => 0.85 * yScale.bandwidth())
@@ -169,8 +117,8 @@ export function Type() {
                         .style('opacity', 1)
 
                     toolTip.html(getHtmlToolTip(row, dataLength))
-                          .style("left", (event.pageX + 20) + "px")
-                          .style("top", (event.pageY - 20) + "px")
+                        .style("left", (event.pageX + 20) + "px")
+                        .style("top", (event.pageY - 20) + "px")
                 })
                 .on('mouseout', function (event, row) {
                     d3.select(this)
@@ -183,11 +131,11 @@ export function Type() {
                         .style('opacity', 0)
                 })
 
-           barContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
+            dataContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
                 .text(row => row.free.distribution + '%')
                 .style("text-anchor", "middle")
                 .attr("x", 100)
-                .attr("y", (row) => yScale(row.value) - 21 + yScale.bandwidth()/2)
+                .attr("y", (row) => yScale(row.value) - 21 + yScale.bandwidth() / 2)
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
                 .attr("fill", "black")
@@ -202,8 +150,8 @@ export function Type() {
                         .style('opacity', 1)
 
                     toolTip.html(getHtmlToolTip(row, dataLength))
-                          .style("left", (event.pageX + 20) + "px")
-                          .style("top", (event.pageY - 20) + "px")
+                        .style("left", (event.pageX + 20) + "px")
+                        .style("top", (event.pageY - 20) + "px")
                 })
                 .on('mouseout', function (event, row) {
                     d3.select(this)
@@ -216,11 +164,11 @@ export function Type() {
                         .style('opacity', 0)
                 })
 
-            barContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
+            dataContainer.append('text') // Todo : le texte ne dois pas annuler le hover sur la barre 
                 .text(row => row.paid.distribution + '%')
                 .style("text-anchor", "middle")
                 .attr("x", 100)
-                .attr("y", (row) =>  yScale(row.value) + 21 + yScale.bandwidth()/2)
+                .attr("y", (row) => yScale(row.value) + 21 + yScale.bandwidth() / 2)
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "14px")
                 .attr("fill", "black")
@@ -235,8 +183,8 @@ export function Type() {
                         .style('opacity', 1)
 
                     toolTip.html(getHtmlToolTip(row, dataLength))
-                          .style("left", (event.pageX + 20) + "px")
-                          .style("top", (event.pageY - 20) + "px")
+                        .style("left", (event.pageX + 20) + "px")
+                        .style("top", (event.pageY - 20) + "px")
                 })
                 .on('mouseout', function (event, row) {
                     d3.select(this)
@@ -274,9 +222,9 @@ export function Type() {
                         currentValue={variable} onChange={(event) => setVariable(event.target.value)} menuItemsValues={CONSTANTS.variableSelector.values} menuItemsText={CONSTANTS.variableSelector.texts} helperText={CONSTANTS.variableSelector.helper}
                         onClickToolTip={() => setModalData({ 'isOpen': true, 'title': 'Variable ', 'content': CONSTANTS.variableSelector.modalContent })} />
                 </Box >
-              <Box >
-                    <LegendViz2 data ={[getDataViz2('red', 'Applications payantes', avg.free.reviews ? avg.free.reviews.toLocaleString() : null, avg.free.rating ? avg.free.rating.toLocaleString() : null), getDataViz2('steelblue', 'Applications gratuites', avg.paid.reviews? avg.paid.reviews.toLocaleString() : null,  avg.paid.rating? avg.paid.rating.toLocaleString() : null)]}></LegendViz2>
-              </Box>
+                <Box >
+                    <LegendViz2 data={[getDataViz2('red', 'Applications payantes', avg.free.reviews ? avg.free.reviews.toLocaleString() : null, avg.free.rating ? avg.free.rating.toLocaleString() : null), getDataViz2('steelblue', 'Applications gratuites', avg.paid.reviews ? avg.paid.reviews.toLocaleString() : null, avg.paid.rating ? avg.paid.rating.toLocaleString() : null)]}></LegendViz2>
+                </Box>
             </Box>
             <Box id='svg' height='100vh' p={2} ></Box>
         </Box>
