@@ -33,6 +33,9 @@ export function Categorical() {
     title: null,
     content: null,
   });
+  const [stats, setStats] = React.useState({
+    avg : null, std : null, top : null, low : null, nValues : null
+  });
 
   const createVisusalisation = () => {
     d3.csv(CSV_URL).then((data, error) => {
@@ -47,6 +50,9 @@ export function Categorical() {
         isAscending,
         downloadsRange
       );
+      setStats({
+        avg : preprocessedData.avg, std : preprocessedData.std, top : preprocessedData.topValue, low : preprocessedData.lowValue, nValues :  preprocessedData.nValues
+      })
       let dataLength = preprocessedData.length;
       let xScale = d3
         .scaleLinear()

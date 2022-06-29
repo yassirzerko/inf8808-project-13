@@ -6,6 +6,11 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
+const stringToHtml = (text) => {
+  return require("html-react-parser")(text);
+};
+
+
 export const Modal = (props) => {
   const { isOpen, onClose, title, content } = props;
 
@@ -19,7 +24,7 @@ export const Modal = (props) => {
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          {content}
+          {content && stringToHtml(content)}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

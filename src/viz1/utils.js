@@ -2,16 +2,16 @@ export const CONSTANTS = {
   variableSelector: {
     values: ["Category", "Genres", "Type", "Content Rating", "Android Ver"],
     texts: [
-      "Categorie",
+      "Catégorie",
       "Genres",
       "Type",
       "Evaluation de contenu",
       "Version minimale d’Android requise",
     ],
-    helper: "Choisir la variable categorique a visualiser",
+    helper: "Choisir la variable catégorique à visualiser",
     label: "Variable",
     modalContent:
-      "Choisir la variable dont vous voulez explorer le comportement. Vous avez le choix entre les 5 variables suivantes :Categorie, Evaluation de contenu, Version minimale Android requise, Genres, Type (Payante ou grauite).",
+      " <h4> Choisir la variable dont vous voulez explorer le comportement .</h4> Vous avez le choix entre les 5 variables suivantes : <ul> <li> Catégorie </li> <li> Evaluation de contenu </li> <li> Version minimale Android requise </li> <li> Genres </li> <li> Type (application payante ou grauite) </li> </ul>",
   },
   downloadsMetricSelector: {
     values: ["sum", "avg", "nApp", "avgNApp"],
@@ -21,22 +21,22 @@ export const CONSTANTS = {
       "Nombre applications avec + ",
       "Nombre applications avec + moyen",
     ],
-    helper: "Choisir la metrique de telechargement a visualiser",
+    helper: "Choisir la métrique de téléchargements à visualiser",
     label: "Metrique de telechargements",
     modalContent:
-      "Choisir la metrique de telechargement que vous voulez utiliser. Vous avez le choix entre 4 metriques Nombre de téléchargements :  Somme des téléchargements de toutes les applications avec une certaines valeurs catégoriques.Nombre de téléchargements moyens : Ratio entre le nombre de téléchargements de toutes les applications avec une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique.Nombre d’applications avec plus de n téléchargements : Nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique.Nombre d’applications avec plus de n téléchargements moyens : Ratio entre le nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique.Nombre d’applications avec plus de n téléchargements moyens : Ratio entre le nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique.",
+      "<h4> Choisir la métrique de téléchargements que vous voulez utiliser. </h4> Vous avez le choix entre les 4 métrique de téléchargements suivantes : <ul> <li> Nombre de téléchargements :  Somme des téléchargements de toutes les applications avec une certaines valeurs catégoriques (en fonction de la variable chosie) </li> <li> Nombre de téléchargements moyen : Ratio entre le nombre de téléchargements de toutes les applications avec une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique </li> <li> Nombre d’applications avec plus de n téléchargements : Nombre d’applications avec plus de n (+100, +100 000+, ...) téléchargements pour une certaine valeur catégorique </li> <li> Nombre d’applications avec plus de n téléchargements moyens : Ratio entre le nombre d’applications avec plus de n téléchargements pour une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique </li> <li> Nombre d’applications avec plus de n téléchargements moyens : Ratio entre le nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique </li> </ul>",
   },
   radioButtons: {
     values: [true, false],
-    texts: ["Croissant", "Decroissant"],
+    texts: ["Croissant", "Décroissant"],
     label: "Ordonnancement",
-    modalContent: "Choisir l ordre dans lequel les valeurs seront ordonnee. ",
+    modalContent: "Choisir l'ordre dans lequel les valeurs seront ordonnées. ",
   },
   downloadsRangeSelector: {
-    label: "Nombre de telechargements",
-    helper: "Choisir la tranche de telechargement",
+    label: "Nombre de téléchargements",
+    helper: "Choisir la tranche de téléchargements",
     modalCOntent:
-      " “n” réfère à une valeur faisant reference a la tranche de telechargement d'une application ( “+10” , “+ 10 000” …). Nombre d’applications avec plus de n téléchargements : Nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique. Nombre d’applications avec plus de n téléchargements moyens : Ratio entre le nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique.",
+      " “n” réfère à une valeur faisant reference a la tranche de telechargement d'une application ( “+10” , “+ 10 000” …). <ul> <li> Nombre d’applications avec plus de n téléchargements : Nombre d’applications avec plus de n téléchargements pour une certaine valeur catégorique </li> <li> Nombre d’applications avec plus de n téléchargements moyens : Ratio entre le nombre d’applications avec plus de n téléchargements pour une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique </li>",
   },
   title:
     "Visualisation 1 : Exploration du comportement des variables catégoriques et des téléchargements",
@@ -178,8 +178,23 @@ const addRankingsMetrics = (preprocessedData) => {
 };
 
 /* Add to the preprocessed data statistics about the data */
-const addStatsMetrics = (preprocessedData) => {
-  // Todo
+const addStatsMetrics = (preprocessedData, downloadsMetric) => {
+  let avg = 0
+  for (let i = 0; i < preprocessedData.length; i ++) {
+    avg += preprocessedData[i][downloadsMetric].value
+  }
+  avg = avg/preprocessedData.length
+  let standardDeviation = Math.sqrt(preprocessedData.map(x => Math.pow(x[downloadsMetric].value - avg, 2)).reduce((a, b) => a + b) / preprocessedData.length)
+  console.log(avg)
+  preprocessedData.average = avg.toLocaleString()
+  preprocessedData.std = standardDeviation.toLocaleString()
+
+  let first = preprocessedData[0]
+  let last= preprocessedData[preprocessedData.length -1]
+  preprocessedData.topValue = [first.value, first[downloadsMetric].value]
+  preprocessedData.lowValue = [last.value, last[downloadsMetric].value]
+  preprocessedData.nValues = preprocessedData.length
+
 };
 
 /* Preprocess and return the data */
@@ -220,5 +235,6 @@ export const preprocessData = (
   }
   addRankingsMetrics(preprocessedData);
   handleSort(preprocessedData, isAscending, downloadsMetric);
+  addStatsMetrics(preprocessedData, downloadsMetric);
   return preprocessedData;
 };

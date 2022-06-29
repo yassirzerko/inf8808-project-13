@@ -1,17 +1,21 @@
 export const CONSTANTS = {
   variableSelector: {
     values: ["Category", "Genres", "Content Rating"],
-    texts: ["Categorie", "Genres", "Evaluation de contenu"],
-    helper: "Choisir la variable categorique a visualiser",
+    texts: [
+      "Catégorie",
+      "Genres",
+      "Evaluation de contenu",
+    ],
+    helper: "Choisir la variable catégorique à visualiser",
     label: "Variable",
     modalContent:
-      "Choisir la variable dont vous voulez explorer le comportement. Vous avez le choix entre les 3 variables suivantes :Categorie, Genres, Evaluation de contenu",
+      " <h4> Choisir la variable dont vous voulez explorer le comportement .</h4> Vous avez le choix entre les 3 variables suivantes : <ul> <li> Catégorie </li> <li> Evaluation de contenu </li> <li> Genres </li> </ul>",
   },
   radioButtons: {
     values: [true, false],
-    texts: ["Croissant", "Decroissant"],
+    texts: ["Croissant", "Décroissant"],
     label: "Ordonnancement",
-    modalContent: "Choisir l ordre dans lequel les valeurs seront ordonnee.",
+    modalContent: "Choisir l'ordre dans lequel les valeurs seront ordonnées. ",
   },
   title:
     "Visualisation 2 : Comparaison des distributions des applications gratuites et payantes",

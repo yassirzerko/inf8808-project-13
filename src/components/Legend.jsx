@@ -12,11 +12,12 @@ function createDataViz1(label, value) {
 }
 
 const rowsViz1 = [
+  // add variable etudie et metrique de telechargement
   createDataViz1("Moyenne", 500000),
   createDataViz1("Écart type", 250000),
   createDataViz1("Plus grande valeur", 100000),
   createDataViz1("Plus petite valeur", 150000),
-  createDataViz1("Nombre de valeurs", 22),
+  createDataViz1("Nombre de valeurs pour la variable", 22),
 ];
 
 export function getDataViz2(
@@ -28,7 +29,8 @@ export function getDataViz2(
   return { color, applicationType, average, standardDeviation };
 }
 
-export function LegendViz1() {
+export function LegendViz1(props) {
+  const {avg, std, top, low, nValues} = props
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 300 }} aria-label="simple table">

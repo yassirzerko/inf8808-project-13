@@ -2,18 +2,18 @@ export const CONSTANTS = {
   variables: {
     Size: "Taille",
     Rating: "Note",
-    Reviews: "Nombre d evaluation",
+    Reviews: "Nombre d'évaluations",
     Price: "Prix",
   },
   xAxisSelector: {
-    helper: "Choisir la variable a visualiser sur l axe horizontal",
+    helper: "Choisir la variable à visualiser sur l'axe horizontal",
     label: "Axe horizontal",
-    modalContent: "Choisir quelle variable explorer sur l axe horizontal",
+    modalContent: "<h4> Choisir la variable dont vous voulez explorer le comportement sur l'axe horizontal </h4> . Vous avez le choix entre les variables suivantes : <ul> <li> Taille de l'application </li> <li> Note </li> <li> Nombre d'évaluation </li> <li> Prix </li> </ul></h4>",
   },
   yAxisSelector: {
-    helper: "Choisir la variable a visualiser sur l axe vertical",
+    helper: "Choisir la variable à visualiser sur l'axe vertical",
     label: "Axe vertical",
-    modalContent: "Choisir quelle variable explorer sur l axe vertical",
+    modalContent: "<h4> Choisir la variable dont vous voulez explorer le comportement sur l'axe vertical </h4>. Vous avez le choix entre les variables suivantes : <ul> <li> Taille de l'application </li> <li> Note </li> <li> Nombre d'évaluation </li> <li> Prix </li> </ul></h4>",
   },
   title:
     "Visualisation 3 : Exploration du comportement des variables numériques et des téléchargements",
