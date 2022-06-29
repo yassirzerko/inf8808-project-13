@@ -11,10 +11,12 @@ export const CONSTANTS = {
     values: [true, false],
     texts: ["Croissant", "Décroissant"],
     label: "Ordonnancement",
-    modalContent: "Choisir l'ordre dans lequel les valeurs seront ordonnées. ",
+    modalContent: "Choisir l'ordre dans lequel les valeurs seront ordonnées selon la métrique de téléechargements choisie. ",
   },
   title:
     "Visualisation 2 : Comparaison des distributions des applications gratuites et payantes",
+  legend : "* l'ordonnancement s'applique sur les applications gratuites",
+  
 };
 
 /* Dynamically get the content of the tooltip  */
@@ -40,6 +42,7 @@ export const getAxisName = (variableName) => {
   return variableName;
 };
 
+/* Sort the data given the variable */
 const handleSort = (preprocessedData, isAscending, type) => {
   let sortMethod = isAscending
     ? (b, a) => b[type].distribution - a[type].distribution
@@ -47,7 +50,7 @@ const handleSort = (preprocessedData, isAscending, type) => {
   preprocessedData.sort(sortMethod);
 };
 
-/* Sort the data given the variable */
+/* Preprocess the data */
 export const preprocessData = (data, variableName, isAscending) => {
   let nAppByValueFree = new Map();
   let nAppByValuePaid = new Map();

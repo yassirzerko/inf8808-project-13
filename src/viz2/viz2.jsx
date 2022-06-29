@@ -244,6 +244,9 @@ export function Type() {
           ></LegendViz2>
         </Box>
       </Box>
+      <Typography variant="subtitle2" color="text.primary" pl={"15%"} pt={2}>
+        {CONSTANTS.legend}
+      </Typography>
       <Box id="svg" height="100vh" p={2}></Box>
     </Box>
   );

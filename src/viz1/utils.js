@@ -30,7 +30,7 @@ export const CONSTANTS = {
     values: [true, false],
     texts: ["Croissant", "Décroissant"],
     label: "Ordonnancement",
-    modalContent: "Choisir l'ordre dans lequel les valeurs seront ordonnées. ",
+    modalContent: "Choisir l'ordre dans lequel les valeurs seront ordonnées selon la métrique de téléchargements choisies. ",
   },
   downloadsRangeSelector: {
     label: "Nombre de téléchargements",
