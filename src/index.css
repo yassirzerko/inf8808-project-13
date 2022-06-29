@@ -9,6 +9,10 @@ html {
   min-height: 100%;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 div.tooltip {
   width: 300px;
   padding: 10px;
