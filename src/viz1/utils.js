@@ -44,20 +44,20 @@ export const CONSTANTS = {
 
 /* Dynamically get the content of the tooltip  */
 export const getHtmlToolTip = (row, dataLength, downloadsRange) => {
-  return `<h4> ${row.value} </h4> 
+  return `<h4> Valeur : ${row.value} </h4> 
     <p> <b> Distribution </b>: ${row.distribution.value}% (${
     row.distribution.position
   }/${dataLength}) </p> 
-    <p> <b> Total download </b>: ${row.sum.value.toLocaleString()} (${
+    <p> <b> Nombre total de telechargement </b>: ${row.sum.value.toLocaleString()} (${
     row.sum.position
   }/${dataLength})</p> 
-    <p> <b> Average download </b>: ${row.avg.value.toLocaleString()} (${
+    <p> <b> Nombre de telechargement moyen </b>: ${row.avg.value.toLocaleString()} (${
     row.avg.position
   }/${dataLength})</p> 
-    <p> <b> Number of app with  ${downloadsRange} downloads  </b>: ${
+    <p> <b> Nombre d'applications avec ${downloadsRange} telechargements  </b>: ${
     row.nApp.value
   } (${row.nApp.position}/${dataLength})</p> 
-    <p> <b> Number of app with ${downloadsRange} downloads average  </b>: ${
+    <p> <b> Nombre d'applications avec ${downloadsRange} telechargements moyen  </b>: ${
     row.avgNApp.value
   } (${row.avgNApp.position}/${dataLength})</p> `;
 };

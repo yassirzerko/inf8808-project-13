@@ -18,16 +18,6 @@ export const CONSTANTS = {
   title:
     "Visualisation 3 : Exploration du comportement des variables numériques et des téléchargements",
 };
-
-/* Dynamically get the content of the tooltip  */
-export const getHtmlToolTip = (row, axes) => {
-  return `<h4> ${row.downloadRange} </h4> 
-    <p> Containing : ${row.nApp} apps <p> 
-    <p> <b> Average of ${axes.xAxis} </b> : ${row.xAvg.toFixed(2)} <p>
-    <p> <b> Average of ${axes.yAxis} </b> : ${row.yAvg.toFixed(2)} <p>
-    `;
-};
-
 /* Get the axis name given the variable it represents  */
 export const getAxisName = (variableName) => {
   if (variableName === "Size") {
@@ -41,6 +31,15 @@ export const getAxisName = (variableName) => {
   if (variableName === "Rating") {
     return "Note ";
   }
+};
+
+/* Dynamically get the content of the tooltip  */
+export const getHtmlToolTip = (row, axes) => {
+  return `<h4> Moyenne des applications avec ${row.downloadRange} telechargements </h4> 
+    <p> <b> Regroupe </b> : ${row.nApp} applications <p> 
+    <p> <b> Valeur moyenne de ${getAxisName(axes.xAxis)} </b> : ${row.xAvg.toFixed(2)} <p>
+    <p> <b> Valeur moyenne de ${getAxisName(axes.yAxis)} </b> : ${row.yAvg.toFixed(2)} <p>
+    `;
 };
 
 /*Get text to display for each value in axis selector based on selected values */

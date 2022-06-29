@@ -19,13 +19,11 @@ export const CONSTANTS = {
 
 /* Dynamically get the content of the tooltip  */
 export const getHtmlToolTip = (row, dataLength) => {
-  return `<h4> ${row.value} </h4> 
-    <h5> Free : <h5> 
-    <p> <b> Distribution </b>: ${row.free.distribution} %  (${row.free.position}/${dataLength})</p> 
-    <p> <b> Number of app </b>:  ${row.free.count}</p> 
-    <h5> Paid : <h5> 
-    <p> <b> Distribution </b>: ${row.paid.distribution} %  (${row.paid.position}/${dataLength})</p> 
-    <p> <b> Number of app </b>:  ${row.paid.count}</p> 
+  return `<h4> Valeur : ${row.value} </h4> 
+    <p> <b> Distribution de cette valeur parmi les applications gratuites </b>: ${row.free.distribution} %  (${row.free.position}/${dataLength})</p> 
+    <p> <b> Nombre d'applications gratuites avec cette valeur </b>:  ${row.free.count}</p> 
+    <p> <b> Distribution de cette valeur parmi les applications payantes </b>: ${row.paid.distribution} %  (${row.paid.position}/${dataLength})</p> 
+    <p> <b> Nombre d'applications payante avec cette valeur </b>:  ${row.paid.count}</p> 
     `;
 };
 
