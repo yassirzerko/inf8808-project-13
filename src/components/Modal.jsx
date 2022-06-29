@@ -10,7 +10,6 @@ const stringToHtml = (text) => {
   return require("html-react-parser")(text);
 };
 
-
 export const Modal = (props) => {
   const { isOpen, onClose, title, content } = props;
 

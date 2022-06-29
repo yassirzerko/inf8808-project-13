@@ -18,8 +18,8 @@ export const CONSTANTS = {
     texts: [
       "Somme",
       "Moyenne",
-      "Nombre applications avec + ",
-      "Nombre applications avec + moyen",
+      "Nombre d'applications avec + ",
+      "Nombre d'applications avec + moyen",
     ],
     helper: "Choisir la métrique de téléchargements à visualiser",
     label: "Metrique de telechargements",
@@ -65,7 +65,7 @@ export const getHtmlToolTip = (row, dataLength, downloadsRange) => {
 /* Get the axis name given the variable it represents  */
 export const getAxisName = (variableName, downloadsRange) => {
   if (variableName === "Category") {
-    return "Categories";
+    return "Catégories";
   }
 
   if (variableName === "Content rating") {
@@ -77,17 +77,17 @@ export const getAxisName = (variableName, downloadsRange) => {
   }
 
   if (variableName === "sum") {
-    return "Nombre total de telechargement";
+    return "Nombre total de téléchargements";
   }
   if (variableName === "avg") {
-    return "Nombre moyen de telechargement";
+    return "Nombre moyen de téléchargements";
   }
   if (variableName === "nApp") {
-    return `Nombre d application avec plus de ${downloadsRange} telechargement`;
+    return `Nombre d'application avec plus de ${downloadsRange} téléchargements`;
   }
 
   if (variableName === "avgNApp") {
-    return `Nombre d application moyen avec plus de ${downloadsRange} telechargement`;
+    return `Nombre d'application moyen avec plus de ${downloadsRange} téléchargements`;
   }
 
   return variableName;
@@ -179,22 +179,25 @@ const addRankingsMetrics = (preprocessedData) => {
 
 /* Add to the preprocessed data statistics about the data */
 const addStatsMetrics = (preprocessedData, downloadsMetric) => {
-  let avg = 0
-  for (let i = 0; i < preprocessedData.length; i ++) {
-    avg += preprocessedData[i][downloadsMetric].value
+  let avg = 0;
+  for (let i = 0; i < preprocessedData.length; i++) {
+    avg += preprocessedData[i][downloadsMetric].value;
   }
-  avg = avg/preprocessedData.length
-  let standardDeviation = Math.sqrt(preprocessedData.map(x => Math.pow(x[downloadsMetric].value - avg, 2)).reduce((a, b) => a + b) / preprocessedData.length)
-  console.log(avg)
-  preprocessedData.average = avg.toLocaleString()
-  preprocessedData.std = standardDeviation.toLocaleString()
+  avg = avg / preprocessedData.length;
+  let standardDeviation = Math.sqrt(
+    preprocessedData
+      .map((x) => Math.pow(x[downloadsMetric].value - avg, 2))
+      .reduce((a, b) => a + b) / preprocessedData.length
+  );
+  console.log(avg);
+  preprocessedData.avg = avg.toLocaleString();
+  preprocessedData.std = standardDeviation.toLocaleString();
 
-  let first = preprocessedData[0]
-  let last= preprocessedData[preprocessedData.length -1]
-  preprocessedData.topValue = [first.value, first[downloadsMetric].value]
-  preprocessedData.lowValue = [last.value, last[downloadsMetric].value]
-  preprocessedData.nValues = preprocessedData.length
-
+  let first = preprocessedData[0];
+  let last = preprocessedData[preprocessedData.length - 1];
+  preprocessedData.topValue = [first.value, first[downloadsMetric].value];
+  preprocessedData.lowValue = [last.value, last[downloadsMetric].value];
+  preprocessedData.nValues = preprocessedData.length;
 };
 
 /* Preprocess and return the data */

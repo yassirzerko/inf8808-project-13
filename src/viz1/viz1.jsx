@@ -34,7 +34,11 @@ export function Categorical() {
     content: null,
   });
   const [stats, setStats] = React.useState({
-    avg : null, std : null, top : null, low : null, nValues : null
+    avg: null,
+    std: null,
+    top: null,
+    low: null,
+    nValues: null,
   });
 
   const createVisusalisation = () => {
@@ -51,8 +55,12 @@ export function Categorical() {
         downloadsRange
       );
       setStats({
-        avg : preprocessedData.avg, std : preprocessedData.std, top : preprocessedData.topValue, low : preprocessedData.lowValue, nValues :  preprocessedData.nValues
-      })
+        avg: preprocessedData.avg,
+        std: preprocessedData.std,
+        top: preprocessedData.topValue,
+        low: preprocessedData.lowValue,
+        nValues: preprocessedData.nValues,
+      });
       let dataLength = preprocessedData.length;
       let xScale = d3
         .scaleLinear()
@@ -212,9 +220,6 @@ export function Categorical() {
           />
         </Box>
 
-        <Box>
-          <LegendViz1></LegendViz1>
-        </Box>
 
         {shouldDisplayDlsRangesSelector && (
           <Selector
@@ -233,7 +238,16 @@ export function Categorical() {
             }
           ></Selector>
         )}
-      </Box>
+        </Box>
+        <LegendViz1
+            variableName={getAxisName(variable)}
+            downloadsMetric={getAxisName(downloadsMetric, downloadsRange)}
+            avg={stats.avg}
+            std={stats.std}
+            top={stats.top}
+            low={stats.low}
+            nValues={stats.nValues}
+          ></LegendViz1>
       <Box id="svg" height="100vh" p={2}></Box>
     </Box>
   );

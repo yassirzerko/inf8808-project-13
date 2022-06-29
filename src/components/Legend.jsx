@@ -7,19 +7,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-function createDataViz1(label, value) {
-  return { label, value };
-}
-
-const rowsViz1 = [
-  // add variable etudie et metrique de telechargement
-  createDataViz1("Moyenne", 500000),
-  createDataViz1("Écart type", 250000),
-  createDataViz1("Plus grande valeur", 100000),
-  createDataViz1("Plus petite valeur", 150000),
-  createDataViz1("Nombre de valeurs pour la variable", 22),
-];
-
 export function getDataViz2(
   color,
   applicationType,
@@ -30,32 +17,92 @@ export function getDataViz2(
 }
 
 export function LegendViz1(props) {
-  const {avg, std, top, low, nValues} = props
+  let { variableName, downloadsMetric, avg, std, top, low, nValues } = props;
+  console.log(props);
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 300 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center" colSpan={2}>
-              Statistiques
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rowsViz1.map((row) => (
+    top &&
+    low && (
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 300 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center" colSpan={2}>
+                Statistiques
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             <TableRow
-              key={row.label}
+              key={"variable"}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.label}:
+                Variable étudiée
               </TableCell>
-              <TableCell align="right">{row.value}</TableCell>
+              <TableCell align="right">{variableName}</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+
+            <TableRow
+              key={"nValues"}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                Nombre de valeurs
+              </TableCell>
+              <TableCell align="right">{nValues}</TableCell>
+            </TableRow>
+            <TableRow
+              key={"Métrique de téléchargements"}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                Métrique de téléchargements
+              </TableCell>
+              <TableCell align="right">{downloadsMetric}</TableCell>
+            </TableRow>
+            {(<TableRow
+              key={"Moyenne "}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                Moyenne des valeurs
+              </TableCell>
+              <TableCell align="right">{avg}</TableCell>
+            </TableRow>)}
+            {
+             (<TableRow
+              key={"std"}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                Ecart type
+              </TableCell>
+              <TableCell align="right">{std}</TableCell>
+            </TableRow>)
+            }
+           
+            <TableRow
+              key={"first "}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell align="left">{"Valeur en premiere position : " + top[0]}</TableCell>
+              <TableCell align="right">
+                {"Telechargements : " + top[1]}
+              </TableCell>
+            </TableRow>
+            <TableRow
+              key={"first "}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell align="left">{"Valeur en deniere position " + low[0]}</TableCell>
+              <TableCell align="right">
+                {"Telechargements : " + low[1]}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    )
   );
 }
 

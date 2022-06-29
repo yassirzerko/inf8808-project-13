@@ -1,11 +1,7 @@
 export const CONSTANTS = {
   variableSelector: {
     values: ["Category", "Genres", "Content Rating"],
-    texts: [
-      "Catégorie",
-      "Genres",
-      "Evaluation de contenu",
-    ],
+    texts: ["Catégorie", "Genres", "Evaluation de contenu"],
     helper: "Choisir la variable catégorique à visualiser",
     label: "Variable",
     modalContent:

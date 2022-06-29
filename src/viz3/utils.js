@@ -8,12 +8,14 @@ export const CONSTANTS = {
   xAxisSelector: {
     helper: "Choisir la variable à visualiser sur l'axe horizontal",
     label: "Axe horizontal",
-    modalContent: "<h4> Choisir la variable dont vous voulez explorer le comportement sur l'axe horizontal </h4> . Vous avez le choix entre les variables suivantes : <ul> <li> Taille de l'application </li> <li> Note </li> <li> Nombre d'évaluation </li> <li> Prix </li> </ul></h4>",
+    modalContent:
+      "<h4> Choisir la variable dont vous voulez explorer le comportement sur l'axe horizontal </h4> . Vous avez le choix entre les variables suivantes : <ul> <li> Taille de l'application </li> <li> Note </li> <li> Nombre d'évaluation </li> <li> Prix </li> </ul></h4>",
   },
   yAxisSelector: {
     helper: "Choisir la variable à visualiser sur l'axe vertical",
     label: "Axe vertical",
-    modalContent: "<h4> Choisir la variable dont vous voulez explorer le comportement sur l'axe vertical </h4>. Vous avez le choix entre les variables suivantes : <ul> <li> Taille de l'application </li> <li> Note </li> <li> Nombre d'évaluation </li> <li> Prix </li> </ul></h4>",
+    modalContent:
+      "<h4> Choisir la variable dont vous voulez explorer le comportement sur l'axe vertical </h4>. Vous avez le choix entre les variables suivantes : <ul> <li> Taille de l'application </li> <li> Note </li> <li> Nombre d'évaluation </li> <li> Prix </li> </ul></h4>",
   },
   title:
     "Visualisation 3 : Exploration du comportement des variables numériques et des téléchargements",
@@ -35,10 +37,16 @@ export const getAxisName = (variableName) => {
 
 /* Dynamically get the content of the tooltip  */
 export const getHtmlToolTip = (row, axes) => {
-  return `<h4> Bulle représentant la moyenne des applications avec ${row.downloadRange} téléchargements </h4> 
+  return `<h4> Bulle représentant la moyenne des applications avec ${
+    row.downloadRange
+  } téléchargements </h4> 
     <p> <b> Regroupe </b> : ${row.nApp} applications <p> 
-    <p> <b> Valeur moyenne de ${getAxisName(axes.xAxis)} </b> : ${row.xAvg.toFixed(2)} <p>
-    <p> <b> Valeur moyenne de ${getAxisName(axes.yAxis)} </b> : ${row.yAvg.toFixed(2)} <p>
+    <p> <b> Valeur moyenne de ${getAxisName(
+      axes.xAxis
+    )} </b> : ${row.xAvg.toFixed(2)} <p>
+    <p> <b> Valeur moyenne de ${getAxisName(
+      axes.yAxis
+    )} </b> : ${row.yAvg.toFixed(2)} <p>
     `;
 };
 
