@@ -35,7 +35,8 @@ export const CONSTANTS = {
   downloadsRangeSelector: {
     label: "Nombre de telechargements",
     helper: "Choisir la tranche de telechargement",
-    modalCOntent: " “n” réfère à une valeur faisant reference a la tranche de telechargement d'une application ( “+10” , “+ 10 000” …). Nombre d’applications avec plus de n téléchargements : Nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique. Nombre d’applications avec plus de n téléchargements moyens : Ratio entre le nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique."
+    modalCOntent:
+      " “n” réfère à une valeur faisant reference a la tranche de telechargement d'une application ( “+10” , “+ 10 000” …). Nombre d’applications avec plus de n téléchargements : Nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique. Nombre d’applications avec plus de n téléchargements moyens : Ratio entre le nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique.",
   },
   title:
     "Visualisation 1 : Exploration du comportement des variables catégoriques et des téléchargements",

@@ -4,7 +4,13 @@ import { NavBar } from "../components/NavBar";
 import React from "react";
 import * as d3 from "d3";
 import { CSV_URL } from "../constants";
-import { preprocessData, getDownloadsRanges, getHtmlToolTip, getAxisName,CONSTANTS } from "./utils";
+import {
+  preprocessData,
+  getDownloadsRanges,
+  getHtmlToolTip,
+  getAxisName,
+  CONSTANTS,
+} from "./utils";
 import { Selector } from "../components/Selector";
 import { RadioButtons } from "../components/RadioButtons";
 import { Modal } from "../components/Modal";
@@ -17,7 +23,9 @@ export function Categorical() {
   const [downloadsMetric, setDownloadMetric] = React.useState(
     CONSTANTS.downloadsMetricSelector.values[0]
   );
-  const [variable, setVariable] = React.useState(CONSTANTS.variableSelector.values[0]);
+  const [variable, setVariable] = React.useState(
+    CONSTANTS.variableSelector.values[0]
+  );
   const [downloadsRange, setDownloadsRange] = React.useState("1,000,000,000+");
   const [downloadsRanges, setDownloadsRanges] = React.useState(null);
   const [modalData, setModalData] = React.useState({

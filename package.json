@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "html-react-parser": "^2.0.0",
     "prettier": "2.7.1"
   }
 }

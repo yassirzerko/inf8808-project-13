@@ -4,7 +4,13 @@ import { NavBar } from "../components/NavBar";
 import React from "react";
 import * as d3 from "d3";
 import { CSV_URL } from "../constants";
-import { preprocessData, CONSTANTS, getAxesData, getAxisName, getHtmlToolTip } from "./utils";
+import {
+  preprocessData,
+  CONSTANTS,
+  getAxesData,
+  getAxisName,
+  getHtmlToolTip,
+} from "./utils";
 import { Selector } from "../components/Selector";
 import { Modal } from "../components/Modal";
 import "../index.css";
