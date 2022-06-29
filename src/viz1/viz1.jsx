@@ -4,63 +4,13 @@ import { NavBar } from "../components/NavBar";
 import React from "react";
 import * as d3 from "d3";
 import { CSV_URL } from "../constants";
-import { preprocessData, getDownloadsRanges, CONSTANTS } from "./utils";
+import { preprocessData, getDownloadsRanges, getHtmlToolTip, getAxisName,CONSTANTS } from "./utils";
 import { Selector } from "../components/Selector";
 import { RadioButtons } from "../components/RadioButtons";
 import { Modal } from "../components/Modal";
 import "../index.css";
 import { LegendViz1 } from "../components/Legend";
 import { getDataContainer, addTooltip } from "../vizUtils";
-
-const getHtmlToolTip = (row, dataLength, downloadsRange) => {
-  console.log(row.avg.value);
-  return `<h4> ${row.value} </h4> 
-    <p> <b> Distribution </b>: ${row.distribution.value}% (${
-    row.distribution.position
-  }/${dataLength}) </p> 
-    <p> <b> Total download </b>: ${row.sum.value.toLocaleString()} (${
-    row.sum.position
-  }/${dataLength})</p> 
-    <p> <b> Average download </b>: ${row.avg.value.toLocaleString()} (${
-    row.avg.position
-  }/${dataLength})</p> 
-    <p> <b> Number of app with  ${downloadsRange} downloads  </b>: ${
-    row.nApp.value
-  } (${row.nApp.position}/${dataLength})</p> 
-    <p> <b> Number of app with ${downloadsRange} downloads average  </b>: ${
-    row.avgNApp.value
-  } (${row.avgNApp.position}/${dataLength})</p> `;
-};
-
-const getAxisName = (variableName, downloadsRange) => {
-  if (variableName === "Category") {
-    return "Categories";
-  }
-
-  if (variableName === "Content rating") {
-    return "Evaluation de contenu";
-  }
-
-  if (variableName === "Android Ver") {
-    return "Version minimale d'android requise";
-  }
-
-  if (variableName === "sum") {
-    return "Nombre total de telechargement";
-  }
-  if (variableName === "avg") {
-    return "Nombre moyen de telechargement";
-  }
-  if (variableName === "nApp") {
-    return `Nombre d application avec plus de ${downloadsRange} telechargement`;
-  }
-
-  if (variableName === "avgNApp") {
-    return `Nombre d application moyen avec plus de ${downloadsRange} telechargement`;
-  }
-
-  return variableName;
-};
 
 export function Categorical() {
   const [isAscending, setAscending] = React.useState(false);

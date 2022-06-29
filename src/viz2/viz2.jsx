@@ -4,36 +4,13 @@ import { NavBar } from "../components/NavBar";
 import React from "react";
 import * as d3 from "d3";
 import { CSV_URL } from "../constants";
-import { preprocessData, CONSTANTS } from "./utils";
+import { preprocessData, CONSTANTS, getAxisName, getHtmlToolTip } from "./utils";
 import { Selector } from "../components/Selector";
 import { RadioButtons } from "../components/RadioButtons";
 import { Modal } from "../components/Modal";
 import "../index.css";
 import { LegendViz2, getDataViz2 } from "../components/Legend";
 import { getDataContainer, addTooltip } from "../vizUtils";
-
-const getHtmlToolTip = (row, dataLength) => {
-  return `<h4> ${row.value} </h4> 
-    <h5> Free : <h5> 
-    <p> <b> Distribution </b>: ${row.free.distribution} %  (${row.free.position}/${dataLength})</p> 
-    <p> <b> Number of app </b>:  ${row.free.count}</p> 
-    <h5> Paid : <h5> 
-    <p> <b> Distribution </b>: ${row.paid.distribution} %  (${row.paid.position}/${dataLength})</p> 
-    <p> <b> Number of app </b>:  ${row.paid.count}</p> 
-    `;
-};
-
-const getAxisName = (variableName) => {
-  if (variableName === "Category") {
-    return "Categories";
-  }
-
-  if (variableName === "Content rating") {
-    return "Evaluation de contenu";
-  }
-
-  return variableName;
-};
 
 export function Type() {
   const [isAscending, setAscending] = React.useState(false);

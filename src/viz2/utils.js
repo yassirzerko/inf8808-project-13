@@ -17,6 +17,29 @@ export const CONSTANTS = {
     "Visualisation 2 : Comparaison des distributions des applications gratuites et payantes",
 };
 
+export const getHtmlToolTip = (row, dataLength) => {
+  return `<h4> ${row.value} </h4> 
+    <h5> Free : <h5> 
+    <p> <b> Distribution </b>: ${row.free.distribution} %  (${row.free.position}/${dataLength})</p> 
+    <p> <b> Number of app </b>:  ${row.free.count}</p> 
+    <h5> Paid : <h5> 
+    <p> <b> Distribution </b>: ${row.paid.distribution} %  (${row.paid.position}/${dataLength})</p> 
+    <p> <b> Number of app </b>:  ${row.paid.count}</p> 
+    `;
+};
+
+export const getAxisName = (variableName) => {
+  if (variableName === "Category") {
+    return "Categories";
+  }
+
+  if (variableName === "Content rating") {
+    return "Evaluation de contenu";
+  }
+
+  return variableName;
+};
+
 const handleSort = (preprocessedData, isAscending, type) => {
   let sortMethod = isAscending
     ? (b, a) => b[type].distribution - a[type].distribution

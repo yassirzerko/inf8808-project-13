@@ -4,33 +4,11 @@ import { NavBar } from "../components/NavBar";
 import React from "react";
 import * as d3 from "d3";
 import { CSV_URL } from "../constants";
-import { preprocessData, CONSTANTS, getAxesData } from "./utils";
+import { preprocessData, CONSTANTS, getAxesData, getAxisName, getHtmlToolTip } from "./utils";
 import { Selector } from "../components/Selector";
 import { Modal } from "../components/Modal";
 import "../index.css";
 import { getDataContainer, addTooltip } from "../vizUtils";
-
-const getHtmlToolTip = (row, axes) => {
-  return `<h4> ${row.downloadRange} </h4> 
-    <p> Containing : ${row.nApp} apps <p> 
-    <p> <b> Average of ${axes.xAxis} </b> : ${row.xAvg.toFixed(2)} <p>
-    <p> <b> Average of ${axes.yAxis} </b> : ${row.yAvg.toFixed(2)} <p>
-    `;
-};
-
-const getAxisName = (variableName) => {
-  if (variableName === "Size") {
-    return "Taille en mega octets";
-  }
-
-  if (variableName === "Reviews") {
-    return "Nombre d'evaluation";
-  }
-
-  if (variableName === "Rating") {
-    return "Note ";
-  }
-};
 
 export function Numerical() {
   const [axes, setAxes] = React.useState({ xAxis: "Size", yAxis: "Rating" });

@@ -19,6 +19,28 @@ export const CONSTANTS = {
     "Visualisation 3 : Exploration du comportement des variables numériques et des téléchargements",
 };
 
+export const getHtmlToolTip = (row, axes) => {
+  return `<h4> ${row.downloadRange} </h4> 
+    <p> Containing : ${row.nApp} apps <p> 
+    <p> <b> Average of ${axes.xAxis} </b> : ${row.xAvg.toFixed(2)} <p>
+    <p> <b> Average of ${axes.yAxis} </b> : ${row.yAvg.toFixed(2)} <p>
+    `;
+};
+
+export const getAxisName = (variableName) => {
+  if (variableName === "Size") {
+    return "Taille en mega octets";
+  }
+
+  if (variableName === "Reviews") {
+    return "Nombre d'evaluation";
+  }
+
+  if (variableName === "Rating") {
+    return "Note ";
+  }
+};
+
 export const getAxesData = (xAxisValue, yAxisValue) => {
   let variablesData = CONSTANTS.variables;
   let xAxisData = [];
