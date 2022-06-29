@@ -57,7 +57,7 @@ export function Type() {
       let dataContainer = getDataContainer(
         xScale,
         yScale,
-        "Frequence (%) : ",
+        "Fréquence (%) : ",
         getAxisName(variable),
         preprocessedData
       );

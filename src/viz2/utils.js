@@ -32,7 +32,7 @@ export const getHtmlToolTip = (row, dataLength) => {
 /* Get the axis name given the variable it represents  */
 export const getAxisName = (variableName) => {
   if (variableName === "Category") {
-    return "Categories";
+    return "Catégories";
   }
 
   if (variableName === "Content rating") {

@@ -35,6 +35,10 @@ export const getAxisName = (variableName) => {
   if (variableName === "Rating") {
     return "Note ";
   }
+
+  if (variableName === "Price") {
+    return "Prix en $ ";
+  }
 };
 
 /* Dynamically get the content of the tooltip  */

@@ -179,9 +179,10 @@ export function Numerical() {
           <Selector
             inputLabel={CONSTANTS.yAxisSelector.label}
             currentValue={axes.yAxis}
-            onChange={(event) =>
+            onChange={(event) =>{
+              console.log(event.target.value)
               setAxes({ xAxis: axes.xAxis, yAxis: event.target.value })
-            }
+            }}
             menuItemsValues={yAxisData.map((data) => data[0])}
             menuItemsText={yAxisData.map((data) => data[1])}
             helperText={CONSTANTS.yAxisSelector.helper}
