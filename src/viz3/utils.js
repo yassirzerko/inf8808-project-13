@@ -25,7 +25,7 @@ export const getAxisName = (variableName) => {
   }
 
   if (variableName === "Reviews") {
-    return "Nombre d'evaluation";
+    return "Nombre d'évaluations";
   }
 
   if (variableName === "Rating") {
@@ -35,7 +35,7 @@ export const getAxisName = (variableName) => {
 
 /* Dynamically get the content of the tooltip  */
 export const getHtmlToolTip = (row, axes) => {
-  return `<h4> Moyenne des applications avec ${row.downloadRange} telechargements </h4> 
+  return `<h4> Bulle représentant la moyenne des applications avec ${row.downloadRange} téléchargements </h4> 
     <p> <b> Regroupe </b> : ${row.nApp} applications <p> 
     <p> <b> Valeur moyenne de ${getAxisName(axes.xAxis)} </b> : ${row.xAvg.toFixed(2)} <p>
     <p> <b> Valeur moyenne de ${getAxisName(axes.yAxis)} </b> : ${row.yAvg.toFixed(2)} <p>
