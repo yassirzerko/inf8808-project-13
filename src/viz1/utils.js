@@ -1,3 +1,5 @@
+import * as d3 from "d3";
+
 export const CONSTANTS = {
   variableSelector: {
     values: ["Category", "Genres", "Type", "Content Rating", "Android Ver"],
@@ -196,8 +198,8 @@ const addStatsMetrics = (preprocessedData, downloadsMetric) => {
       .reduce((a, b) => a + b) / preprocessedData.length
   );
 
-  preprocessedData.avg = avg.toLocaleString();
-  preprocessedData.std = standardDeviation.toLocaleString();
+  preprocessedData.avg = d3.format(".2f")(avg);
+  preprocessedData.std = d3.format(".2f")(standardDeviation);
 
   let first = preprocessedData[0];
   let last = preprocessedData[preprocessedData.length - 1];
