@@ -1,27 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import Home from './home/Home';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes,
-  Route } from "react-router-dom";
-import { Categorical } from './viz1/viz1';
-import { Type } from './viz2/viz2';
-import { Numerical } from './viz3/viz3';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Home from "./home/Home";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Categorical } from "./viz1/viz1";
+import { Type } from "./viz2/viz2";
+import { Numerical } from "./viz3/viz3";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-  <BrowserRouter basename={process.env.PUBLIC_URL}>
-  <Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="categorical" element={<Categorical />} />
-  <Route path="type" element={<Type />} />
-  <Route path="numerical" element={<Numerical />} />
-  </Routes>
-  
-   
-  </BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="categorical" element={<Categorical />} />
+        <Route path="type" element={<Type />} />
+        <Route path="numerical" element={<Numerical />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

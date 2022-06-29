@@ -1,1 +1,1 @@
-export const CSV_URL = '/googleplaystore.csv'
+export const CSV_URL = "/googleplaystore.csv";
