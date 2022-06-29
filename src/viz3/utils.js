@@ -19,6 +19,8 @@ export const CONSTANTS = {
   },
   title:
     "Visualisation 3 : Exploration du comportement des variables numériques et des téléchargements",
+  legend:
+    "* Une bulle regroupe les applications qui appartiennent à la tranche de téléchargements dont elle est annontée, sa taille est proportionelle à cette tranche et son positionnement dépend des moyennes des valeurs des applications qu'elle contient ",
 };
 /* Get the axis name given the variable it represents  */
 export const getAxisName = (variableName) => {

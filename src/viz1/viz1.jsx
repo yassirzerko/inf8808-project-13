@@ -220,7 +220,6 @@ export function Categorical() {
           />
         </Box>
 
-
         {shouldDisplayDlsRangesSelector && (
           <Selector
             inputLabel={CONSTANTS.downloadsRangeSelector.label}
@@ -238,16 +237,16 @@ export function Categorical() {
             }
           ></Selector>
         )}
-        </Box>
-        <LegendViz1
-            variableName={getAxisName(variable)}
-            downloadsMetric={getAxisName(downloadsMetric, downloadsRange)}
-            avg={stats.avg}
-            std={stats.std}
-            top={stats.top}
-            low={stats.low}
-            nValues={stats.nValues}
-          ></LegendViz1>
+      </Box>
+      <LegendViz1
+        variableName={getAxisName(variable)}
+        downloadsMetric={getAxisName(downloadsMetric, downloadsRange)}
+        avg={stats.avg}
+        std={stats.std}
+        top={stats.top}
+        low={stats.low}
+        nValues={stats.nValues}
+      ></LegendViz1>
       <Box id="svg" height="100vh" p={2}></Box>
     </Box>
   );

@@ -60,32 +60,36 @@ export function LegendViz1(props) {
               </TableCell>
               <TableCell align="right">{downloadsMetric}</TableCell>
             </TableRow>
-            {(<TableRow
-              key={"Moyenne "}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                Moyenne des valeurs
-              </TableCell>
-              <TableCell align="right">{avg}</TableCell>
-            </TableRow>)}
             {
-             (<TableRow
-              key={"std"}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                Ecart type
-              </TableCell>
-              <TableCell align="right">{std}</TableCell>
-            </TableRow>)
+              <TableRow
+                key={"Moyenne "}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  Moyenne des valeurs
+                </TableCell>
+                <TableCell align="right">{avg}</TableCell>
+              </TableRow>
             }
-           
+            {
+              <TableRow
+                key={"std"}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  Ecart type
+                </TableCell>
+                <TableCell align="right">{std}</TableCell>
+              </TableRow>
+            }
+
             <TableRow
               key={"first "}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="left">{"Valeur en premiere position : " + top[0]}</TableCell>
+              <TableCell align="left">
+                {"Valeur en premiere position : " + top[0]}
+              </TableCell>
               <TableCell align="right">
                 {"Telechargements : " + top[1]}
               </TableCell>
@@ -94,7 +98,9 @@ export function LegendViz1(props) {
               key={"first "}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="left">{"Valeur en deniere position " + low[0]}</TableCell>
+              <TableCell align="left">
+                {"Valeur en deniere position " + low[0]}
+              </TableCell>
               <TableCell align="right">
                 {"Telechargements : " + low[1]}
               </TableCell>
