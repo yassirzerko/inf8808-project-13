@@ -207,40 +207,40 @@ const addStatsMetrics = (preprocessedData, downloadsMetric) => {
   preprocessedData.nValues = preprocessedData.length;
 };
 
-const groupSmallerValuesForMetric = (preprocessedData, downloadsMetric, nTotalCategories) => {
-  if (preprocessData.length >= nTotalCategories) {
+const groupSmallerValuesForMetric = (preprocessedData, downloadsMetric, nCategories, nTotalRows) => {
+  if (preprocessData.length >= nCategories) {
     return;
   }
   let newPrepropcessedData = [];
   let otherRows = [];
   for (let row of preprocessedData) {
-    if (row[downloadsMetric].position > nTotalCategories) {
+    if (row[downloadsMetric].position > nCategories) {
       otherRows.push(row);
     } else {
       newPrepropcessedData.push(row);
     }
   }
-  let newOtherRow = combineIntoOtherCategory(otherRows);
+  let newOtherRow = combineIntoOtherCategory(otherRows, nTotalRows);
   newPrepropcessedData.push(newOtherRow);
-  addPositionsMetrics(newPrepropcessedData);
+  // Sort the new preprocessed data
+  addRankingsMetrics(newPrepropcessedData);
   return newPrepropcessedData;
 }
 
-const combineIntoOtherCategory = (otherRows) => {
-  let sum = otherRows.reduce((acc, curr) => { return acc + curr.sum.value }, 0)
-  let avgSum = otherRows.reduce((acc, curr) => { return acc + Number(curr.avg.value) }, 0)
-  let avg = avgSum / otherRows.length // NOT GOOD. Il faudrait faire l'avg sur le nombre total de donnes
-  let distribution = otherRows.reduce((acc, curr) => { return acc + Number(curr.distribution.value) }, 0)
-  let nApp = otherRows.reduce((acc, curr) => { return acc + curr.nApp.value }, 0)
-  let avgNApp = nApp / otherRows.length
+const combineIntoOtherCategory = (otherRows, nTotalRows) => { // fonction entierement a revoir. je ne comprends pas assez bien les metrics.
+  let downloadSum = otherRows.reduce((acc, curr) => { return acc + curr.sum.value }, 0)
+  let avg = downloadSum / otherRows.length;
+  let distribution = otherRows.reduce((acc, curr) => { return acc + curr.distribution.value }, 0)
+  let nOtherApp = otherRows.reduce((acc, curr) => { return acc + curr.nApp.value }, 0)
+  let avgNApp = nOtherApp / otherRows.length
 
   return {
-    value: "AUTRES",
-    sum: { value: sum},
-    avg: { value: avg.toFixed(2) },
-    distribution: { value: distribution.toFixed(2) },
-    nApp: { value: nApp },
-    avgNApp: { value: avgNApp.toFixed(2) },
+    value: "Autres",
+    sum: { value: downloadSum},
+    avg: { value: avg },
+    distribution: { value: distribution},
+    nApp: { value: nOtherApp },
+    avgNApp: { value: avgNApp },
   }
 }
 
@@ -273,16 +273,15 @@ export const preprocessData = (
     let preprocessedValue = {
       value: value,
       sum: { value: sumDls },
-      avg: { value: meanDls.toFixed(2) },
-      distribution: { value: distribution.toFixed(2) },
+      avg: { value: meanDls },
+      distribution: { value: distribution },
       nApp: { value: nApp },
-      avgNApp: { value: meanNApp.toFixed(2) },
+      avgNApp: { value: meanNApp },
     };
     preprocessedData.push(preprocessedValue);
   }
   addRankingsMetrics(preprocessedData);
-  addPositionsMetrics(preprocessedData);
-  preprocessedData = groupSmallerValuesForMetric(preprocessedData, downloadsMetric, 10);
+  preprocessedData = groupSmallerValuesForMetric(preprocessedData, downloadsMetric, 10, data.length);
   handleSort(preprocessedData, isAscending, downloadsMetric);
   addStatsMetrics(preprocessedData, downloadsMetric);
   return preprocessedData;
