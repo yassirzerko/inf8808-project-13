@@ -17,7 +17,7 @@ export function Categorical() {
   const [downloadsMetric, setDownloadMetric] = React.useState(
     CONSTANTS.downloadsMetricSelector.values[0]
   );
-  const [variable, setVariable] = React.useState("Category");
+  const [variable, setVariable] = React.useState(CONSTANTS.variableSelector.values[0]);
   const [downloadsRange, setDownloadsRange] = React.useState("1,000,000,000+");
   const [downloadsRanges, setDownloadsRanges] = React.useState(null);
   const [modalData, setModalData] = React.useState({
@@ -155,7 +155,7 @@ export function Categorical() {
             onClickToolTip={() =>
               setModalData({
                 isOpen: true,
-                title: "Ordonnacement",
+                title: CONSTANTS.radioButtons.label,
                 content: CONSTANTS.radioButtons.modalContent,
               })
             }
@@ -191,7 +191,7 @@ export function Categorical() {
             onClickToolTip={() =>
               setModalData({
                 isOpen: true,
-                title: "Metrique de telechargement",
+                title: CONSTANTS.downloadsMetricSelector.label,
                 content: CONSTANTS.downloadsMetricSelector.modalContent,
               })
             }
@@ -204,17 +204,17 @@ export function Categorical() {
 
         {shouldDisplayDlsRangesSelector && (
           <Selector
-            inputLabel={"Nombre de telechargements"}
+            inputLabel={CONSTANTS.downloadsRangeSelector.label}
             currentValue={downloadsRange}
             onChange={(event) => setDownloadsRange(event.target.value)}
             menuItemsValues={downloadsRanges ? downloadsRanges : []}
             menuItemsText={downloadsRanges ? downloadsRanges : []}
-            helperText={"Choisir la tranche de telechargement"}
+            helperText={CONSTANTS.downloadsRangeSelector.helper}
             onClickToolTip={() =>
               setModalData({
                 isOpen: true,
-                title: "Nombre de telechargement",
-                content: "Explication",
+                title: CONSTANTS.downloadsRangeSelector.label,
+                content: CONSTANTS.downloadsRangeSelector.modalCOntent,
               })
             }
           ></Selector>

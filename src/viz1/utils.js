@@ -18,8 +18,8 @@ export const CONSTANTS = {
     texts: [
       "Somme",
       "Moyenne",
-      "Nombre applications avec",
-      "Nombre applications avec",
+      "Nombre applications avec + ",
+      "Nombre applications avec + moyen",
     ],
     helper: "Choisir la metrique de telechargement a visualiser",
     label: "Metrique de telechargements",
@@ -31,6 +31,11 @@ export const CONSTANTS = {
     texts: ["Croissant", "Decroissant"],
     label: "Ordonnancement",
     modalContent: "Choisir l ordre dans lequel les valeurs seront ordonnee. ",
+  },
+  downloadsRangeSelector: {
+    label: "Nombre de telechargements",
+    helper: "Choisir la tranche de telechargement",
+    modalCOntent: " “n” réfère à une valeur faisant reference a la tranche de telechargement d'une application ( “+10” , “+ 10 000” …). Nombre d’applications avec plus de n téléchargements : Nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique. Nombre d’applications avec plus de n téléchargements moyens : Ratio entre le nombre d’applications avec plus de n téléchargement pour une certaine valeur catégorique et le nombre d’applications avec cette valeur catégorique."
   },
   title:
     "Visualisation 1 : Exploration du comportement des variables catégoriques et des téléchargements",
@@ -144,8 +149,8 @@ const fillMaps = (
         : 1
     );
 
-    let [nAppByValue, download_number] = nAppByValueData;
-    if (row.Installs === download_number) {
+    let [nAppByValue, downloadsRange] = nAppByValueData;
+    if (row.Installs === downloadsRange) {
       nAppByValue.set(
         variableValue,
         nAppByValue.has(variableValue) ? nAppByValue.get(variableValue) + 1 : 1
