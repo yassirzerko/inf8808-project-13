@@ -235,10 +235,10 @@ export const preprocessData = (
     let preprocessedValue = {
       value: value,
       sum: { value: sumDls },
-      avg: { value: meanDls.toFixed(2) },
-      distribution: { value: distribution.toFixed(2) },
+      avg: { value: meanDls },
+      distribution: { value: distribution},
       nApp: { value: nApp },
-      avgNApp: { value: meanNApp.toFixed(2) },
+      avgNApp: { value: meanNApp },
     };
     preprocessedData.push(preprocessedValue);
   }
