@@ -19,7 +19,7 @@ export function NavBar() {
     for (const element of buttonData) {
       let [link, title, hover] = element
       const isCurrentPage = currentPath === link
-      buttons.push(<Tooltip title = {hover} placement="bottom">
+      buttons.push(<Tooltip title = {hover} key={link} placement="bottom">
         <Button key = {link} component={Link} to={link} variant="contained" color="primary" href="#"  disabled = {isCurrentPage}  >
         <Box sx={isCurrentPage ? {borderBottom: '1px solid'} :  {borderBottom: 'none'}}>
         {title}
@@ -39,7 +39,7 @@ export function NavBar() {
   }
 
   return (
-    <AppBar position="sticky" variant = "outlined">
+    <AppBar position="sticky">
       <ButtonGroups/>
     </AppBar>
   )

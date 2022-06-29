@@ -28,7 +28,7 @@ const getHtmlToolTip = (row, dataLength, downloadsRange) => {
     <p> <b> Total download </b>: ${row.sum.value.toLocaleString()} (${row.sum.position}/${dataLength})</p> 
     <p> <b> Average download </b>: ${row.avg.value.toLocaleString()} (${row.avg.position}/${dataLength})</p> 
     <p> <b> Number of app with  ${downloadsRange} downloads  </b>: ${row.nApp.value} (${row.nApp.position}/${dataLength})</p> 
-    <p> <b> Number of app with ${downloadsRange} downloads average  </b>: ${row.avgNApp.value} (${row.avgNApp.position}/${dataLength})</p> `
+    <p> <b> Number of app with ${downloadsRange} downloads average  </b>: ${row.avgNApp.value} (${row.avgNApp.position}/${dataLength})</p>`
 }
 
 const getAxisName = (variableName, downloadsRange) => {

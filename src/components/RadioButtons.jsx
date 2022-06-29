@@ -13,7 +13,7 @@ export const RadioButtons = (props) => {
 
     let radioButtons = []
     for (let i = 0; i < buttonsValues.length; i++) {
-        radioButtons.push(<FormControlLabel value={buttonsValues[i]} control={<Radio />} label={buttonsText[i]} labelPlacement="top" />)
+        radioButtons.push(<FormControlLabel value={buttonsValues[i]} control={<Radio />} label={buttonsText[i]} labelPlacement="top" key={buttonsValues[i]} />)
     }
     return (
         <Box sx={{ display: 'flex' }}>
