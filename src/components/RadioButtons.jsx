@@ -25,6 +25,7 @@ export const RadioButtons = (props) => {
         control={<Radio />}
         label={buttonsText[i]}
         labelPlacement="top"
+        key={buttonsValues[i]}
       />
     );
   }

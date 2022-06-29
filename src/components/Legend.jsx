@@ -94,7 +94,7 @@ export function LegendViz1(props) {
               </TableCell>
             </TableRow>
             <TableRow
-              key={"first "}
+              key={"last"}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="left">

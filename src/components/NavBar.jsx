@@ -33,7 +33,7 @@ export function NavBar() {
       let [link, title, hover] = element;
       const isCurrentPage = currentPath === link;
       buttons.push(
-        <Tooltip title={hover} placement="bottom">
+        <Tooltip key={link} title={hover} placement="bottom">
           <Button
             key={link}
             component={Link}
@@ -69,7 +69,7 @@ export function NavBar() {
   };
 
   return (
-    <AppBar position="sticky" variant="outlined">
+    <AppBar position="sticky">
       <ButtonGroups />
     </AppBar>
   );
