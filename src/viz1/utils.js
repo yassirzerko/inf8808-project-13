@@ -136,8 +136,10 @@ const fillMaps = (
   for (const element of data) {
     let row = element;
     if (
-      variableName === CONSTANTS.variableSelector.values[0] &&
-      element[variableName] === "1.9"
+      (variableName === CONSTANTS.variableSelector.values[0] &&
+        element[variableName] === "1.9") ||
+      (variableName === CONSTANTS.variableSelector.values[3] &&
+        element[variableName] === "")
     ) {
       continue;
     }

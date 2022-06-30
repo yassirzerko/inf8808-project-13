@@ -97,8 +97,9 @@ export const preprocessData = (data, variableName, isAscending) => {
     let row = data[i];
     let value = row[variableName];
     if (
-      variableName === CONSTANTS.variableSelector.values[0] &&
-      value === "1.9"
+      (variableName === CONSTANTS.variableSelector.values[0] &&
+        value === "1.9") ||
+      (variableName === CONSTANTS.variableSelector.values[2] && value === "")
     ) {
       if (row.Type === "Free") {
         skippedFreeRate += 1;
