@@ -187,8 +187,8 @@ const addRankingsMetrics = (preprocessedData) => {
 /* Add to the preprocessed data statistics about the data */
 const addStatsMetrics = (preprocessedData, downloadsMetric) => {
   let avg = 0;
-  for (let i = 0; i < preprocessedData.length; i++) {
-    avg += preprocessedData[i][downloadsMetric].value;
+  for (const element of preprocessedData) {
+    avg += element[downloadsMetric].value;
   }
   avg = avg / preprocessedData.length;
   let standardDeviation = Math.sqrt(
