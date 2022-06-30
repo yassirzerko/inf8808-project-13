@@ -91,7 +91,7 @@ export function LegendViz1(props) {
                 {"Valeur en première position : " + top[0]}
               </TableCell>
               <TableCell align="right">
-                {"Téléchargements : " + d3.format(".2f")(top[1])}
+                {downloadsMetric + " :" + d3.format(".2f")(top[1])}
               </TableCell>
             </TableRow>
             <TableRow
@@ -102,7 +102,7 @@ export function LegendViz1(props) {
                 {"Valeur en denière position " + low[0]}
               </TableCell>
               <TableCell align="right">
-                {"Téléchargements : " + d3.format(".2f")(low[1])}
+                {downloadsMetric + " :" + d3.format(".2f")(low[1])}
               </TableCell>
             </TableRow>
           </TableBody>
