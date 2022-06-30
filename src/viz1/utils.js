@@ -207,6 +207,7 @@ const addStatsMetrics = (preprocessedData, downloadsMetric) => {
   preprocessedData.nValues = preprocessedData.length;
 };
 
+/** Add Others value to the preprocessed data */
 const getDataWithOthers = (preprocessedData) => {
   let others = preprocessedData.slice(20, preprocessedData.length)
   preprocessedData = preprocessedData.slice(0, 20)
@@ -266,8 +267,8 @@ export const preprocessData = (
     preprocessedData.push(preprocessedValue);
   }
   handleSort(preprocessedData, isAscending, downloadsMetric);
-  addStatsMetrics(preprocessedData, downloadsMetric);
   preprocessedData = getDataWithOthers(preprocessedData)
+  addStatsMetrics(preprocessedData, downloadsMetric);
   addRankingsMetrics(preprocessedData);
   handleSort(preprocessedData, isAscending, downloadsMetric);
   return preprocessedData;

@@ -22,9 +22,9 @@ export const CONSTANTS = {
 /* Dynamically get the content of the tooltip  */
 export const getHtmlToolTip = (row, dataLength) => {
   return `<h4> Valeur : ${row.value} </h4> 
-    <p> <b> Distribution de cette valeur parmi les applications gratuites </b>: ${row.free.distribution} %  (${row.free.position}/${dataLength})</p> 
+    <p> <b> Distribution de cette valeur parmi les applications gratuites </b>: ${row.free.distribution.toLocaleString()} %  (${row.free.position}/${dataLength})</p> 
     <p> <b> Nombre d'applications gratuites avec cette valeur </b>:  ${row.free.count}</p> 
-    <p> <b> Distribution de cette valeur parmi les applications payantes </b>: ${row.paid.distribution} %  (${row.paid.position}/${dataLength})</p> 
+    <p> <b> Distribution de cette valeur parmi les applications payantes </b>: ${row.paid.distribution.toLocaleString()} %  (${row.paid.position}/${dataLength})</p> 
     <p> <b> Nombre d'applications payante avec cette valeur </b>:  ${row.paid.count}</p> 
     `;
 };
@@ -49,6 +49,8 @@ const handleSort = (preprocessedData, isAscending, type) => {
     : (b, a) => a[type].distribution - b[type].distribution;
   preprocessedData.sort(sortMethod);
 };
+
+
 
 /* Preprocess the data */
 export const preprocessData = (data, variableName, isAscending) => {

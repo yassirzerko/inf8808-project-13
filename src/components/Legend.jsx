@@ -68,7 +68,7 @@ export function LegendViz1(props) {
                 <TableCell component="th" scope="row">
                   Moyenne des valeurs
                 </TableCell>
-                <TableCell align="right">{avg}</TableCell>
+                <TableCell align="right">{avg.toLocaleString()}</TableCell>
               </TableRow>
             }
             {
@@ -79,7 +79,7 @@ export function LegendViz1(props) {
                 <TableCell component="th" scope="row">
                   Écart type
                 </TableCell>
-                <TableCell align="right">{std}</TableCell>
+                <TableCell align="right">{std.toLocaleString()}</TableCell>
               </TableRow>
             }
 
