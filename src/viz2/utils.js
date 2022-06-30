@@ -50,7 +50,25 @@ const handleSort = (preprocessedData, isAscending, type) => {
   preprocessedData.sort(sortMethod);
 };
 
+/** Add Others value to the preprocessed data */
+const getDataWithOthers = (preprocessedData) => {
+  let others = preprocessedData.slice(20, preprocessedData.length)
+  preprocessedData = preprocessedData.slice(0, 20)
+  let othersData = {free : {count : 0, distribution : 0}, paid : {count : 0, distribution : 0}}
+  othersData.value = "AUTRES"
+  for (const other of others) {
+    othersData.free.count += other.free.count
+    othersData.free.distribution += parseFloat(other.free.distribution)
+    othersData.paid.count += other.paid.count
+    othersData.paid.distribution += parseFloat(other.paid.distribution)
+  }
 
+  othersData.paid.distribution = othersData.paid.distribution.toFixed(2)
+  othersData.free.distribution = othersData.free.distribution.toFixed(2)
+  preprocessedData.push(othersData)
+  return preprocessedData
+   
+}
 
 /* Preprocess the data */
 export const preprocessData = (data, variableName, isAscending) => {
@@ -137,6 +155,10 @@ export const preprocessData = (data, variableName, isAscending) => {
   for (let j = 0; j < preprocessedData.length; j++) {
     preprocessedData[j].paid.position = j + 1;
   }
+
+  handleSort(preprocessedData, isAscending, "free");
+
+  preprocessedData = getDataWithOthers(preprocessedData)
 
   handleSort(preprocessedData, isAscending, "free");
 

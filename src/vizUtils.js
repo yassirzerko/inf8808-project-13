@@ -54,7 +54,6 @@ export const getDataContainer = (
 
   var svgContainer = d3.select("#mysvg").node();
   if (svgContainer) {
-    console.log("hello");
     var bbox = svgContainer.getBBox();
     svgContainer.setAttribute("width", bbox.x + bbox.width + bbox.x);
     svgContainer.setAttribute("height", bbox.y + bbox.height + bbox.y);
