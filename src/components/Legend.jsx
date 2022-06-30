@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import * as d3 from "d3";
 
 export function getDataViz2(
   color,
@@ -76,7 +77,7 @@ export function LegendViz1(props) {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  Ecart type
+                  Écart type
                 </TableCell>
                 <TableCell align="right">{std}</TableCell>
               </TableRow>
@@ -87,10 +88,10 @@ export function LegendViz1(props) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="left">
-                {"Valeur en premiere position : " + top[0]}
+                {"Valeur en première position : " + top[0]}
               </TableCell>
               <TableCell align="right">
-                {"Telechargements : " + top[1]}
+                {"Téléchargements : " + d3.format(".2f")(top[1])}
               </TableCell>
             </TableRow>
             <TableRow
@@ -98,10 +99,10 @@ export function LegendViz1(props) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="left">
-                {"Valeur en deniere position " + low[0]}
+                {"Valeur en denière position " + low[0]}
               </TableCell>
               <TableCell align="right">
-                {"Telechargements : " + low[1]}
+                {"Téléchargements : " + d3.format(".2f")(low[1])}
               </TableCell>
             </TableRow>
           </TableBody>

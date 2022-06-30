@@ -1,3 +1,5 @@
+import * as d3 from "d3";
+
 export const CONSTANTS = {
   variableSelector: {
     values: ["Category", "Genres", "Type", "Content Rating", "Android Ver"],
@@ -45,7 +47,7 @@ export const CONSTANTS = {
 /* Dynamically get the content of the tooltip  */
 export const getHtmlToolTip = (row, dataLength, downloadsRange) => {
   return `<h4> Valeur : ${row.value} </h4> 
-    <p> <b> Distribution </b>: ${row.distribution.value}% (${
+    <p> <b> Distribution </b>: ${row.distribution.value.toLocaleString()}% (${
     row.distribution.position
   }/${dataLength}) </p> 
     <p> <b> Nombre total de telechargement </b>: ${row.sum.value.toLocaleString()} (${
@@ -54,10 +56,10 @@ export const getHtmlToolTip = (row, dataLength, downloadsRange) => {
     <p> <b> Nombre de telechargement moyen </b>: ${row.avg.value.toLocaleString()} (${
     row.avg.position
   }/${dataLength})</p> 
-    <p> <b> Nombre d'applications avec ${downloadsRange} telechargements  </b>: ${
+    <p> <b> Nombre d'applications avec ${downloadsRange.toLocaleString()} telechargements  </b>: ${
     row.nApp.value
   } (${row.nApp.position}/${dataLength})</p> 
-    <p> <b> Nombre d'applications avec ${downloadsRange} telechargements moyen  </b>: ${
+    <p> <b> Nombre d'applications avec ${downloadsRange.toLocaleString()} telechargements moyen  </b>: ${
     row.avgNApp.value
   } (${row.avgNApp.position}/${dataLength})</p> `;
 };
@@ -195,8 +197,8 @@ const addStatsMetrics = (preprocessedData, downloadsMetric) => {
       .reduce((a, b) => a + b) / preprocessedData.length
   );
 
-  preprocessedData.avg = avg.toLocaleString();
-  preprocessedData.std = standardDeviation.toLocaleString();
+  preprocessedData.avg = d3.format(".2f")(avg);
+  preprocessedData.std = d3.format(".2f")(standardDeviation);
 
   let first = preprocessedData[0];
   let last = preprocessedData[preprocessedData.length - 1];
@@ -205,7 +207,7 @@ const addStatsMetrics = (preprocessedData, downloadsMetric) => {
   preprocessedData.nValues = preprocessedData.length;
 };
 
-const createOthers = (preprocessedData) => {
+const getDataWithOthers = (preprocessedData) => {
   let others = preprocessedData.slice(20, preprocessedData.length)
   preprocessedData = preprocessedData.slice(0, 20)
   const metrics = [...CONSTANTS.downloadsMetricSelector.values, "distribution"];
@@ -216,7 +218,7 @@ const createOthers = (preprocessedData) => {
     for(let i = 0 ; i < others.length; i ++) {
       othersData[metric].value += others[i][metric].value 
     }
-    if (metric === 'distribution' || metric === CONSTANTS.downloadsMetricSelector.values[0] ) {
+    if (metric === 'distribution' || metric === CONSTANTS.downloadsMetricSelector.values[0] ||  metric === CONSTANTS.downloadsMetricSelector.values[2]) {
       continue
     }
     othersData[metric].value = isNaN(othersData[metric] / others.length) ? 0 : othersData[metric] / others.length
@@ -256,16 +258,16 @@ export const preprocessData = (
     let preprocessedValue = {
       value: value,
       sum: { value: sumDls },
-      avg: { value: meanDls},
+      avg: { value: meanDls },
       distribution: { value: distribution},
       nApp: { value: nApp },
-      avgNApp: { value: meanNApp},
+      avgNApp: { value: meanNApp },
     };
     preprocessedData.push(preprocessedValue);
   }
   handleSort(preprocessedData, isAscending, downloadsMetric);
   addStatsMetrics(preprocessedData, downloadsMetric);
-  preprocessedData = createOthers(preprocessedData)
+  preprocessedData = getDataWithOthers(preprocessedData)
   addRankingsMetrics(preprocessedData);
   handleSort(preprocessedData, isAscending, downloadsMetric);
   return preprocessedData;
