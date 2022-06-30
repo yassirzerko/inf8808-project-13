@@ -4,8 +4,8 @@ const getSVG = () => {
   return d3
     .select("#svg")
     .append("svg")
+    .attr("id", "mysvg")
     .attr("width", "90%")
-    .attr("height", "400%")
     .append("g")
     .attr("transform", "translate(" + 250 + "," + 20 + ")");
 };
@@ -51,6 +51,14 @@ export const getDataContainer = (
     .attr("x", "-100")
     .text(yName)
     .attr("class", "axis");
+
+  var svgContainer = d3.select("#mysvg").node();
+  if (svgContainer) {
+    console.log("hello");
+    var bbox = svgContainer.getBBox();
+    svgContainer.setAttribute("width", bbox.x + bbox.width + bbox.x);
+    svgContainer.setAttribute("height", bbox.y + bbox.height + bbox.y);
+  }
 
   return svg
     .selectAll("myRect")

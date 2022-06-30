@@ -148,7 +148,7 @@ export function Categorical() {
     downloadsMetric === CONSTANTS.downloadsMetricSelector.values[3];
 
   return (
-    <Box height={"500vh"} m={0} p={0}>
+    <Box height={"auto"} m={0} p={0}>
       <NavBar></NavBar>
       <Modal
         isOpen={modalData.isOpen}
@@ -247,7 +247,7 @@ export function Categorical() {
         low={stats.low}
         nValues={stats.nValues}
       ></LegendViz1>
-      <Box id="svg" height="100vh" p={2}></Box>
+      <Box id="svg" p={2}></Box>
     </Box>
   );
 }
