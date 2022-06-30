@@ -188,7 +188,7 @@ const addRankingsMetrics = (preprocessedData) => {
 };
 
 /* Add to the preprocessed data statistics about the data */
-const addStatsMetrics = (preprocessedData, downloadsMetric) => {
+const addStatsMetrics = (preprocessedData, downloadsMetric, dataLength) => {
   let avg = 0;
   for (const element of preprocessedData) {
     avg += element[downloadsMetric].value;
@@ -200,14 +200,15 @@ const addStatsMetrics = (preprocessedData, downloadsMetric) => {
       .reduce((a, b) => a + b) / preprocessedData.length
   );
 
+  let first = preprocessedData[0];
+  let last = preprocessedData[preprocessedData.length - 1];
+
   preprocessedData.avg = d3.format(".2f")(avg);
   preprocessedData.std = d3.format(".2f")(standardDeviation);
 
-  let first = preprocessedData[0];
-  let last = preprocessedData[preprocessedData.length - 1];
   preprocessedData.topValue = [first.value, first[downloadsMetric].value];
   preprocessedData.lowValue = [last.value, last[downloadsMetric].value];
-  preprocessedData.nValues = preprocessedData.length;
+  preprocessedData.nValues = dataLength;
 };
 
 /** Add Others value to the preprocessed data */
@@ -274,9 +275,12 @@ export const preprocessData = (
     };
     preprocessedData.push(preprocessedValue);
   }
+
+  const originalLength = preprocessedData.length;
   handleSort(preprocessedData, isAscending, downloadsMetric);
   preprocessedData = getDataWithOthers(preprocessedData);
-  addStatsMetrics(preprocessedData, downloadsMetric);
+  handleSort(preprocessedData, isAscending, downloadsMetric);
+  addStatsMetrics(preprocessedData, downloadsMetric, originalLength);
   addRankingsMetrics(preprocessedData);
   handleSort(preprocessedData, isAscending, downloadsMetric);
   return preprocessedData;

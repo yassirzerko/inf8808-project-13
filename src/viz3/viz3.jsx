@@ -180,7 +180,6 @@ export function Numerical() {
             inputLabel={CONSTANTS.yAxisSelector.label}
             currentValue={axes.yAxis}
             onChange={(event) => {
-              console.log(event.target.value);
               setAxes({ xAxis: axes.xAxis, yAxis: event.target.value });
             }}
             menuItemsValues={yAxisData.map((data) => data[0])}

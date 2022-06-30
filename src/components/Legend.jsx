@@ -88,7 +88,7 @@ export function LegendViz1(props) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="left">
-                {"Valeur en première position : " + top[0]}
+                {"Valeur gratuite en première position : " + top[0]}
               </TableCell>
               <TableCell align="right">
                 {downloadsMetric + " :" + d3.format(".2f")(top[1])}
@@ -99,7 +99,7 @@ export function LegendViz1(props) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="left">
-                {"Valeur en denière position " + low[0]}
+                {"Valeur gratuite en denière position : " + low[0]}
               </TableCell>
               <TableCell align="right">
                 {downloadsMetric + " :" + d3.format(".2f")(low[1])}
