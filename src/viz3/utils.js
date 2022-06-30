@@ -137,7 +137,7 @@ export const preprocessData = (data, axes) => {
       let [xValue, yValue] = variablesValues[i];
       xValue = sanitizeData(xValue, axes.xAxis);
       yValue = sanitizeData(yValue, axes.yAxis);
-      if (!xValue || !yValue) {
+      if (xValue === null || yValue === null) {
         skipped += 1;
         continue;
       }
