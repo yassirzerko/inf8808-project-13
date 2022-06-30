@@ -32,7 +32,8 @@ export const CONSTANTS = {
     values: [true, false],
     texts: ["Croissant", "Décroissant"],
     label: "Ordonnancement",
-    modalContent: "Choisir l'ordre dans lequel les valeurs seront ordonnées selon la métrique de téléchargements choisies. ",
+    modalContent:
+      "Choisir l'ordre dans lequel les valeurs seront ordonnées selon la métrique de téléchargements choisies. ",
   },
   downloadsRangeSelector: {
     label: "Nombre de téléchargements",
@@ -209,26 +210,31 @@ const addStatsMetrics = (preprocessedData, downloadsMetric) => {
 
 /** Add Others value to the preprocessed data */
 const getDataWithOthers = (preprocessedData) => {
-  let others = preprocessedData.slice(20, preprocessedData.length)
-  preprocessedData = preprocessedData.slice(0, 20)
+  let others = preprocessedData.slice(20, preprocessedData.length);
+  preprocessedData = preprocessedData.slice(0, 20);
   const metrics = [...CONSTANTS.downloadsMetricSelector.values, "distribution"];
-  let othersData = {}
-  othersData.value = "AUTRES"
+  let othersData = {};
+  othersData.value = "AUTRES";
   for (const metric of metrics) {
-    othersData[metric] = {value : 0}
-    for(let i = 0 ; i < others.length; i ++) {
-      othersData[metric].value += others[i][metric].value 
+    othersData[metric] = { value: 0 };
+    for (let i = 0; i < others.length; i++) {
+      othersData[metric].value += others[i][metric].value;
     }
-    if (metric === 'distribution' || metric === CONSTANTS.downloadsMetricSelector.values[0] ||  metric === CONSTANTS.downloadsMetricSelector.values[2]) {
-      continue
+    if (
+      metric === "distribution" ||
+      metric === CONSTANTS.downloadsMetricSelector.values[0] ||
+      metric === CONSTANTS.downloadsMetricSelector.values[2]
+    ) {
+      continue;
     }
-    othersData[metric].value = isNaN(othersData[metric] / others.length) ? 0 : othersData[metric] / others.length
-   }
+    othersData[metric].value = isNaN(othersData[metric] / others.length)
+      ? 0
+      : othersData[metric] / others.length;
+  }
 
-  preprocessedData.push(othersData)
-  return preprocessedData
-   
-}
+  preprocessedData.push(othersData);
+  return preprocessedData;
+};
 
 /* Preprocess and return the data */
 export const preprocessData = (
@@ -260,14 +266,14 @@ export const preprocessData = (
       value: value,
       sum: { value: sumDls },
       avg: { value: meanDls },
-      distribution: { value: distribution},
+      distribution: { value: distribution },
       nApp: { value: nApp },
       avgNApp: { value: meanNApp },
     };
     preprocessedData.push(preprocessedValue);
   }
   handleSort(preprocessedData, isAscending, downloadsMetric);
-  preprocessedData = getDataWithOthers(preprocessedData)
+  preprocessedData = getDataWithOthers(preprocessedData);
   addStatsMetrics(preprocessedData, downloadsMetric);
   addRankingsMetrics(preprocessedData);
   handleSort(preprocessedData, isAscending, downloadsMetric);

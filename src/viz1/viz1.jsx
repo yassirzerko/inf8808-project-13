@@ -112,7 +112,11 @@ export function Categorical() {
 
       dataContainer
         .append("text") // Todo : le texte ne dois pas annuler le hover sur la barre
-        .text((row) => { return (row[downloadsMetric].value % 1) ? d3.format(".2f")(row[downloadsMetric].value) : row[downloadsMetric].value; })
+        .text((row) => {
+          return row[downloadsMetric].value % 1
+            ? d3.format(".2f")(row[downloadsMetric].value)
+            : row[downloadsMetric].value;
+        })
         .style("text-anchor", "middle")
         .attr("x", 100)
         .attr("y", (row) => yScale(row.value) + yScale.bandwidth() - 10)

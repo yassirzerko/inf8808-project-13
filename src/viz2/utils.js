@@ -11,21 +11,29 @@ export const CONSTANTS = {
     values: [true, false],
     texts: ["Croissant", "Décroissant"],
     label: "Ordonnancement",
-    modalContent: "Choisir l'ordre dans lequel les valeurs seront ordonnées selon la métrique de téléechargements choisie. ",
+    modalContent:
+      "Choisir l'ordre dans lequel les valeurs seront ordonnées selon la métrique de téléechargements choisie. ",
   },
   title:
     "Visualisation 2 : Comparaison des distributions des applications gratuites et payantes",
-  legend : "* l'ordonnancement s'applique sur les applications gratuites",
-  
+  legend: "* l'ordonnancement s'applique sur les applications gratuites",
 };
 
 /* Dynamically get the content of the tooltip  */
 export const getHtmlToolTip = (row, dataLength) => {
   return `<h4> Valeur : ${row.value} </h4> 
-    <p> <b> Distribution de cette valeur parmi les applications gratuites </b>: ${row.free.distribution.toLocaleString()} %  (${row.free.position}/${dataLength})</p> 
-    <p> <b> Nombre d'applications gratuites avec cette valeur </b>:  ${row.free.count}</p> 
-    <p> <b> Distribution de cette valeur parmi les applications payantes </b>: ${row.paid.distribution.toLocaleString()} %  (${row.paid.position}/${dataLength})</p> 
-    <p> <b> Nombre d'applications payante avec cette valeur </b>:  ${row.paid.count}</p> 
+    <p> <b> Distribution de cette valeur parmi les applications gratuites </b>: ${row.free.distribution.toLocaleString()} %  (${
+    row.free.position
+  }/${dataLength})</p> 
+    <p> <b> Nombre d'applications gratuites avec cette valeur </b>:  ${
+      row.free.count
+    }</p> 
+    <p> <b> Distribution de cette valeur parmi les applications payantes </b>: ${row.paid.distribution.toLocaleString()} %  (${
+    row.paid.position
+  }/${dataLength})</p> 
+    <p> <b> Nombre d'applications payante avec cette valeur </b>:  ${
+      row.paid.count
+    }</p> 
     `;
 };
 
@@ -52,23 +60,25 @@ const handleSort = (preprocessedData, isAscending, type) => {
 
 /** Add Others value to the preprocessed data */
 const getDataWithOthers = (preprocessedData) => {
-  let others = preprocessedData.slice(20, preprocessedData.length)
-  preprocessedData = preprocessedData.slice(0, 20)
-  let othersData = {free : {count : 0, distribution : 0}, paid : {count : 0, distribution : 0}}
-  othersData.value = "AUTRES"
+  let others = preprocessedData.slice(20, preprocessedData.length);
+  preprocessedData = preprocessedData.slice(0, 20);
+  let othersData = {
+    free: { count: 0, distribution: 0 },
+    paid: { count: 0, distribution: 0 },
+  };
+  othersData.value = "AUTRES";
   for (const other of others) {
-    othersData.free.count += other.free.count
-    othersData.free.distribution += parseFloat(other.free.distribution)
-    othersData.paid.count += other.paid.count
-    othersData.paid.distribution += parseFloat(other.paid.distribution)
+    othersData.free.count += other.free.count;
+    othersData.free.distribution += parseFloat(other.free.distribution);
+    othersData.paid.count += other.paid.count;
+    othersData.paid.distribution += parseFloat(other.paid.distribution);
   }
 
-  othersData.paid.distribution = othersData.paid.distribution.toFixed(2)
-  othersData.free.distribution = othersData.free.distribution.toFixed(2)
-  preprocessedData.push(othersData)
-  return preprocessedData
-   
-}
+  othersData.paid.distribution = othersData.paid.distribution.toFixed(2);
+  othersData.free.distribution = othersData.free.distribution.toFixed(2);
+  preprocessedData.push(othersData);
+  return preprocessedData;
+};
 
 /* Preprocess the data */
 export const preprocessData = (data, variableName, isAscending) => {
@@ -152,7 +162,7 @@ export const preprocessData = (data, variableName, isAscending) => {
   }
 
   handleSort(preprocessedData, isAscending, "free");
-  preprocessedData = getDataWithOthers(preprocessedData)
+  preprocessedData = getDataWithOthers(preprocessedData);
   for (let j = 0; j < preprocessedData.length; j++) {
     preprocessedData[j].free.position = j + 1;
   }
