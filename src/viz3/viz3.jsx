@@ -140,7 +140,7 @@ export function Numerical() {
   const { xAxisData, yAxisData } = getAxesData(axes.xAxis, axes.yAxis);
 
   return (
-    <Box height={"500vh"} m={0} p={0}>
+    <Box height={"auto"} m={0} p={0}>
       <NavBar></NavBar>
       <Modal
         isOpen={modalData.isOpen}
@@ -199,7 +199,7 @@ export function Numerical() {
       <Typography variant="subtitle2" color="text.primary" pl={"5%"} pt={2}>
         {CONSTANTS.legend}
       </Typography>
-      <Box id="svg" height="100vh" p={2}></Box>
+      <Box id="svg" p={2}></Box>
     </Box>
   );
 }
