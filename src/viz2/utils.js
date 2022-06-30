@@ -60,6 +60,9 @@ const handleSort = (preprocessedData, isAscending, type) => {
 
 /** Add Others value to the preprocessed data */
 const getDataWithOthers = (preprocessedData) => {
+  if (preprocessedData.length <= 20) {
+    return preprocessedData;
+  }
   let others = preprocessedData.slice(20, preprocessedData.length);
   preprocessedData = preprocessedData.slice(0, 20);
   let othersData = {
