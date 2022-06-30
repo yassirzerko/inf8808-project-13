@@ -79,7 +79,6 @@ export function Numerical() {
 
       let toolTip = addTooltip();
 
-      //Free bars
       dataContainer
         .append("circle")
         .attr("cy", (row) => yScale(row.yAvg))
@@ -107,7 +106,7 @@ export function Numerical() {
         });
 
       dataContainer
-        .append("text") // Todo : le texte ne dois pas annuler le hover sur la barre
+        .append("text")
         .text((row) => row.downloadRange)
         .style("text-anchor", "middle")
         .attr("x", (row) => xScale(row.xAvg))

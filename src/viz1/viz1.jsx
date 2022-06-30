@@ -85,7 +85,6 @@ export function Categorical() {
       );
       let toolTip = addTooltip();
 
-      //real bars
       dataContainer
         .append("rect")
         .attr("y", (row) => yScale(String(row.value)))
@@ -111,7 +110,7 @@ export function Categorical() {
         });
 
       dataContainer
-        .append("text") // Todo : le texte ne dois pas annuler le hover sur la barre
+        .append("text")
         .text((row) => {
           return row[downloadsMetric].value % 1
             ? d3.format(".2f")(row[downloadsMetric].value)

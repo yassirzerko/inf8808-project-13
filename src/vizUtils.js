@@ -23,7 +23,7 @@ export const getDataContainer = (
   svg
     .append("g")
     .attr("transform", "translate(-10,15)")
-    .attr("position", "fixed") //todo : fix la position
+    .attr("position", "fixed")
     .call(d3.axisBottom(xScale))
     .append("text")
     .style("text-anchor", "end")

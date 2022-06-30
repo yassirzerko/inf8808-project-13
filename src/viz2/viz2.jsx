@@ -64,7 +64,6 @@ export function Type() {
 
       let toolTip = addTooltip();
 
-      //Free bars
       dataContainer
         .append("rect")
         .attr("y", (row) => yScale(row.value) - 21)
@@ -90,7 +89,6 @@ export function Type() {
           toolTip.transition().duration(50).style("opacity", 0);
         });
 
-      //Paid bars
       dataContainer
         .append("rect")
         .attr("y", (row) => yScale(row.value) + 21)
@@ -116,7 +114,7 @@ export function Type() {
         });
 
       dataContainer
-        .append("text") // Todo : le texte ne dois pas annuler le hover sur la barre
+        .append("text")
         .text((row) => row.free.distribution + "%")
         .style("text-anchor", "middle")
         .attr("x", 100)
@@ -141,7 +139,7 @@ export function Type() {
         });
 
       dataContainer
-        .append("text") // Todo : le texte ne dois pas annuler le hover sur la barre
+        .append("text")
         .text((row) => row.paid.distribution + "%")
         .style("text-anchor", "middle")
         .attr("x", 100)
