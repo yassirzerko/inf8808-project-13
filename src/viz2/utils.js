@@ -150,21 +150,20 @@ export const preprocessData = (data, variableName, isAscending) => {
       },
     });
   }
-  handleSort(preprocessedData, false, "paid");
+
+  handleSort(preprocessedData, isAscending, "free");
+  preprocessedData = getDataWithOthers(preprocessedData)
+  for (let j = 0; j < preprocessedData.length; j++) {
+    preprocessedData[j].free.position = j + 1;
+  }
+
+  handleSort(preprocessedData, isAscending, "paid");
 
   for (let j = 0; j < preprocessedData.length; j++) {
     preprocessedData[j].paid.position = j + 1;
   }
 
   handleSort(preprocessedData, isAscending, "free");
-
-  preprocessedData = getDataWithOthers(preprocessedData)
-
-  handleSort(preprocessedData, isAscending, "free");
-
-  for (let j = 0; j < preprocessedData.length; j++) {
-    preprocessedData[j].free.position = j + 1;
-  }
 
   return {
     preprocessedData: preprocessedData,
