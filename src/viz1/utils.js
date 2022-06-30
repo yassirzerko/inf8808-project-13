@@ -173,8 +173,7 @@ const fillMaps = (
 /* Add to the preprocessed data the ranking of each element according to each metric */
 const addRankingsMetrics = (preprocessedData) => {
   const metrics = [...CONSTANTS.downloadsMetricSelector.values, "distribution"];
-  for (const element of metrics) {
-    let metric = element;
+  for (const metric of metrics) {
     handleSort(preprocessedData, false, metric);
 
     for (let j = 0; j < preprocessedData.length; j++) {
@@ -206,6 +205,28 @@ const addStatsMetrics = (preprocessedData, downloadsMetric) => {
   preprocessedData.nValues = preprocessedData.length;
 };
 
+const createOthers = (preprocessedData) => {
+  let others = preprocessedData.slice(20, preprocessedData.length)
+  preprocessedData = preprocessedData.slice(0, 20)
+  const metrics = [...CONSTANTS.downloadsMetricSelector.values, "distribution"];
+  let othersData = {}
+  othersData.value = "AUTRES"
+  for (const metric of metrics) {
+    othersData[metric] = {value : 0}
+    for(let i = 0 ; i < others.length; i ++) {
+      othersData[metric].value += others[i][metric].value 
+    }
+    if (metric === 'distribution' || metric === CONSTANTS.downloadsMetricSelector.values[0] ) {
+      continue
+    }
+    othersData[metric].value = isNaN(othersData[metric] / others.length) ? 0 : othersData[metric] / others.length
+   }
+
+  preprocessedData.push(othersData)
+  return preprocessedData
+   
+}
+
 /* Preprocess and return the data */
 export const preprocessData = (
   data,
@@ -235,15 +256,17 @@ export const preprocessData = (
     let preprocessedValue = {
       value: value,
       sum: { value: sumDls },
-      avg: { value: meanDls.toFixed(2) },
-      distribution: { value: distribution.toFixed(2) },
+      avg: { value: meanDls},
+      distribution: { value: distribution},
       nApp: { value: nApp },
-      avgNApp: { value: meanNApp.toFixed(2) },
+      avgNApp: { value: meanNApp},
     };
     preprocessedData.push(preprocessedValue);
   }
-  addRankingsMetrics(preprocessedData);
   handleSort(preprocessedData, isAscending, downloadsMetric);
   addStatsMetrics(preprocessedData, downloadsMetric);
+  preprocessedData = createOthers(preprocessedData)
+  addRankingsMetrics(preprocessedData);
+  handleSort(preprocessedData, isAscending, downloadsMetric);
   return preprocessedData;
 };
