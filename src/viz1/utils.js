@@ -125,6 +125,18 @@ const handleSort = (preprocessedData, isAscending, downloadsMetric) => {
   preprocessedData.sort(sortMethod);
 };
 
+/* Skip the outlier data */
+const shouldSkip = (variableName, element) => {
+  return (
+    (variableName === CONSTANTS.variableSelector.values[0] &&
+      element[variableName] === "1.9") ||
+    (variableName === CONSTANTS.variableSelector.values[3] &&
+      element[variableName] === "") ||
+    (variableName === CONSTANTS.variableSelector.values[1] &&
+      element[variableName] === "February 11, 2018")
+  );
+};
+
 /* Fill the maps used by preprocessData */
 const fillMaps = (
   data,
@@ -135,12 +147,7 @@ const fillMaps = (
 ) => {
   for (const element of data) {
     let row = element;
-    if (
-      (variableName === CONSTANTS.variableSelector.values[0] &&
-        element[variableName] === "1.9") ||
-      (variableName === CONSTANTS.variableSelector.values[3] &&
-        element[variableName] === "")
-    ) {
+    if (shouldSkip(variableName, element)) {
       continue;
     }
     let downloads = parseInt(

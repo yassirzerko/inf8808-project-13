@@ -80,6 +80,17 @@ const getDataWithOthers = (preprocessedData) => {
   return preprocessedData;
 };
 
+/* Skip the outlier data */
+const shouldSkip = (variableName, value) => {
+  return (
+    (variableName === CONSTANTS.variableSelector.values[0] &&
+      value === "1.9") ||
+    (variableName === CONSTANTS.variableSelector.values[2] && value === "") ||
+    (variableName === CONSTANTS.variableSelector.values[1] &&
+      value === "February 11, 2018")
+  );
+};
+
 /* Preprocess the data */
 export const preprocessData = (data, variableName, isAscending) => {
   let nAppByValueFree = new Map();
@@ -96,11 +107,7 @@ export const preprocessData = (data, variableName, isAscending) => {
   for (let i = 0; i < data.length; i++) {
     let row = data[i];
     let value = row[variableName];
-    if (
-      (variableName === CONSTANTS.variableSelector.values[0] &&
-        value === "1.9") ||
-      (variableName === CONSTANTS.variableSelector.values[2] && value === "")
-    ) {
+    if (shouldSkip(variableName, value)) {
       if (row.Type === "Free") {
         skippedFreeRate += 1;
       } else {
